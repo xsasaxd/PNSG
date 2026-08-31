@@ -22,6 +22,8 @@
     --secondary:#2337C6;
     --accent:#4169E1;
     --sky:#4CC9F0;
+    --good:#1E8E5A;
+    --bad:#D64550;
   }
 
   @media (prefers-color-scheme: dark){
@@ -33,6 +35,8 @@
       --ink-muted:#AEB4DA;
       --border:#2B3161;
       --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+      --good:#4ADE80;
+      --bad:#FF6B6B;
     }
   }
   :root[data-theme="dark"]{
@@ -43,6 +47,8 @@
     --ink-muted:#AEB4DA;
     --border:#2B3161;
     --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    --good:#4ADE80;
+    --bad:#FF6B6B;
   }
 
   *{ box-sizing:border-box; }
@@ -303,6 +309,29 @@
   .community-card h4{ font-family:"Fraunces",serif; font-weight:600; font-size:1.05rem; margin:0 0 4px; }
   .community-card .note{ font-size:.78rem; color:var(--ink-muted); font-style:italic; margin-top:6px; }
 
+  /* ---------- Applications ---------- */
+  .app-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  .app-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:28px;
+    box-shadow:var(--shadow);
+  }
+  .app-card h4{ font-family:"Fraunces",serif; font-weight:600; font-size:1.15rem; margin:0 0 16px; }
+  .app-card ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .app-card li{ font-size:.9rem; color:var(--ink-muted); padding-left:26px; position:relative; line-height:1.45; }
+  .app-card li.do::before{ content:"✓"; position:absolute; left:0; top:0; color:var(--good); font-weight:700; }
+  .app-card li.dont::before{ content:"✕"; position:absolute; left:0; top:0; color:var(--bad); font-weight:700; }
+
+  /* ---------- Media specs ---------- */
+  .spec-table-wrap{ overflow-x:auto; border-radius:16px; border:1px solid var(--border); box-shadow:var(--shadow); }
+  .spec-table{ width:100%; border-collapse:collapse; background:var(--surface); min-width:640px; }
+  .spec-table th, .spec-table td{ padding:14px 18px; text-align:left; font-size:.88rem; border-bottom:1px solid var(--border); white-space:nowrap; }
+  .spec-table th{ background:var(--surface-2); color:var(--ink-muted); text-transform:uppercase; font-size:.72rem; letter-spacing:.06em; font-weight:700; }
+  .spec-table tr:last-child td{ border-bottom:none; }
+  .spec-table td.mono{ font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.82rem; color:var(--ink-muted); }
+
   footer{
     padding:40px 0 60px;
     text-align:center;
@@ -317,6 +346,7 @@
     .matriz-card{ grid-template-columns:1fr; }
     .matriz-card .photo{ min-height:200px; }
     .community-grid{ grid-template-columns:1fr; }
+    .app-grid{ grid-template-columns:1fr; }
     .subnav .wrap{ overflow-x:auto; }
   }
 </style>
@@ -343,6 +373,8 @@
       <a href="#tipografia">Tipografia</a>
       <a href="#figurinhas">Figurinhas</a>
       <a href="#identidades">Identidades</a>
+      <a href="#aplicacoes">Aplicações da Marca</a>
+      <a href="#especificacoes">Especificações de Mídia</a>
     </div>
   </nav>
 
@@ -511,6 +543,76 @@
             <div class="note">Selo próprio em desenvolvimento</div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="aplicacoes">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">05 — Aplicações</div>
+        <h2>Aplicações Práticas da Marca</h2>
+        <p>Como usar o selo, as cores e as fontes no dia a dia — em redes sociais, grupos de WhatsApp, materiais impressos e uniformes das comunidades.</p>
+      </div>
+      <div class="app-grid">
+        <div class="app-card">
+          <h4>Redes sociais</h4>
+          <ul>
+            <li class="do">Use o selo da Matriz ou da comunidade em posts institucionais</li>
+            <li class="do">Combine títulos em Fraunces com a paleta de azuis</li>
+            <li class="dont">Não distorça o selo nem o aplique sobre fotos de baixo contraste</li>
+          </ul>
+        </div>
+        <div class="app-card">
+          <h4>WhatsApp</h4>
+          <ul>
+            <li class="do">Use as figurinhas de fé para avisos e mensagens do dia a dia</li>
+            <li class="do">Mantenha o fundo transparente das figurinhas</li>
+            <li class="dont">Não recorte ou combine letterings diferentes numa mesma peça</li>
+          </ul>
+        </div>
+        <div class="app-card">
+          <h4>Materiais impressos</h4>
+          <ul>
+            <li class="do">Reserve uma margem de respiro ao redor do selo</li>
+            <li class="do">Use fundo branco ou Azul Meia-Noite atrás do selo</li>
+            <li class="dont">Não reduza o selo abaixo de 2 cm de largura</li>
+          </ul>
+        </div>
+        <div class="app-card">
+          <h4>Uniformes e crachás</h4>
+          <ul>
+            <li class="do">Aplique o selo em versão monocromática sobre tecido escuro</li>
+            <li class="do">Use Public Sans para nomes e funções</li>
+            <li class="dont">Não use o manuscrito (Alex Brush) em textos pequenos — perde legibilidade</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="especificacoes">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">06 — Especificações</div>
+        <h2>Especificações de Mídias</h2>
+        <p>Tamanhos e formatos recomendados para preparar artes prontas para cada canal, sem retrabalho.</p>
+      </div>
+      <div class="spec-table-wrap">
+        <table class="spec-table">
+          <thead>
+            <tr><th>Aplicação</th><th>Proporção</th><th>Tamanho recomendado</th><th>Arquivo</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Instagram — Feed</td><td class="mono">1:1</td><td class="mono">1080 × 1080 px</td><td>JPG/PNG, RGB</td></tr>
+            <tr><td>Instagram — Stories/Reels</td><td class="mono">9:16</td><td class="mono">1080 × 1920 px</td><td>JPG/PNG, RGB</td></tr>
+            <tr><td>WhatsApp — Status</td><td class="mono">9:16</td><td class="mono">1080 × 1920 px</td><td>JPG/PNG</td></tr>
+            <tr><td>WhatsApp — Figurinha</td><td class="mono">1:1</td><td class="mono">512 × 512 px</td><td>PNG transparente, até 100 KB</td></tr>
+            <tr><td>Facebook — Capa</td><td class="mono">2.63:1</td><td class="mono">820 × 312 px</td><td>JPG/PNG</td></tr>
+            <tr><td>Cartaz — A4</td><td class="mono">210 × 297 mm</td><td class="mono">300 dpi</td><td>PDF, CMYK</td></tr>
+            <tr><td>Banner de fachada</td><td class="mono">conforme o local</td><td class="mono">mín. 150 dpi na escala final</td><td>PDF, CMYK</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
