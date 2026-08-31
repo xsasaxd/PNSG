@@ -28,6 +28,7 @@
     --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
   }
   *{ box-sizing:border-box; }
+  [hidden]{ display:none !important; }
   body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Public Sans",ui-sans-serif,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased; }
   a{ color:var(--secondary); }
 
@@ -157,6 +158,62 @@
   }
   .seg-toggle button.active{ background:var(--primary); color:#fff; }
   .seg-toggle:disabled, .media-controls.disabled{ opacity:.4; pointer-events:none; }
+
+  .link-row{ display:flex; gap:8px; }
+  .link-row input[type="text"]{
+    flex:1; min-width:0; border:1px solid var(--border); border-radius:10px; padding:10px 12px;
+    font-family:"Public Sans",sans-serif; font-size:.85rem; color:var(--ink); background:var(--bg);
+  }
+  .link-row button{
+    flex-shrink:0; padding:10px 14px; border:1px solid var(--border); border-radius:10px; cursor:pointer;
+    background:var(--surface-2); color:var(--ink); font-family:"Public Sans",sans-serif; font-weight:700; font-size:.82rem;
+  }
+
+  .add-btn{
+    width:100%; padding:11px; border:1px dashed var(--border); border-radius:10px; cursor:pointer;
+    background:var(--bg); color:var(--primary); font-family:"Public Sans",sans-serif; font-weight:700; font-size:.85rem;
+    margin-bottom:10px;
+  }
+  .add-btn:hover{ background:var(--surface-2); }
+
+  .shape-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .shape-btn{
+    display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px 4px; cursor:pointer;
+    border:1px solid var(--border); border-radius:10px; background:var(--bg); font-size:.72rem; font-weight:600; color:var(--ink-muted);
+    font-family:"Public Sans",sans-serif;
+  }
+  .shape-btn:hover{ background:var(--surface-2); }
+  .shape-btn svg{ display:block; }
+
+  .color-row{ display:flex; align-items:center; gap:10px; }
+  .color-row input[type="color"]{ width:40px; height:36px; padding:0; border:1px solid var(--border); border-radius:8px; background:none; cursor:pointer; flex-shrink:0; }
+  .color-row span{ font-size:.82rem; color:var(--ink-muted); }
+
+  .seg-btn-row{ display:flex; gap:6px; }
+  .seg-btn-row button{
+    flex:1; padding:8px; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:var(--bg);
+    color:var(--ink-muted); font-size:.85rem; font-weight:700; font-family:"Public Sans",sans-serif;
+  }
+  .seg-btn-row button.active{ background:var(--primary); color:#fff; border-color:var(--primary); }
+  .seg-btn-row button.it{ font-style:italic; }
+  .seg-btn-row button.un{ text-decoration:underline; }
+
+  select.text-field{
+    width:100%; border:1px solid var(--border); border-radius:10px; padding:10px 12px;
+    font-family:"Public Sans",sans-serif; font-size:.85rem; color:var(--ink); background:var(--bg);
+  }
+
+  .props-close{ float:right; background:none; border:none; color:var(--ink-muted); cursor:pointer; font-size:1rem; padding:0; }
+
+  /* ---------- free elements (custom text boxes & shapes) ---------- */
+  .free-el{ position:absolute; }
+  .free-el .field-del{ display:none; }
+  .stage.move-mode .free-el{ cursor:move; }
+  .stage.move-mode .free-el:hover{ outline:1px dashed rgba(76,201,240,.9); outline-offset:4px; }
+  .stage.move-mode .free-el:hover .field-del,
+  .stage.move-mode .free-el.dragging .field-del{ display:flex; }
+  .free-el.selected{ outline:2px solid #4CC9F0; outline-offset:4px; }
+  .stage:not(.move-mode) .free-el .field-del{ display:none !important; }
 </style>
 </head>
 <body>
@@ -183,14 +240,24 @@
         <button id="mode-media">Posicionar foto</button>
       </div>
 
+      <button class="add-btn" id="add-text-btn">+ Adicionar caixa de texto</button>
+
       <div class="field-label" style="margin-top:0">Fundo predefinido</div>
       <div class="presets" id="presets"></div>
 
       <div class="field-label">Foto de fundo (opcional)</div>
-      <div class="upload-row">
+      <div class="seg-toggle" style="margin-bottom:10px">
+        <button id="bg-src-file" class="active">Do computador</button>
+        <button id="bg-src-link">Por link</button>
+      </div>
+      <div class="upload-row" id="bg-file-row">
         <label class="upload-btn" for="bg-input">Escolher imagem</label>
         <input type="file" id="bg-input" accept="image/*">
         <button class="remove-btn" id="remove-bg" hidden>Remover</button>
+      </div>
+      <div class="link-row" id="bg-link-row" hidden>
+        <input type="text" id="bg-link-input" placeholder="Cole o link da imagem (https://...)">
+        <button id="bg-link-load">Carregar</button>
       </div>
 
       <div id="media-controls" class="media-controls disabled">
@@ -223,6 +290,18 @@
       <button class="reset-btn" id="reset-btn">Restaurar este modelo</button>
 
       <button class="download-btn" id="download-btn">Baixar arte (PNG)</button>
+    </div>
+
+    <div class="panel" id="shapes-panel">
+      <h3>Formas</h3>
+      <div class="hint">Clique para adicionar uma forma ao modelo. Depois é só arrastar (modo "Mover texto") e ajustar cor e contorno aqui do lado.</div>
+      <div class="shape-grid" id="shape-grid"></div>
+    </div>
+
+    <div class="panel" id="props-panel" hidden>
+      <button class="props-close" id="props-close" title="Fechar">×</button>
+      <h3 id="props-title">Propriedades</h3>
+      <div id="props-body"></div>
     </div>
 
     <div class="panel" id="carousel-panel" hidden>
@@ -278,14 +357,40 @@
       { id:'profundo', nome:'Azul Profundo', css:'linear-gradient(175deg,#031273 0%,#0504AA 85%)' },
       { id:'noite',    nome:'Noite Real',     css:'linear-gradient(160deg,#031273 0%,#2337C6 70%,#4169E1 130%)' },
       { id:'horizonte',nome:'Horizonte Celeste', css:'radial-gradient(circle at 85% 100%, #4CC9F0 0%, #0504AA 45%, #031273 100%)' },
-      { id:'sobrio',   nome:'Sóbrio',         css:'#031273' }
+      { id:'sobrio',   nome:'Sóbrio',         css:'#031273' },
+      { id:'meiaNoite',nome:'Meia-Noite',     css:'linear-gradient(200deg,#000318 0%,#031273 100%)' },
+      { id:'aurora',   nome:'Aurora',         css:'radial-gradient(circle at 20% 10%, #4CC9F0 0%, #2337C6 40%, #031273 100%)' },
+      { id:'marinho',  nome:'Marinho Diagonal', css:'linear-gradient(120deg,#2337C6 0%,#031273 60%,#0504AA 100%)' },
+      { id:'vinheta',  nome:'Vinheta Real',   css:'radial-gradient(circle at 50% 50%, #4169E1 0%, #0504AA 55%, #031273 100%)' }
     ],
     light: [
       { id:'neblina',  nome:'Neblina',        css:'#F5F7FC' },
       { id:'nevoa',    nome:'Névoa Celeste',  css:'linear-gradient(160deg,#FFFFFF 0%,#EDF1FA 60%,#D8ECFB 130%)' },
-      { id:'aureola',  nome:'Auréola',        css:'radial-gradient(circle at 15% 0%, rgba(76,201,240,.35) 0%, #F5F7FC 60%)' }
+      { id:'aureola',  nome:'Auréola',        css:'radial-gradient(circle at 15% 0%, rgba(76,201,240,.35) 0%, #F5F7FC 60%)' },
+      { id:'gelo',     nome:'Gelo',           css:'linear-gradient(160deg,#FFFFFF 0%,#F5F7FC 100%)' },
+      { id:'ceu',      nome:'Céu Claro',      css:'linear-gradient(180deg,#EAF4FE 0%,#F5F7FC 70%)' },
+      { id:'perola',   nome:'Pérola Azulada', css:'radial-gradient(circle at 85% 15%, rgba(65,105,225,.22) 0%, #FFFFFF 60%)' }
     ]
   };
+
+  const TEXT_FONTS = [
+    { id: "'Fraunces',Georgia,serif", nome: 'Fraunces (título)' },
+    { id: "'Public Sans',sans-serif", nome: 'Public Sans (texto)' },
+    { id: "'Alex Brush',cursive", nome: 'Alex Brush (manuscrito)' },
+    { id: 'Georgia,serif', nome: 'Serifada clássica' },
+    { id: 'Arial,sans-serif', nome: 'Sem serifa simples' }
+  ];
+
+  const SHAPE_TYPES = [
+    { id: 'rect', nome: 'Retângulo' },
+    { id: 'square', nome: 'Quadrado' },
+    { id: 'circle', nome: 'Círculo' },
+    { id: 'triangle', nome: 'Triângulo' },
+    { id: 'star', nome: 'Estrela' }
+  ];
+
+  let elIdCounter = 1;
+  function nextId(){ return 'el' + (elIdCounter++); }
 
   function el(tag, attrs, children){
     const n = document.createElement(tag);
@@ -463,8 +568,81 @@
     return {
       texts: Object.assign({}, DEFAULTS[key], textsOverride || {}),
       bgImage: null, scrim: 55, presetIndex: 0, offsets: {}, hidden: [],
-      media: { fit: 'cover', zoom: 100, offsetX: 0, offsetY: 0, layer: 'behind' }
+      media: { fit: 'cover', zoom: 100, offsetX: 0, offsetY: 0, layer: 'behind' },
+      customTexts: [], shapes: []
     };
+  }
+
+  function makeCustomText(frameW, frameH){
+    return {
+      id: nextId(), text: 'Novo texto', x: Math.round(frameW / 2 - 140), y: Math.round(frameH / 2 - 20),
+      fontFamily: TEXT_FONTS[1].id, fontSize: 36, bold: false, italic: false, underline: false, color: '#FFFFFF'
+    };
+  }
+
+  function makeShape(type, frameW, frameH){
+    const size = type === 'star' || type === 'circle' || type === 'square' ? 260 : 320;
+    const h = type === 'rect' ? 200 : size;
+    return {
+      id: nextId(), type,
+      x: Math.round(frameW / 2 - size / 2), y: Math.round(frameH / 2 - h / 2),
+      w: size, h,
+      fill: '#0504AA', stroke: '#4CC9F0', strokeWidth: 4
+    };
+  }
+
+  // ---------- custom text boxes & shapes (free elements) ----------
+  function buildCustomText(ct, interactive){
+    const wrap = el('div', {
+      class: 'free-el', 'data-kind': 'customText', 'data-id': ct.id,
+      style: {
+        left: ct.x + 'px', top: ct.y + 'px', zIndex: 5,
+        fontFamily: ct.fontFamily, fontSize: ct.fontSize + 'px',
+        fontWeight: ct.bold ? '700' : '400', fontStyle: ct.italic ? 'italic' : 'normal',
+        textDecoration: ct.underline ? 'underline' : 'none',
+        color: ct.color, whiteSpace: 'pre-wrap', maxWidth: '920px'
+      }
+    });
+    const inner = el('div', { 'data-field': 'custom:' + ct.id, style: { outline: 'none' } });
+    inner.textContent = ct.text;
+    wrap.appendChild(inner);
+    wrap.appendChild(el('button', { class: 'field-del', type: 'button', title: 'Remover', text: '×' }));
+    return wrap;
+  }
+
+  function starPoints(w, h, sw){
+    const cx = w / 2, cy = h / 2, outerR = Math.min(w, h) / 2 - sw / 2, innerR = outerR * 0.42;
+    const pts = [];
+    for (let i = 0; i < 10; i++) {
+      const r = i % 2 === 0 ? outerR : innerR;
+      const a = -Math.PI / 2 + i * Math.PI / 5;
+      pts.push((cx + r * Math.cos(a)).toFixed(1) + ',' + (cy + r * Math.sin(a)).toFixed(1));
+    }
+    return pts.join(' ');
+  }
+
+  function shapeSvgInner(type, w, h, fill, stroke, sw){
+    const pad = sw / 2;
+    if (type === 'rect' || type === 'square') {
+      return `<rect x="${pad}" y="${pad}" width="${Math.max(0, w - sw)}" height="${Math.max(0, h - sw)}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+    }
+    if (type === 'circle') {
+      return `<ellipse cx="${w / 2}" cy="${h / 2}" rx="${Math.max(0, (w - sw) / 2)}" ry="${Math.max(0, (h - sw) / 2)}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+    }
+    if (type === 'triangle') {
+      return `<polygon points="${w / 2},${pad} ${w - pad},${h - pad} ${pad},${h - pad}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>`;
+    }
+    return `<polygon points="${starPoints(w, h, sw)}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>`;
+  }
+
+  function buildShape(shape, interactive){
+    const wrap = el('div', {
+      class: 'free-el', 'data-kind': 'shape', 'data-id': shape.id,
+      style: { left: shape.x + 'px', top: shape.y + 'px', width: shape.w + 'px', height: shape.h + 'px', zIndex: 5 }
+    });
+    wrap.innerHTML = `<svg width="${shape.w}" height="${shape.h}" style="display:block;overflow:visible">${shapeSvgInner(shape.type, shape.w, shape.h, shape.fill, shape.stroke, shape.strokeWidth)}</svg>`;
+    wrap.appendChild(el('button', { class: 'field-del', type: 'button', title: 'Remover', text: '×' }));
+    return wrap;
   }
 
   // ---------- background photo: fit / zoom / pan / layer ----------
@@ -540,6 +718,8 @@
       node.appendChild(media);
       node.appendChild(scrim);
     }
+    (state.shapes || []).forEach(shape => node.appendChild(buildShape(shape)));
+    (state.customTexts || []).forEach(ct => node.appendChild(buildCustomText(ct)));
     finalizeNode(node, state);
     return node;
   }
@@ -568,6 +748,7 @@
 
   let mode = 'text'; // 'text' | 'move' | 'media'
   let currentScale = 1;
+  let selection = null; // { kind:'customText'|'shape', id }
 
   const stage = document.getElementById('stage');
   const tabsEl = document.getElementById('tabs');
@@ -599,6 +780,15 @@
   const slideCount = document.getElementById('slide-count');
   const slideAdd = document.getElementById('slide-add');
   const slideDel = document.getElementById('slide-del');
+  const addTextBtn = document.getElementById('add-text-btn');
+  const shapeGrid = document.getElementById('shape-grid');
+  const propsClose = document.getElementById('props-close');
+  const bgSrcFileBtn = document.getElementById('bg-src-file');
+  const bgSrcLinkBtn = document.getElementById('bg-src-link');
+  const bgFileRow = document.getElementById('bg-file-row');
+  const bgLinkRow = document.getElementById('bg-link-row');
+  const bgLinkInput = document.getElementById('bg-link-input');
+  const bgLinkLoad = document.getElementById('bg-link-load');
 
   function toast(msg){
     toastEl.textContent = msg;
@@ -632,12 +822,22 @@
         document.execCommand('insertText', false, text);
       });
       f.addEventListener('input', () => {
-        currentState().texts[f.dataset.field] = f.innerText;
+        const key = f.dataset.field;
+        if (key.indexOf('custom:') === 0) {
+          const ct = (currentState().customTexts || []).find(c => 'custom:' + c.id === key);
+          if (ct) ct.text = f.innerText;
+        } else {
+          currentState().texts[key] = f.innerText;
+        }
       });
     });
 
     enableFieldDrag(node, state);
     enableMediaDrag(node, state, t.w, t.h);
+    enableFreeDrag(node, state);
+    node.addEventListener('click', e => {
+      if (!e.target.closest('.free-el') && selection) { selection = null; renderPropsPanel(); }
+    });
     stage.classList.toggle('move-mode', mode === 'move');
     stage.classList.toggle('media-mode', mode === 'media');
 
@@ -657,6 +857,7 @@
     layerFrontBtn.classList.toggle('active', state.media.layer === 'front');
 
     renderPresets();
+    renderPropsPanel();
     carouselPanel.hidden = !isCarousel();
     if (isCarousel()) renderSlideNav();
   }
@@ -736,6 +937,181 @@
       layer.addEventListener('pointerup', onUp);
       layer.addEventListener('pointercancel', onUp);
     });
+  }
+
+  function enableFreeDrag(node, state){
+    node.querySelectorAll('.free-el').forEach(wrap => {
+      const kind = wrap.dataset.kind, id = wrap.dataset.id;
+      const list = kind === 'shape' ? state.shapes : state.customTexts;
+      const item = list.find(x => x.id === id);
+      if (!item) return;
+      wrap.style.touchAction = 'none';
+      if (selection && selection.kind === kind && selection.id === id) wrap.classList.add('selected');
+
+      wrap.addEventListener('click', e => {
+        e.stopPropagation();
+        selection = { kind, id };
+        renderPropsPanel();
+        node.querySelectorAll('.free-el.selected').forEach(w2 => w2.classList.remove('selected'));
+        wrap.classList.add('selected');
+      });
+
+      wrap.addEventListener('pointerdown', e => {
+        if (mode !== 'move') return;
+        e.preventDefault(); e.stopPropagation();
+        wrap.setPointerCapture(e.pointerId);
+        const start = { x: e.clientX, y: e.clientY };
+        const base = { x: item.x, y: item.y };
+        wrap.classList.add('dragging');
+        function onMove(ev){
+          if (ev.pointerId !== e.pointerId) return;
+          item.x = Math.round(base.x + (ev.clientX - start.x) / currentScale);
+          item.y = Math.round(base.y + (ev.clientY - start.y) / currentScale);
+          wrap.style.left = item.x + 'px';
+          wrap.style.top = item.y + 'px';
+        }
+        function onUp(ev){
+          if (ev.pointerId !== e.pointerId) return;
+          wrap.removeEventListener('pointermove', onMove);
+          wrap.removeEventListener('pointerup', onUp);
+          wrap.removeEventListener('pointercancel', onUp);
+          wrap.classList.remove('dragging');
+        }
+        wrap.addEventListener('pointermove', onMove);
+        wrap.addEventListener('pointerup', onUp);
+        wrap.addEventListener('pointercancel', onUp);
+      });
+
+      wrap.querySelector('.field-del').addEventListener('click', e => {
+        e.stopPropagation();
+        const idx = list.indexOf(item);
+        if (idx >= 0) list.splice(idx, 1);
+        if (selection && selection.kind === kind && selection.id === id) selection = null;
+        render();
+      });
+    });
+  }
+
+  function renderPropsPanel(){
+    const panel = document.getElementById('props-panel');
+    const body = document.getElementById('props-body');
+    const title = document.getElementById('props-title');
+    if (!selection) { panel.hidden = true; return; }
+    const state = currentState();
+    const list = selection.kind === 'shape' ? state.shapes : state.customTexts;
+    const item = list && list.find(x => x.id === selection.id);
+    if (!item) { selection = null; panel.hidden = true; return; }
+    panel.hidden = false;
+    body.innerHTML = '';
+
+    function labelRow(text, extraStyle){
+      return el('div', { class: 'field-label', style: Object.assign({ marginTop: '0' }, extraStyle || {}), text });
+    }
+    function sliderRow(labelText, valueText){
+      const row = el('div', { class: 'slider-row', style: { marginTop: '18px' } });
+      row.appendChild(el('span', { text: labelText }));
+      const val = el('span', { class: 'slider-val', text: valueText });
+      row.appendChild(val);
+      return { row, val };
+    }
+
+    if (selection.kind === 'customText') {
+      title.textContent = 'Caixa de texto';
+
+      body.appendChild(labelRow('Fonte'));
+      const fontSelect = el('select', { class: 'text-field' });
+      TEXT_FONTS.forEach(f => {
+        const opt = el('option', { value: f.id, text: f.nome });
+        if (f.id === item.fontFamily) opt.setAttribute('selected', 'selected');
+        fontSelect.appendChild(opt);
+      });
+      fontSelect.addEventListener('change', () => { item.fontFamily = fontSelect.value; render(); });
+      body.appendChild(fontSelect);
+
+      const sz = sliderRow('Tamanho', item.fontSize + 'px');
+      body.appendChild(sz.row);
+      const sizeRange = el('input', { type: 'range', min: '14', max: '140', value: String(item.fontSize) });
+      sizeRange.addEventListener('input', () => { item.fontSize = parseInt(sizeRange.value, 10); sz.val.textContent = item.fontSize + 'px'; render(); });
+      body.appendChild(sizeRange);
+
+      body.appendChild(labelRow('Estilo', { marginTop: '18px' }));
+      const styleRow = el('div', { class: 'seg-btn-row' });
+      const boldBtn = el('button', { type: 'button', text: 'B', style: { fontWeight: '700' } });
+      const italBtn = el('button', { type: 'button', class: 'it', text: 'I' });
+      const undBtn = el('button', { type: 'button', class: 'un', text: 'S' });
+      [[boldBtn, 'bold'], [italBtn, 'italic'], [undBtn, 'underline']].forEach(([btn, key]) => {
+        btn.classList.toggle('active', !!item[key]);
+        btn.addEventListener('click', () => { item[key] = !item[key]; render(); });
+        styleRow.appendChild(btn);
+      });
+      body.appendChild(styleRow);
+
+      body.appendChild(labelRow('Cor do texto', { marginTop: '18px' }));
+      const colorRow = el('div', { class: 'color-row' });
+      const colorInput = el('input', { type: 'color', value: item.color });
+      colorInput.addEventListener('input', () => { item.color = colorInput.value; render(); });
+      colorRow.appendChild(colorInput);
+      colorRow.appendChild(el('span', { text: item.color }));
+      body.appendChild(colorRow);
+    } else {
+      title.textContent = (SHAPE_TYPES.find(s => s.id === item.type) || {}).nome || 'Forma';
+
+      body.appendChild(labelRow('Cor de preenchimento'));
+      const fillRow = el('div', { class: 'color-row' });
+      const fillInput = el('input', { type: 'color', value: item.fill });
+      fillInput.addEventListener('input', () => { item.fill = fillInput.value; render(); });
+      fillRow.appendChild(fillInput);
+      fillRow.appendChild(el('span', { text: item.fill }));
+      body.appendChild(fillRow);
+
+      body.appendChild(labelRow('Cor da linha', { marginTop: '18px' }));
+      const strokeRow = el('div', { class: 'color-row' });
+      const strokeInput = el('input', { type: 'color', value: item.stroke });
+      strokeInput.addEventListener('input', () => { item.stroke = strokeInput.value; render(); });
+      strokeRow.appendChild(strokeInput);
+      strokeRow.appendChild(el('span', { text: item.stroke }));
+      body.appendChild(strokeRow);
+
+      const sw = sliderRow('Espessura da linha', item.strokeWidth + 'px');
+      body.appendChild(sw.row);
+      const swRange = el('input', { type: 'range', min: '0', max: '24', value: String(item.strokeWidth) });
+      swRange.addEventListener('input', () => { item.strokeWidth = parseInt(swRange.value, 10); sw.val.textContent = item.strokeWidth + 'px'; render(); });
+      body.appendChild(swRange);
+
+      if (item.type === 'rect') {
+        const wR = sliderRow('Largura', item.w + 'px');
+        body.appendChild(wR.row);
+        const wRange = el('input', { type: 'range', min: '60', max: '1000', value: String(item.w) });
+        wRange.addEventListener('input', () => { item.w = parseInt(wRange.value, 10); wR.val.textContent = item.w + 'px'; render(); });
+        body.appendChild(wRange);
+
+        const hR = sliderRow('Altura', item.h + 'px');
+        body.appendChild(hR.row);
+        const hRange = el('input', { type: 'range', min: '60', max: '1000', value: String(item.h) });
+        hRange.addEventListener('input', () => { item.h = parseInt(hRange.value, 10); hR.val.textContent = item.h + 'px'; render(); });
+        body.appendChild(hRange);
+      } else {
+        const sizeR = sliderRow('Tamanho', item.w + 'px');
+        body.appendChild(sizeR.row);
+        const sizeRange = el('input', { type: 'range', min: '60', max: '900', value: String(item.w) });
+        sizeRange.addEventListener('input', () => {
+          const v = parseInt(sizeRange.value, 10);
+          item.w = v; item.h = v;
+          sizeR.val.textContent = v + 'px';
+          render();
+        });
+        body.appendChild(sizeRange);
+      }
+    }
+
+    const delBtn = el('button', { class: 'remove-btn', style: { marginTop: '18px', display: 'block' }, text: 'Excluir elemento' });
+    delBtn.addEventListener('click', () => {
+      const idx = list.indexOf(item);
+      if (idx >= 0) list.splice(idx, 1);
+      selection = null;
+      render();
+    });
+    body.appendChild(delBtn);
   }
 
   function renderPresets(){
@@ -852,6 +1228,77 @@
 
   layerBehindBtn.addEventListener('click', () => { currentState().media.layer = 'behind'; render(); });
   layerFrontBtn.addEventListener('click', () => { currentState().media.layer = 'front'; render(); });
+
+  const SHAPE_ICONS = {
+    rect: '<rect x="3" y="6" width="18" height="12" rx="1"></rect>',
+    square: '<rect x="5" y="5" width="14" height="14" rx="1"></rect>',
+    circle: '<circle cx="12" cy="12" r="9"></circle>',
+    triangle: '<polygon points="12,4 20,20 4,20"></polygon>',
+    star: '<polygon points="12,3 14.5,9.5 21,9.8 15.8,13.9 17.6,20.5 12,16.8 6.4,20.5 8.2,13.9 3,9.8 9.5,9.5"></polygon>'
+  };
+  SHAPE_TYPES.forEach(s => {
+    const btn = el('button', { type: 'button', class: 'shape-btn' });
+    btn.innerHTML = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">' + SHAPE_ICONS[s.id] + '</svg>';
+    btn.appendChild(document.createTextNode(s.nome));
+    btn.addEventListener('click', () => {
+      const t = TEMPLATES[currentTemplate];
+      const shape = makeShape(s.id, t.w, t.h);
+      currentState().shapes.push(shape);
+      selection = { kind: 'shape', id: shape.id };
+      if (mode !== 'move') setMode('move'); else render();
+    });
+    shapeGrid.appendChild(btn);
+  });
+
+  addTextBtn.addEventListener('click', () => {
+    const t = TEMPLATES[currentTemplate];
+    const ct = makeCustomText(t.w, t.h);
+    currentState().customTexts.push(ct);
+    selection = { kind: 'customText', id: ct.id };
+    if (mode !== 'move') setMode('move'); else render();
+  });
+
+  propsClose.addEventListener('click', () => { selection = null; renderPropsPanel(); });
+
+  bgSrcFileBtn.addEventListener('click', () => {
+    bgSrcFileBtn.classList.add('active'); bgSrcLinkBtn.classList.remove('active');
+    bgFileRow.hidden = false; bgLinkRow.hidden = true;
+  });
+  bgSrcLinkBtn.addEventListener('click', () => {
+    bgSrcLinkBtn.classList.add('active'); bgSrcFileBtn.classList.remove('active');
+    bgLinkRow.hidden = false; bgFileRow.hidden = true;
+  });
+
+  bgLinkLoad.addEventListener('click', async () => {
+    const url = bgLinkInput.value.trim();
+    if (!url) { toast('Cole o link da imagem primeiro.'); return; }
+    bgLinkLoad.disabled = true;
+    bgLinkLoad.textContent = 'Carregando...';
+    try {
+      const res = await fetch(url, { mode: 'cors' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const blob = await res.blob();
+      if (blob.type.indexOf('image/') !== 0) throw new Error('O link não aponta para uma imagem.');
+      const dataUrl = await new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result);
+        r.onerror = reject;
+        r.readAsDataURL(blob);
+      });
+      await loadImage(dataUrl);
+      const state = currentState();
+      state.bgImage = dataUrl;
+      state.media = { fit: 'cover', zoom: 100, offsetX: 0, offsetY: 0, layer: 'behind' };
+      render();
+      toast('Imagem carregada pelo link.');
+    } catch (e) {
+      console.error(e);
+      toast('Não foi possível carregar essa imagem pelo link (o site pode bloquear acesso externo). Baixe a imagem e use "Do computador".');
+    } finally {
+      bgLinkLoad.disabled = false;
+      bgLinkLoad.textContent = 'Carregar';
+    }
+  });
 
   resetBtn.addEventListener('click', () => {
     Object.assign(currentState(), makeInstance(currentTemplate));
