@@ -193,6 +193,20 @@
   .type-role + .type-role{ border-top:1px solid var(--border); }
   .type-role .label{ font-size:.8rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-muted); font-weight:700; }
   .type-role .label small{ display:block; text-transform:none; letter-spacing:0; font-weight:400; margin-top:4px; font-size:.78rem; }
+  .type-role .label .font-name{
+    display:inline-block;
+    text-transform:none;
+    letter-spacing:0;
+    font-weight:600;
+    font-family:ui-monospace, "SF Mono", Menlo, monospace;
+    font-size:.78rem;
+    color:var(--primary);
+    margin-top:8px;
+    padding:2px 8px;
+    border:1px solid var(--border);
+    border-radius:999px;
+    background:var(--surface);
+  }
   .type-role .sample.script{ font-family:"Alex Brush", cursive; font-size:2.6rem; color:var(--primary); line-height:1; }
   :root[data-theme="dark"] .type-role .sample.script{ color: var(--sky); }
   @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .type-role .sample.script{ color: var(--sky); } }
@@ -393,15 +407,15 @@
       </div>
       <div class="type-roles">
         <div class="type-role">
-          <div class="label">Manuscrito<small>Frases de destaque e assinatura</small></div>
+          <div class="label">Manuscrito<small>Frases de destaque e assinatura</small><span class="font-name">Alex Brush</span></div>
           <div class="sample script">com fé, tudo posso</div>
         </div>
         <div class="type-role">
-          <div class="label">Títulos<small>Nomes de igrejas e seções</small></div>
+          <div class="label">Títulos<small>Nomes de igrejas e seções</small><span class="font-name">Fraunces</span></div>
           <div class="sample heading">Nossa Senhora das Graças</div>
         </div>
         <div class="type-role">
-          <div class="label">Texto corrido<small>Parágrafos e legendas</small></div>
+          <div class="label">Texto corrido<small>Parágrafos e legendas</small><span class="font-name">Public Sans</span></div>
           <div class="sample body">Usada em avisos, textos de missa e comunicação do dia a dia — priorizando leitura fácil em qualquer tamanho de tela ou material impresso.</div>
         </div>
       </div>
