@@ -126,7 +126,7 @@
   /* ---------- slide (real dimensions, rasterized on export) ---------- */
   .slide{ position:relative; overflow:hidden; font-family:"Public Sans",ui-sans-serif,sans-serif; }
   .slide-bg{ position:absolute; inset:0; background-size:cover; background-position:center; }
-  .slide-scrim{ position:absolute; inset:0; }
+  .slide-scrim{ position:absolute; inset:0; pointer-events:none; }
   .slide [data-field]{ outline:none; }
   .stage.editing [data-field]{ cursor:text; outline:1px dashed rgba(255,255,255,.4); outline-offset:4px; border-radius:4px; }
   .stage.editing .tone-light [data-field]{ outline-color:rgba(3,18,115,.35); }
@@ -140,14 +140,15 @@
   }
   .stage.move-mode{ cursor:default; }
   .stage.move-mode [data-field]{ pointer-events:none; }
+  .stage.media-mode .slide > *:not(.slide-media):not(.slide-scrim){ pointer-events:none; }
   .stage.move-mode .field-wrap{ cursor:move; }
   .stage.move-mode .field-wrap:hover{ outline:1px dashed rgba(76,201,240,.9); outline-offset:4px; }
   .stage.move-mode .field-wrap:hover .field-del,
   .stage.move-mode .field-wrap.dragging .field-del{ display:flex; }
 
   .slide-media{ position:absolute; inset:0; overflow:hidden; }
-  .slide-media img{ position:absolute; user-select:none; -webkit-user-drag:none; }
-  .stage.media-mode .slide-media img{ cursor:move; }
+  .slide-media img{ position:absolute; user-select:none; -webkit-user-drag:none; pointer-events:none; }
+  .stage.media-mode .slide-media{ cursor:move; }
 
   .seg-toggle{ display:flex; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
   .seg-toggle button{
@@ -662,26 +663,32 @@
 
   function enableFieldDrag(node, state){
     node.querySelectorAll('.field-wrap').forEach(wrap => {
-      wrap.addEventListener('mousedown', e => {
+      wrap.style.touchAction = 'none';
+      wrap.addEventListener('pointerdown', e => {
         if (mode !== 'move') return;
         e.preventDefault(); e.stopPropagation();
+        wrap.setPointerCapture(e.pointerId);
         const key = wrap.dataset.key;
         const start = { x: e.clientX, y: e.clientY };
         const base = Object.assign({ dx: 0, dy: 0 }, state.offsets[key]);
         wrap.classList.add('dragging');
         function onMove(ev){
+          if (ev.pointerId !== e.pointerId) return;
           const dx = Math.round(base.dx + (ev.clientX - start.x) / currentScale);
           const dy = Math.round(base.dy + (ev.clientY - start.y) / currentScale);
           state.offsets[key] = { dx, dy };
           wrap.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
         }
-        function onUp(){
-          window.removeEventListener('mousemove', onMove);
-          window.removeEventListener('mouseup', onUp);
+        function onUp(ev){
+          if (ev.pointerId !== e.pointerId) return;
+          wrap.removeEventListener('pointermove', onMove);
+          wrap.removeEventListener('pointerup', onUp);
+          wrap.removeEventListener('pointercancel', onUp);
           wrap.classList.remove('dragging');
         }
-        window.addEventListener('mousemove', onMove);
-        window.addEventListener('mouseup', onUp);
+        wrap.addEventListener('pointermove', onMove);
+        wrap.addEventListener('pointerup', onUp);
+        wrap.addEventListener('pointercancel', onUp);
       });
 
       wrap.querySelector('.field-del').addEventListener('click', e => {
@@ -694,11 +701,14 @@
   }
 
   function enableMediaDrag(node, state, frameW, frameH){
+    const layer = node.querySelector('.slide-media');
     const img = node.querySelector('.slide-media img');
-    if (!img) return;
-    img.addEventListener('mousedown', e => {
+    if (!layer || !img) return;
+    layer.style.touchAction = 'none';
+    layer.addEventListener('pointerdown', e => {
       if (mode !== 'media') return;
       e.preventDefault(); e.stopPropagation();
+      layer.setPointerCapture(e.pointerId);
       const cached = imageCache.get(state.bgImage);
       if (!cached) return;
       const rect = computeMediaRect(cached.naturalWidth, cached.naturalHeight, frameW, frameH, state.media.fit, state.media.zoom);
@@ -707,6 +717,7 @@
       const start = { x: e.clientX, y: e.clientY };
       const base = { x: state.media.offsetX, y: state.media.offsetY };
       function onMove(ev){
+        if (ev.pointerId !== e.pointerId) return;
         let nx = base.x + (ev.clientX - start.x) / currentScale;
         let ny = base.y + (ev.clientY - start.y) / currentScale;
         nx = Math.max(-maxX, Math.min(maxX, nx));
@@ -715,12 +726,15 @@
         img.style.left = ((frameW - rect.w) / 2 + nx) + 'px';
         img.style.top = ((frameH - rect.h) / 2 + ny) + 'px';
       }
-      function onUp(){
-        window.removeEventListener('mousemove', onMove);
-        window.removeEventListener('mouseup', onUp);
+      function onUp(ev){
+        if (ev.pointerId !== e.pointerId) return;
+        layer.removeEventListener('pointermove', onMove);
+        layer.removeEventListener('pointerup', onUp);
+        layer.removeEventListener('pointercancel', onUp);
       }
-      window.addEventListener('mousemove', onMove);
-      window.addEventListener('mouseup', onUp);
+      layer.addEventListener('pointermove', onMove);
+      layer.addEventListener('pointerup', onUp);
+      layer.addEventListener('pointercancel', onUp);
     });
   }
 
