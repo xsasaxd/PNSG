@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Templates de Mídia — Paróquia Nossa Senhora das Graças</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&family=Alex+Brush&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<style>
+  :root{
+    --bg:#F5F7FC; --surface:#FFFFFF; --surface-2:#EDF1FA;
+    --ink:#12162A; --ink-muted:#535A7A; --border:#DBE1F1;
+    --shadow: 0 1px 2px rgba(18,22,42,.04), 0 8px 24px rgba(18,22,42,.06);
+    --primary-dark:#031273; --primary:#0504AA; --secondary:#2337C6; --accent:#4169E1; --sky:#4CC9F0;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0B0E1E; --surface:#141935; --surface-2:#1B2145;
+      --ink:#EDEFFB; --ink-muted:#AEB4DA; --border:#2B3161;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B0E1E; --surface:#141935; --surface-2:#1B2145;
+    --ink:#EDEFFB; --ink-muted:#AEB4DA; --border:#2B3161;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+  *{ box-sizing:border-box; }
+  [hidden]{ display:none !important; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Public Sans",ui-sans-serif,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  a{ color:var(--secondary); }
+
+  header{ background:linear-gradient(175deg,var(--primary-dark),var(--primary) 85%); color:#fff; padding:32px 28px; }
+  header .wrap{ max-width:1320px; margin:0 auto; }
+  header .back{ color:#D7DCFA; text-decoration:none; font-size:.85rem; font-weight:600; }
+  header .back:hover{ color:#fff; }
+  header h1{ font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:1.5rem; margin:6px 0 0; }
+  header p{ margin:6px 0 0; color:#D7DCFA; font-size:.92rem; max-width:60ch; }
+
+  .layout{ max-width:1320px; margin:0 auto; padding:28px; display:grid; grid-template-columns:320px 1fr; gap:24px; align-items:start; }
+
+  .tabs{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+  .tab{ font-size:.82rem; font-weight:600; padding:9px 14px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-muted); cursor:pointer; }
+  .tab.active{ background:var(--primary); border-color:var(--primary); color:#fff; }
+
+  .panel{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:22px; box-shadow:var(--shadow); margin-bottom:16px; }
+  .panel h3{ font-family:"Fraunces",Georgia,serif; font-size:1.05rem; margin:0 0 6px; }
+  .panel .hint{ font-size:.82rem; color:var(--ink-muted); line-height:1.5; margin-bottom:16px; }
+
+  .mode-toggle{ display:flex; border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:18px; }
+  .mode-toggle button{
+    flex:1; padding:10px; border:none; background:var(--bg); color:var(--ink-muted); font-size:.82rem; font-weight:700;
+    cursor:pointer; font-family:"Public Sans",sans-serif;
+  }
+  .mode-toggle button.active{ background:var(--primary); color:#fff; }
+
+  .field-label{ display:block; font-size:.76rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted); margin:18px 0 8px; }
+  .field-label:first-of-type{ margin-top:0; }
+
+  .upload-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .upload-btn{ display:inline-flex; align-items:center; gap:8px; font-size:.85rem; font-weight:600; padding:10px 14px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--ink); cursor:pointer; }
+  .remove-btn{ font-size:.8rem; color:#D64550; background:none; border:none; cursor:pointer; font-weight:600; padding:4px 0; }
+  input[type="file"]{ display:none; }
+
+  .presets{ display:flex; gap:10px; flex-wrap:wrap; }
+  .preset-swatch{
+    width:44px; height:44px; border-radius:10px; cursor:pointer; border:2px solid var(--border);
+    position:relative; flex-shrink:0;
+  }
+  .preset-swatch.active{ border-color:var(--primary); box-shadow:0 0 0 2px rgba(5,4,170,.18); }
+  .preset-swatch span{ display:none; }
+
+  .slider-row{ display:flex; justify-content:space-between; font-size:.76rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted); }
+  .slider-val{ font-variant-numeric:tabular-nums; color:var(--ink); }
+  input[type="range"]{ width:100%; margin:8px 0 4px; accent-color:var(--primary); }
+  .slider-disabled{ opacity:.4; }
+
+  .reset-btn{ font-size:.8rem; font-weight:600; color:var(--secondary); background:none; border:none; cursor:pointer; padding:0; margin-top:18px; }
+
+  .download-btn{
+    width:100%; margin-top:22px; padding:14px; border:none; border-radius:12px; cursor:pointer;
+    background:linear-gradient(175deg,var(--primary-dark),var(--primary) 85%); color:#fff;
+    font-family:"Public Sans",sans-serif; font-weight:700; font-size:.95rem; letter-spacing:.02em;
+  }
+  .download-btn:hover:not(:disabled){ opacity:.92; }
+  .download-btn:disabled{ opacity:.6; cursor:progress; }
+
+  .carousel-input{
+    width:100%; min-height:120px; border:1px solid var(--border); border-radius:10px; padding:10px 12px;
+    font-family:"Public Sans",sans-serif; font-size:.86rem; color:var(--ink); background:var(--bg); resize:vertical;
+  }
+  .generate-btn{
+    width:100%; margin-top:10px; padding:11px; border:1px solid var(--border); border-radius:10px; cursor:pointer;
+    background:var(--surface-2); color:var(--ink); font-family:"Public Sans",sans-serif; font-weight:700; font-size:.85rem;
+  }
+  .generate-btn:hover{ background:var(--border); }
+
+  .slide-nav{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:16px; }
+  .slide-nav .nav-btns{ display:flex; align-items:center; gap:8px; }
+  .slide-nav button{
+    width:32px; height:32px; border-radius:8px; border:1px solid var(--border); background:var(--bg);
+    color:var(--ink); cursor:pointer; font-size:.9rem; font-family:"Public Sans",sans-serif;
+  }
+  .slide-nav button:disabled{ opacity:.35; cursor:not-allowed; }
+  .slide-nav .count{ font-size:.82rem; font-weight:700; color:var(--ink-muted); min-width:52px; text-align:center; font-variant-numeric:tabular-nums; }
+  .slide-nav .danger{ color:#D64550; font-size:.8rem; font-weight:600; background:none; border:none; cursor:pointer; width:auto; }
+
+  .preview{ display:flex; flex-direction:column; align-items:center; gap:14px; position:sticky; top:20px; }
+  .stage-wrap{ position:relative; margin:0 auto; }
+  .stage{ position:absolute; top:0; left:0; box-shadow:var(--shadow); border-radius:6px; overflow:hidden; transform-origin:top left; }
+  .dim-label{ font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.78rem; color:var(--ink-muted); }
+
+  .toast{
+    position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(120px);
+    background:var(--ink); color:#fff; padding:13px 22px; border-radius:12px; font-size:.85rem; font-weight:500;
+    z-index:200; transition:transform .3s cubic-bezier(.2,.8,.3,1); box-shadow:0 14px 40px rgba(0,0,0,.35);
+    max-width:80vw; text-align:center;
+  }
+  .toast.show{ transform:translateX(-50%) translateY(0); }
+
+  @media (max-width:900px){
+    .layout{ grid-template-columns:1fr; }
+    .preview{ position:static; }
+  }
+
+  /* ---------- slide (real dimensions, rasterized on export) ---------- */
+  .slide{ position:relative; overflow:hidden; font-family:"Public Sans",ui-sans-serif,sans-serif; }
+  .slide-bg{ position:absolute; inset:0; background-size:cover; background-position:center; }
+  .slide-scrim{ position:absolute; inset:0; pointer-events:none; }
+  .slide [data-field]{ outline:none; }
+  .stage.editing [data-field]{ cursor:text; outline:1px dashed rgba(255,255,255,.4); outline-offset:4px; border-radius:4px; }
+  .stage.editing .tone-light [data-field]{ outline-color:rgba(3,18,115,.35); }
+  .stage.editing [data-field]:focus{ outline:2px solid #4CC9F0; }
+
+  .field-wrap{ position:relative; }
+  .field-del{
+    position:absolute; top:-12px; right:-12px; width:24px; height:24px; border-radius:50%;
+    background:#D64550; color:#fff; border:2px solid #fff; font-size:14px; line-height:1; cursor:pointer;
+    display:none; align-items:center; justify-content:center; z-index:6; padding:0;
+  }
+  .stage.move-mode{ cursor:default; }
+  .stage.move-mode [data-field]{ pointer-events:none; }
+  .stage.media-mode .slide > *:not(.slide-media):not(.slide-scrim){ pointer-events:none; }
+  .stage.move-mode .field-wrap{ cursor:move; }
+  .stage.move-mode .field-wrap:hover{ outline:1px dashed rgba(76,201,240,.9); outline-offset:4px; }
+  .stage.move-mode .field-wrap:hover .field-del,
+  .stage.move-mode .field-wrap.dragging .field-del{ display:flex; }
+
+  .slide-media{ position:absolute; inset:0; overflow:hidden; }
+  .slide-media img{ position:absolute; user-select:none; -webkit-user-drag:none; pointer-events:none; }
+  .stage.media-mode .slide-media{ cursor:move; }
+
+  .seg-toggle{ display:flex; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .seg-toggle button{
+    flex:1; padding:9px; border:none; background:var(--bg); color:var(--ink-muted); font-size:.78rem; font-weight:700;
+    cursor:pointer; font-family:"Public Sans",sans-serif;
+  }
+  .seg-toggle button.active{ background:var(--primary); color:#fff; }
+  .seg-toggle:disabled, .media-controls.disabled{ opacity:.4; pointer-events:none; }
+
+  .link-row{ display:flex; gap:8px; }
+  .link-row input[type="text"]{
+    flex:1; min-width:0; border:1px solid var(--border); border-radius:10px; padding:10px 12px;
+    font-family:"Public Sans",sans-serif; font-size:.85rem; color:var(--ink); background:var(--bg);
+  }
+  .link-row button{
+    flex-shrink:0; padding:10px 14px; border:1px solid var(--border); border-radius:10px; cursor:pointer;
+    background:var(--surface-2); color:var(--ink); font-family:"Public Sans",sans-serif; font-weight:700; font-size:.82rem;
+  }
+
+  .add-btn{
+    width:100%; padding:11px; border:1px dashed var(--border); border-radius:10px; cursor:pointer;
+    background:var(--bg); color:var(--primary); font-family:"Public Sans",sans-serif; font-weight:700; font-size:.85rem;
+    margin-bottom:10px;
+  }
+  .add-btn:hover{ background:var(--surface-2); }
+
+  .shape-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .shape-btn{
+    display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px 4px; cursor:pointer;
+    border:1px solid var(--border); border-radius:10px; background:var(--bg); font-size:.72rem; font-weight:600; color:var(--ink-muted);
+    font-family:"Public Sans",sans-serif;
+  }
+  .shape-btn:hover{ background:var(--surface-2); }
+  .shape-btn svg{ display:block; }
+
+  .color-row{ display:flex; align-items:center; gap:10px; }
+  .color-row input[type="color"]{ width:40px; height:36px; padding:0; border:1px solid var(--border); border-radius:8px; background:none; cursor:pointer; flex-shrink:0; }
+  .color-row span{ font-size:.82rem; color:var(--ink-muted); }
+
+  .seg-btn-row{ display:flex; gap:6px; }
+  .seg-btn-row button{
+    flex:1; padding:8px; border:1px solid var(--border); border-radius:8px; cursor:pointer; background:var(--bg);
+    color:var(--ink-muted); font-size:.85rem; font-weight:700; font-family:"Public Sans",sans-serif;
+  }
+  .seg-btn-row button.active{ background:var(--primary); color:#fff; border-color:var(--primary); }
+  .seg-btn-row button.it{ font-style:italic; }
+  .seg-btn-row button.un{ text-decoration:underline; }
+
+  select.text-field{
+    width:100%; border:1px solid var(--border); border-radius:10px; padding:10px 12px;
+    font-family:"Public Sans",sans-serif; font-size:.85rem; color:var(--ink); background:var(--bg);
+  }
+
+  .props-close{ float:right; background:none; border:none; color:var(--ink-muted); cursor:pointer; font-size:1rem; padding:0; }
+
+  /* ---------- free elements (custom text boxes & shapes) ---------- */
+  .free-el{ position:absolute; }
+  .free-el .field-del{ display:none; }
+  .stage.move-mode .free-el{ cursor:move; }
+  .stage.move-mode .free-el:hover{ outline:1px dashed rgba(76,201,240,.9); outline-offset:4px; }
+  .stage.move-mode .free-el:hover .field-del,
+  .stage.move-mode .free-el.dragging .field-del{ display:flex; }
+  .free-el.selected{ outline:2px solid #4CC9F0; outline-offset:4px; }
+  .stage:not(.move-mode) .free-el .field-del{ display:none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="back" href="index.html">← Voltar ao guia de identidade</a>
+    <h1>Templates de Mídia</h1>
+    <p>Escolha um modelo, clique em qualquer texto para editar, envie uma foto (ou escolha um fundo predefinido) e baixe a arte pronta para postar.</p>
+  </div>
+</header>
+
+<div class="layout">
+  <div>
+    <div class="tabs" id="tabs"></div>
+
+    <div class="panel">
+      <h3>Editar</h3>
+      <div class="hint" id="mode-hint">Clique direto em qualquer texto no preview ao lado para reescrevê-lo.</div>
+
+      <div class="mode-toggle">
+        <button id="mode-edit" class="active">Editar texto</button>
+        <button id="mode-move">Mover texto</button>
+        <button id="mode-media">Posicionar foto</button>
+      </div>
+
+      <button class="add-btn" id="add-text-btn">+ Adicionar caixa de texto</button>
+
+      <div class="field-label" style="margin-top:0">Fundo predefinido</div>
+      <div class="presets" id="presets"></div>
+
+      <div class="field-label">Foto de fundo (opcional)</div>
+      <div class="seg-toggle" style="margin-bottom:10px">
+        <button id="bg-src-file" class="active">Do computador</button>
+        <button id="bg-src-link">Por link</button>
+      </div>
+      <div class="upload-row" id="bg-file-row">
+        <label class="upload-btn" for="bg-input">Escolher imagem</label>
+        <input type="file" id="bg-input" accept="image/*">
+        <button class="remove-btn" id="remove-bg" hidden>Remover</button>
+      </div>
+      <div class="link-row" id="bg-link-row" hidden>
+        <input type="text" id="bg-link-input" placeholder="Cole o link da imagem (https://...)">
+        <button id="bg-link-load">Carregar</button>
+      </div>
+
+      <div id="media-controls" class="media-controls disabled">
+        <div class="field-label">Enquadramento</div>
+        <div class="seg-toggle">
+          <button id="fit-cover" class="active">Preencher (cortar)</button>
+          <button id="fit-contain">Mostrar tudo</button>
+        </div>
+
+        <div class="slider-row" style="margin-top:18px">
+          <span>Zoom da foto</span>
+          <span class="slider-val" id="zoom-val">100%</span>
+        </div>
+        <input type="range" id="zoom-range" min="100" max="300" value="100">
+        <div class="hint" style="margin:6px 0 0">Use o modo "Posicionar foto" acima para arrastar e escolher o melhor enquadramento.</div>
+
+        <div class="field-label">Camada</div>
+        <div class="seg-toggle">
+          <button id="layer-behind" class="active">Atrás do texto</button>
+          <button id="layer-front">Na frente do texto</button>
+        </div>
+      </div>
+
+      <div class="slider-row" style="margin-top:18px">
+        <span>Escurecer / clarear foto</span>
+        <span class="slider-val" id="scrim-val">55%</span>
+      </div>
+      <input type="range" id="scrim-range" min="0" max="100" value="55">
+
+      <button class="reset-btn" id="reset-btn">Restaurar este modelo</button>
+
+      <button class="download-btn" id="download-btn">Baixar arte (PNG)</button>
+    </div>
+
+    <div class="panel" id="shapes-panel">
+      <h3>Formas</h3>
+      <div class="hint">Clique para adicionar uma forma ao modelo. Depois é só arrastar (modo "Mover texto") e ajustar cor e contorno aqui do lado.</div>
+      <div class="shape-grid" id="shape-grid"></div>
+    </div>
+
+    <div class="panel" id="props-panel" hidden>
+      <button class="props-close" id="props-close" title="Fechar">×</button>
+      <h3 id="props-title">Propriedades</h3>
+      <div id="props-body"></div>
+    </div>
+
+    <div class="panel" id="carousel-panel" hidden>
+      <h3>Carrossel — gerar tudo de uma vez</h3>
+      <div class="hint">Cole o texto: cada bloco vira um slide (primeira linha = título, o resto = subtítulo). Separe os blocos com uma linha em branco.</div>
+      <textarea class="carousel-input" id="carousel-input" placeholder="O que é a Liturgia do Tempo Comum?&#10;Entenda o significado das cores e das leituras diárias.&#10;&#10;Por que rezamos o terço?&#10;Descubra a origem e o significado de cada mistério.&#10;&#10;O que é a Eucaristia?&#10;A presença real de Cristo no pão e no vinho consagrados."></textarea>
+      <button class="generate-btn" id="generate-btn">Gerar carrossel</button>
+
+      <div class="slide-nav">
+        <div class="nav-btns">
+          <button id="slide-prev">‹</button>
+          <span class="count" id="slide-count">1 / 1</span>
+          <button id="slide-next">›</button>
+        </div>
+        <div class="nav-btns">
+          <button id="slide-add" title="Novo slide">+</button>
+          <button class="danger" id="slide-del" title="Excluir slide">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="preview">
+    <div class="stage-wrap">
+      <div class="stage editing" id="stage"></div>
+    </div>
+    <div class="dim-label" id="dim-label"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const DEFAULTS = {
+    modeloA: { quote: 'A oração é a força do homem e a fraqueza de Deus.', author: 'São Agostinho' },
+    modeloB: { badge: 'Aviso da Comunidade', title: 'Horários das Missas de Domingo', line1: 'Manhã: 08h00 e 10h00', line2: 'Noite: 18h00 e 19h30', closing: 'Venha celebrar conosco!' },
+    modeloC: { number: '01', cta: 'Arraste pro lado →', title: 'O que é a Liturgia do Tempo Comum?', subtitle: 'Entenda o significado das cores e das leituras diárias na tradição católica.' },
+    modeloD: { label: 'Evangelho do Dia', reference: 'João 14, 6', verse: 'Eu sou o Caminho, a Verdade e a Vida.', reflection: 'Jesus nos convida a caminhar com confiança na fé, sabendo que Ele mesmo é quem nos conduz e nos sustenta a cada passo.' },
+    stories: { tag: 'Comunidade Matriz', script: 'com fé, tudo posso', headline: 'Festa da Padroeira', subtext: 'Domingo, 14 de setembro · missas às 9h e 19h · procissão e festa depois da celebração.', handle: '@perfil da comunidade' }
+  };
+
+  const TEMPLATES = {
+    modeloA: { label: 'Modelo A — Citações', w: 1080, h: 1080, tone: 'dark', build: buildModeloA },
+    modeloB: { label: 'Modelo B — Avisos', w: 1080, h: 1080, tone: 'light', build: buildModeloB },
+    modeloC: { label: 'Modelo C — Carrossel', w: 1080, h: 1080, tone: 'dark', build: buildModeloC },
+    modeloD: { label: 'Modelo D — Evangelho', w: 1080, h: 1080, tone: 'light', build: buildModeloD },
+    stories: { label: 'Stories / Reels', w: 1080, h: 1920, tone: 'dark', build: buildStories }
+  };
+
+  const PRESETS = {
+    dark: [
+      { id:'profundo', nome:'Azul Profundo', css:'linear-gradient(175deg,#031273 0%,#0504AA 85%)' },
+      { id:'noite',    nome:'Noite Real',     css:'linear-gradient(160deg,#031273 0%,#2337C6 70%,#4169E1 130%)' },
+      { id:'horizonte',nome:'Horizonte Celeste', css:'radial-gradient(circle at 85% 100%, #4CC9F0 0%, #0504AA 45%, #031273 100%)' },
+      { id:'sobrio',   nome:'Sóbrio',         css:'#031273' },
+      { id:'meiaNoite',nome:'Meia-Noite',     css:'linear-gradient(200deg,#000318 0%,#031273 100%)' },
+      { id:'aurora',   nome:'Aurora',         css:'radial-gradient(circle at 20% 10%, #4CC9F0 0%, #2337C6 40%, #031273 100%)' },
+      { id:'marinho',  nome:'Marinho Diagonal', css:'linear-gradient(120deg,#2337C6 0%,#031273 60%,#0504AA 100%)' },
+      { id:'vinheta',  nome:'Vinheta Real',   css:'radial-gradient(circle at 50% 50%, #4169E1 0%, #0504AA 55%, #031273 100%)' }
+    ],
+    light: [
+      { id:'neblina',  nome:'Neblina',        css:'#F5F7FC' },
+      { id:'nevoa',    nome:'Névoa Celeste',  css:'linear-gradient(160deg,#FFFFFF 0%,#EDF1FA 60%,#D8ECFB 130%)' },
+      { id:'aureola',  nome:'Auréola',        css:'radial-gradient(circle at 15% 0%, rgba(76,201,240,.35) 0%, #F5F7FC 60%)' },
+      { id:'gelo',     nome:'Gelo',           css:'linear-gradient(160deg,#FFFFFF 0%,#F5F7FC 100%)' },
+      { id:'ceu',      nome:'Céu Claro',      css:'linear-gradient(180deg,#EAF4FE 0%,#F5F7FC 70%)' },
+      { id:'perola',   nome:'Pérola Azulada', css:'radial-gradient(circle at 85% 15%, rgba(65,105,225,.22) 0%, #FFFFFF 60%)' }
+    ]
+  };
+
+  const TEXT_FONTS = [
+    { id: "'Fraunces',Georgia,serif", nome: 'Fraunces (título)' },
+    { id: "'Public Sans',sans-serif", nome: 'Public Sans (texto)' },
+    { id: "'Alex Brush',cursive", nome: 'Alex Brush (manuscrito)' },
+    { id: 'Georgia,serif', nome: 'Serifada clássica' },
+    { id: 'Arial,sans-serif', nome: 'Sem serifa simples' }
+  ];
+
+  const SHAPE_TYPES = [
+    { id: 'rect', nome: 'Retângulo' },
+    { id: 'square', nome: 'Quadrado' },
+    { id: 'circle', nome: 'Círculo' },
+    { id: 'triangle', nome: 'Triângulo' },
+    { id: 'star', nome: 'Estrela' }
+  ];
+
+  let elIdCounter = 1;
+  function nextId(){ return 'el' + (elIdCounter++); }
+
+  function el(tag, attrs, children){
+    const n = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(k => {
+      if (k === 'style') {
+        if (typeof attrs.style === 'string') n.setAttribute('style', attrs.style);
+        else Object.assign(n.style, attrs.style);
+      }
+      else if (k === 'text') n.textContent = attrs.text;
+      else n.setAttribute(k, attrs[k]);
+    });
+    (children||[]).forEach(c => n.appendChild(c));
+    return n;
+  }
+
+  function field(tag, key, value, style){
+    const inner = el(tag, { 'data-field': key, style });
+    inner.textContent = value;
+    const wrap = el('div', { class: 'field-wrap', 'data-key': key, style: { position:'relative', display: tag === 'span' ? 'inline' : 'block' } });
+    wrap.appendChild(inner);
+    wrap.appendChild(el('button', { class: 'field-del', type: 'button', title: 'Remover este texto', text: '×' }));
+    return wrap;
+  }
+
+  function scrimStyle(tone, pct){
+    if (tone === 'dark'){
+      const bottom = (pct/100) * 0.9;
+      const top = bottom * 0.35;
+      return `background:linear-gradient(180deg, rgba(3,18,115,${top.toFixed(2)}), rgba(3,18,115,${bottom.toFixed(2)}))`;
+    }
+    return `background:rgba(255,255,255,${((pct/100)*0.92).toFixed(2)})`;
+  }
+
+  function presetCss(tone, idx){
+    const list = PRESETS[tone];
+    const p = list[idx] || list[0];
+    return p.css;
+  }
+
+  // ---------- Modelo A: Citações ----------
+  function buildModeloA(state){
+    const s = el('div', { class: 'slide tone-dark', style: { width:'1080px', height:'1080px' } });
+
+    const wrap = el('div', { style: { position:'relative', zIndex:2, height:'100%', display:'flex', alignItems:'center', justifyContent:'center', padding:'140px 130px' } });
+    const inner = el('div', { style: { display:'flex', flexDirection:'column', alignItems:'center', gap:'32px', textAlign:'center' } });
+
+    inner.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#4CC9F0" stroke-width="1.5" stroke-linecap="round"><path d="M12 3v18"></path><path d="M4 9h16"></path></svg>';
+
+    const quoteRow = el('div', { style: { fontFamily:"'Fraunces',Georgia,serif", fontStyle:'italic', fontWeight:'500', fontSize:'46px', lineHeight:'1.42', color:'#fff', maxWidth:'22ch' } });
+    quoteRow.appendChild(document.createTextNode('“'));
+    quoteRow.appendChild(field('span', 'quote', state.texts.quote, { whiteSpace:'pre-wrap' }));
+    quoteRow.appendChild(document.createTextNode('”'));
+    inner.appendChild(quoteRow);
+
+    inner.appendChild(field('div', 'author', state.texts.author, { fontFamily:"'Public Sans',sans-serif", fontWeight:'700', fontSize:'16px', letterSpacing:'.14em', color:'#4CC9F0', textTransform:'uppercase' }));
+
+    wrap.appendChild(inner);
+    s.appendChild(wrap);
+    return s;
+  }
+
+  // ---------- Modelo B: Avisos ----------
+  function buildModeloB(state){
+    const s = el('div', { class: 'slide tone-light', style: { width:'1080px', height:'1080px' } });
+
+    s.appendChild(el('div', { style: { position:'absolute', top:0, left:0, right:0, height:'16px', background:'linear-gradient(90deg,#2337C6,#4169E1)', zIndex:2 } }));
+
+    const content = el('div', { style: { position:'relative', zIndex:2, display:'flex', flexDirection:'column', gap:'32px', width:'888px', margin:'150px 96px 0' } });
+
+    content.appendChild(field('div', 'badge', state.texts.badge, {
+      alignSelf:'flex-start', fontFamily:"'Public Sans',sans-serif", fontWeight:'700', fontSize:'14px', letterSpacing:'.1em', textTransform:'uppercase',
+      color:'#fff', background:'#0504AA', borderRadius:'999px', padding:'10px 20px'
+    }));
+
+    content.appendChild(field('div', 'title', state.texts.title, { fontFamily:"'Fraunces',Georgia,serif", fontWeight:'700', fontSize:'56px', lineHeight:'1.15', color:'#031273', maxWidth:'16ch', whiteSpace:'pre-wrap' }));
+
+    const list = el('div', { style: { display:'flex', flexDirection:'column', gap:'16px', fontFamily:"'Public Sans',sans-serif", fontSize:'28px', lineHeight:'1.5', color:'#12162A' } });
+    ['line1','line2'].forEach(key => {
+      const row = el('div', { style: { display:'flex', alignItems:'baseline', gap:'14px' } });
+      row.appendChild(el('span', { style: { color:'#4169E1', fontSize:'22px' }, text:'•' }));
+      row.appendChild(field('span', key, state.texts[key], {}));
+      list.appendChild(row);
+    });
+    content.appendChild(list);
+
+    content.appendChild(field('div', 'closing', state.texts.closing, { fontFamily:"'Fraunces',Georgia,serif", fontStyle:'italic', fontWeight:'500', fontSize:'30px', color:'#2337C6', marginTop:'auto' }));
+
+    s.appendChild(content);
+    return s;
+  }
+
+  // ---------- Modelo C: Carrossel ----------
+  function buildModeloC(state){
+    const s = el('div', { class: 'slide tone-dark', style: { width:'1080px', height:'1080px' } });
+
+    const content = el('div', { style: { position:'relative', zIndex:2, height:'100%', display:'flex', flexDirection:'column', margin:'80px' } });
+
+    const top = el('div', { style: { display:'flex', alignItems:'center', justifyContent:'space-between' } });
+    top.appendChild(field('div', 'number', state.texts.number, { fontFamily:"'Fraunces',Georgia,serif", fontWeight:'700', fontSize:'72px', color:'#fff' }));
+    top.appendChild(field('div', 'cta', state.texts.cta, { fontFamily:"'Public Sans',sans-serif", fontWeight:'700', fontSize:'14px', letterSpacing:'.1em', textTransform:'uppercase', color:'#fff', background:'#2337C6', borderRadius:'999px', padding:'12px 22px', whiteSpace:'nowrap' }));
+    content.appendChild(top);
+
+    const bottom = el('div', { style: { marginTop:'auto', display:'flex', flexDirection:'column', gap:'20px' } });
+    bottom.appendChild(field('div', 'title', state.texts.title, { fontFamily:"'Fraunces',Georgia,serif", fontWeight:'700', fontSize:'52px', lineHeight:'1.15', color:'#fff', maxWidth:'17ch', whiteSpace:'pre-wrap' }));
+    bottom.appendChild(field('div', 'subtitle', state.texts.subtitle, { fontFamily:"'Public Sans',sans-serif", fontSize:'26px', lineHeight:'1.55', color:'#AEB4DA', maxWidth:'30ch', whiteSpace:'pre-wrap' }));
+    content.appendChild(bottom);
+
+    s.appendChild(content);
+    return s;
+  }
+
+  // ---------- Modelo D: Evangelho ----------
+  function buildModeloD(state){
+    const s = el('div', { class: 'slide tone-light', style: { width:'1080px', height:'1080px' } });
+
+    const content = el('div', { style: { position:'relative', zIndex:2, display:'flex', flexDirection:'column', gap:'36px', width:'888px', margin:'150px 96px 0' } });
+
+    const header = el('div', { style: { paddingLeft:'20px', borderLeft:'4px solid #2337C6', display:'flex', flexDirection:'column', gap:'4px' } });
+    header.appendChild(field('div', 'label', state.texts.label, { fontFamily:"'Public Sans',sans-serif", fontWeight:'700', fontSize:'15px', letterSpacing:'.1em', textTransform:'uppercase', color:'#0504AA' }));
+    header.appendChild(field('div', 'reference', state.texts.reference, { fontFamily:"'Public Sans',sans-serif", fontSize:'18px', color:'#535A7A' }));
+    content.appendChild(header);
+
+    const box = el('div', { style: { background:'#EDF1FA', borderLeft:'4px solid #0504AA', borderRadius:'0 16px 16px 0', padding:'36px 40px' } });
+    const verseText = el('div', { style: { fontFamily:"'Fraunces',Georgia,serif", fontStyle:'italic', fontWeight:'500', fontSize:'40px', lineHeight:'1.4', color:'#031273', whiteSpace:'pre-wrap' } });
+    verseText.appendChild(document.createTextNode('“'));
+    verseText.appendChild(field('span', 'verse', state.texts.verse, {}));
+    verseText.appendChild(document.createTextNode('”'));
+    box.appendChild(verseText);
+    content.appendChild(box);
+
+    content.appendChild(field('div', 'reflection', state.texts.reflection, { fontFamily:"'Public Sans',sans-serif", fontSize:'26px', lineHeight:'1.65', color:'#535A7A', maxWidth:'34ch', whiteSpace:'pre-wrap' }));
+
+    s.appendChild(content);
+    return s;
+  }
+
+  // ---------- Stories / Reels ----------
+  function buildStories(state){
+    const s = el('div', { class: 'slide tone-dark', style: { width:'1080px', height:'1920px' } });
+
+    const content = el('div', { style: { position:'absolute', top:'250px', left:'64px', right:'64px', bottom:'250px', zIndex:2, display:'flex', flexDirection:'column', gap:'28px' } });
+
+    const row = el('div', { style: { display:'flex', alignItems:'center', justifyContent:'flex-end' } });
+    row.appendChild(field('div', 'tag', state.texts.tag, { fontFamily:"'Public Sans',sans-serif", fontWeight:'700', fontSize:'14px', letterSpacing:'.08em', textTransform:'uppercase', color:'#4CC9F0', background:'rgba(255,255,255,.12)', border:'1px solid rgba(255,255,255,.3)', borderRadius:'999px', padding:'7px 16px' }));
+    content.appendChild(row);
+
+    const photoBox = el('div', { style: { flexGrow:'1', position:'relative' } });
+
+    const scrimBox = el('div', {
+      style: {
+        position:'absolute', left:0, right:0, bottom:0,
+        background:'linear-gradient(to top, rgba(3,18,115,0.95) 55%, rgba(3,18,115,0))',
+        padding:'44px 32px 32px', display:'flex', flexDirection:'column', gap:'18px'
+      }
+    });
+    scrimBox.appendChild(field('div', 'script', state.texts.script, { fontFamily:"'Alex Brush',cursive", fontSize:'40px', color:'#4CC9F0', lineHeight:'1' }));
+    scrimBox.appendChild(field('div', 'headline', state.texts.headline, { fontFamily:"'Fraunces',Georgia,serif", fontWeight:'700', fontSize:'52px', lineHeight:'1.08', color:'#fff', maxWidth:'18ch', whiteSpace:'pre-wrap' }));
+    scrimBox.appendChild(field('div', 'subtext', state.texts.subtext, { fontFamily:"'Public Sans',sans-serif", fontSize:'22px', lineHeight:'1.5', color:'rgba(255,255,255,.88)', maxWidth:'34ch', whiteSpace:'pre-wrap' }));
+    scrimBox.appendChild(el('div', { style: { borderTop:'1px solid rgba(255,255,255,.25)' } }));
+
+    const ctaRow = el('div', { style: { display:'flex', alignItems:'center', gap:'8px' } });
+    ctaRow.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"></path><path d="M6 11l6-6 6 6"></path></svg>';
+    ctaRow.appendChild(el('div', { style: { fontFamily:"'Public Sans',sans-serif", fontWeight:'600', fontSize:'16px', color:'#fff' }, text:'Deslize para saber mais' }));
+    scrimBox.appendChild(ctaRow);
+
+    scrimBox.appendChild(field('div', 'handle', state.texts.handle, { fontFamily:"'Public Sans',sans-serif", fontWeight:'600', fontSize:'15px', letterSpacing:'.03em', color:'rgba(76,201,240,.85)' }));
+
+    photoBox.appendChild(scrimBox);
+    content.appendChild(photoBox);
+    s.appendChild(content);
+    return s;
+  }
+
+  function makeInstance(key, textsOverride){
+    return {
+      texts: Object.assign({}, DEFAULTS[key], textsOverride || {}),
+      bgImage: null, scrim: 55, presetIndex: 0, offsets: {}, hidden: [],
+      media: { fit: 'cover', zoom: 100, offsetX: 0, offsetY: 0, layer: 'behind' },
+      customTexts: [], shapes: []
+    };
+  }
+
+  function makeCustomText(frameW, frameH){
+    return {
+      id: nextId(), text: 'Novo texto', x: Math.round(frameW / 2 - 140), y: Math.round(frameH / 2 - 20),
+      fontFamily: TEXT_FONTS[1].id, fontSize: 36, bold: false, italic: false, underline: false, color: '#FFFFFF'
+    };
+  }
+
+  function makeShape(type, frameW, frameH){
+    const size = type === 'star' || type === 'circle' || type === 'square' ? 260 : 320;
+    const h = type === 'rect' ? 200 : size;
+    return {
+      id: nextId(), type,
+      x: Math.round(frameW / 2 - size / 2), y: Math.round(frameH / 2 - h / 2),
+      w: size, h,
+      fill: '#0504AA', stroke: '#4CC9F0', strokeWidth: 4
+    };
+  }
+
+  // ---------- custom text boxes & shapes (free elements) ----------
+  function buildCustomText(ct, interactive){
+    const wrap = el('div', {
+      class: 'free-el', 'data-kind': 'customText', 'data-id': ct.id,
+      style: {
+        left: ct.x + 'px', top: ct.y + 'px', zIndex: 5,
+        fontFamily: ct.fontFamily, fontSize: ct.fontSize + 'px',
+        fontWeight: ct.bold ? '700' : '400', fontStyle: ct.italic ? 'italic' : 'normal',
+        textDecoration: ct.underline ? 'underline' : 'none',
+        color: ct.color, whiteSpace: 'pre-wrap', maxWidth: '920px'
+      }
+    });
+    const inner = el('div', { 'data-field': 'custom:' + ct.id, style: { outline: 'none' } });
+    inner.textContent = ct.text;
+    wrap.appendChild(inner);
+    wrap.appendChild(el('button', { class: 'field-del', type: 'button', title: 'Remover', text: '×' }));
+    return wrap;
+  }
+
+  function starPoints(w, h, sw){
+    const cx = w / 2, cy = h / 2, outerR = Math.min(w, h) / 2 - sw / 2, innerR = outerR * 0.42;
+    const pts = [];
+    for (let i = 0; i < 10; i++) {
+      const r = i % 2 === 0 ? outerR : innerR;
+      const a = -Math.PI / 2 + i * Math.PI / 5;
+      pts.push((cx + r * Math.cos(a)).toFixed(1) + ',' + (cy + r * Math.sin(a)).toFixed(1));
+    }
+    return pts.join(' ');
+  }
+
+  function shapeSvgInner(type, w, h, fill, stroke, sw){
+    const pad = sw / 2;
+    if (type === 'rect' || type === 'square') {
+      return `<rect x="${pad}" y="${pad}" width="${Math.max(0, w - sw)}" height="${Math.max(0, h - sw)}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+    }
+    if (type === 'circle') {
+      return `<ellipse cx="${w / 2}" cy="${h / 2}" rx="${Math.max(0, (w - sw) / 2)}" ry="${Math.max(0, (h - sw) / 2)}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+    }
+    if (type === 'triangle') {
+      return `<polygon points="${w / 2},${pad} ${w - pad},${h - pad} ${pad},${h - pad}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>`;
+    }
+    return `<polygon points="${starPoints(w, h, sw)}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>`;
+  }
+
+  function buildShape(shape, interactive){
+    const wrap = el('div', {
+      class: 'free-el', 'data-kind': 'shape', 'data-id': shape.id,
+      style: { left: shape.x + 'px', top: shape.y + 'px', width: shape.w + 'px', height: shape.h + 'px', zIndex: 5 }
+    });
+    wrap.innerHTML = `<svg width="${shape.w}" height="${shape.h}" style="display:block;overflow:visible">${shapeSvgInner(shape.type, shape.w, shape.h, shape.fill, shape.stroke, shape.strokeWidth)}</svg>`;
+    wrap.appendChild(el('button', { class: 'field-del', type: 'button', title: 'Remover', text: '×' }));
+    return wrap;
+  }
+
+  // ---------- background photo: fit / zoom / pan / layer ----------
+  const imageCache = new Map();
+
+  function loadImage(dataUrl){
+    if (imageCache.has(dataUrl)) return Promise.resolve(imageCache.get(dataUrl));
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => { imageCache.set(dataUrl, img); resolve(img); };
+      img.onerror = reject;
+      img.src = dataUrl;
+    });
+  }
+
+  function computeMediaRect(naturalW, naturalH, frameW, frameH, fit, zoomPct){
+    const ir = naturalW / naturalH, fr = frameW / frameH;
+    let baseW, baseH;
+    if (fit === 'contain' ? (ir > fr) : (ir <= fr)) { baseW = frameW; baseH = baseW / ir; }
+    else { baseH = frameH; baseW = baseH * ir; }
+    const zoom = (zoomPct || 100) / 100;
+    return { w: baseW * zoom, h: baseH * zoom };
+  }
+
+  function clampMediaOffset(m, rect, frameW, frameH){
+    const maxX = Math.max(0, (rect.w - frameW) / 2);
+    const maxY = Math.max(0, (rect.h - frameH) / 2);
+    m.offsetX = Math.max(-maxX, Math.min(maxX, m.offsetX));
+    m.offsetY = Math.max(-maxY, Math.min(maxY, m.offsetY));
+  }
+
+  function buildMediaLayer(state, frameW, frameH, interactive){
+    const wrap = el('div', { class: 'slide-media', style: { pointerEvents: interactive ? 'auto' : 'none' } });
+    const cached = imageCache.get(state.bgImage);
+    if (!cached) return wrap;
+    const m = state.media;
+    const rect = computeMediaRect(cached.naturalWidth, cached.naturalHeight, frameW, frameH, m.fit, m.zoom);
+    clampMediaOffset(m, rect, frameW, frameH);
+    const img = el('img', {
+      src: state.bgImage,
+      style: {
+        width: rect.w + 'px', height: rect.h + 'px',
+        left: ((frameW - rect.w) / 2 + m.offsetX) + 'px',
+        top: ((frameH - rect.h) / 2 + m.offsetY) + 'px'
+      }
+    });
+    wrap.appendChild(img);
+    return wrap;
+  }
+
+  function finalizeNode(node, state){
+    node.querySelectorAll('[data-field]').forEach(f => {
+      f.style.display = f.style.display || 'block';
+      if (f.tagName === 'SPAN') f.style.display = 'inline';
+    });
+    node.querySelectorAll('.field-wrap').forEach(w => {
+      const key = w.dataset.key;
+      const off = state.offsets[key];
+      if (off) w.style.transform = 'translate(' + off.dx + 'px,' + off.dy + 'px)';
+      if (state.hidden.indexOf(key) >= 0) w.style.display = 'none';
+    });
+  }
+
+  function buildSlide(key, state, opts){
+    const t = TEMPLATES[key];
+    const node = t.build(state);
+    node.style.background = presetCss(t.tone, state.presetIndex);
+    if (state.bgImage) {
+      const front = state.media.layer === 'front';
+      const media = buildMediaLayer(state, t.w, t.h, opts && opts.mediaInteractive);
+      const scrim = el('div', { class: 'slide-scrim', style: scrimStyle(t.tone, state.scrim) });
+      if (front) { media.style.zIndex = '3'; scrim.style.zIndex = '3'; }
+      node.appendChild(media);
+      node.appendChild(scrim);
+    }
+    (state.shapes || []).forEach(shape => node.appendChild(buildShape(shape)));
+    (state.customTexts || []).forEach(ct => node.appendChild(buildCustomText(ct)));
+    finalizeNode(node, state);
+    return node;
+  }
+
+  function parseCarouselText(text){
+    const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+    return blocks.map((b, i) => {
+      const lines = b.split('\n').map(l => l.trim()).filter(Boolean);
+      const title = lines[0] || '';
+      const subtitle = lines.slice(1).join(' ') || '';
+      return makeInstance('modeloC', { number: String(i + 1).padStart(2, '0'), title, subtitle, cta: DEFAULTS.modeloC.cta });
+    });
+  }
+
+  // ---------- state ----------
+  const stateByTemplate = {};
+  Object.keys(TEMPLATES).forEach(key => {
+    stateByTemplate[key] = key === 'modeloC'
+      ? { slides: [makeInstance('modeloC')], active: 0 }
+      : makeInstance(key);
+  });
+
+  let currentTemplate = 'modeloA';
+  const requested = new URLSearchParams(location.search).get('t');
+  if (requested && TEMPLATES[requested]) currentTemplate = requested;
+
+  let mode = 'text'; // 'text' | 'move' | 'media'
+  let currentScale = 1;
+  let selection = null; // { kind:'customText'|'shape', id }
+
+  const stage = document.getElementById('stage');
+  const tabsEl = document.getElementById('tabs');
+  const dimLabel = document.getElementById('dim-label');
+  const bgInput = document.getElementById('bg-input');
+  const removeBgBtn = document.getElementById('remove-bg');
+  const scrimRange = document.getElementById('scrim-range');
+  const scrimVal = document.getElementById('scrim-val');
+  const resetBtn = document.getElementById('reset-btn');
+  const downloadBtn = document.getElementById('download-btn');
+  const toastEl = document.getElementById('toast');
+  const presetsEl = document.getElementById('presets');
+  const modeEditBtn = document.getElementById('mode-edit');
+  const modeMoveBtn = document.getElementById('mode-move');
+  const modeMediaBtn = document.getElementById('mode-media');
+  const modeHint = document.getElementById('mode-hint');
+  const mediaControls = document.getElementById('media-controls');
+  const fitCoverBtn = document.getElementById('fit-cover');
+  const fitContainBtn = document.getElementById('fit-contain');
+  const zoomRange = document.getElementById('zoom-range');
+  const zoomVal = document.getElementById('zoom-val');
+  const layerBehindBtn = document.getElementById('layer-behind');
+  const layerFrontBtn = document.getElementById('layer-front');
+  const carouselPanel = document.getElementById('carousel-panel');
+  const carouselInput = document.getElementById('carousel-input');
+  const generateBtn = document.getElementById('generate-btn');
+  const slidePrev = document.getElementById('slide-prev');
+  const slideNext = document.getElementById('slide-next');
+  const slideCount = document.getElementById('slide-count');
+  const slideAdd = document.getElementById('slide-add');
+  const slideDel = document.getElementById('slide-del');
+  const addTextBtn = document.getElementById('add-text-btn');
+  const shapeGrid = document.getElementById('shape-grid');
+  const propsClose = document.getElementById('props-close');
+  const bgSrcFileBtn = document.getElementById('bg-src-file');
+  const bgSrcLinkBtn = document.getElementById('bg-src-link');
+  const bgFileRow = document.getElementById('bg-file-row');
+  const bgLinkRow = document.getElementById('bg-link-row');
+  const bgLinkInput = document.getElementById('bg-link-input');
+  const bgLinkLoad = document.getElementById('bg-link-load');
+
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toastEl.classList.remove('show'), 3200);
+  }
+
+  function isCarousel(){ return currentTemplate === 'modeloC'; }
+
+  function currentState(){
+    if (isCarousel()) {
+      const cd = stateByTemplate.modeloC;
+      return cd.slides[cd.active];
+    }
+    return stateByTemplate[currentTemplate];
+  }
+
+  function render(){
+    const t = TEMPLATES[currentTemplate];
+    const state = currentState();
+    const node = buildSlide(currentTemplate, state, { mediaInteractive: mode === 'media' });
+    stage.innerHTML = '';
+    stage.appendChild(node);
+
+    node.querySelectorAll('[data-field]').forEach(f => {
+      f.setAttribute('contenteditable', mode === 'text' ? 'true' : 'false');
+      f.addEventListener('paste', e => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+        document.execCommand('insertText', false, text);
+      });
+      f.addEventListener('input', () => {
+        const key = f.dataset.field;
+        if (key.indexOf('custom:') === 0) {
+          const ct = (currentState().customTexts || []).find(c => 'custom:' + c.id === key);
+          if (ct) ct.text = f.innerText;
+        } else {
+          currentState().texts[key] = f.innerText;
+        }
+      });
+    });
+
+    enableFieldDrag(node, state);
+    enableMediaDrag(node, state, t.w, t.h);
+    enableFreeDrag(node, state);
+    node.addEventListener('click', e => {
+      if (!e.target.closest('.free-el') && selection) { selection = null; renderPropsPanel(); }
+    });
+    stage.classList.toggle('move-mode', mode === 'move');
+    stage.classList.toggle('media-mode', mode === 'media');
+
+    fitStage();
+    dimLabel.textContent = t.w + ' × ' + t.h + ' px';
+    removeBgBtn.hidden = !state.bgImage;
+    scrimRange.value = state.scrim;
+    scrimVal.textContent = state.scrim + '%';
+    scrimRange.classList.toggle('slider-disabled', !state.bgImage);
+
+    mediaControls.classList.toggle('disabled', !state.bgImage);
+    fitCoverBtn.classList.toggle('active', state.media.fit === 'cover');
+    fitContainBtn.classList.toggle('active', state.media.fit === 'contain');
+    zoomRange.value = state.media.zoom;
+    zoomVal.textContent = state.media.zoom + '%';
+    layerBehindBtn.classList.toggle('active', state.media.layer === 'behind');
+    layerFrontBtn.classList.toggle('active', state.media.layer === 'front');
+
+    renderPresets();
+    renderPropsPanel();
+    carouselPanel.hidden = !isCarousel();
+    if (isCarousel()) renderSlideNav();
+  }
+
+  function enableFieldDrag(node, state){
+    node.querySelectorAll('.field-wrap').forEach(wrap => {
+      wrap.style.touchAction = 'none';
+      wrap.addEventListener('pointerdown', e => {
+        if (mode !== 'move') return;
+        e.preventDefault(); e.stopPropagation();
+        wrap.setPointerCapture(e.pointerId);
+        const key = wrap.dataset.key;
+        const start = { x: e.clientX, y: e.clientY };
+        const base = Object.assign({ dx: 0, dy: 0 }, state.offsets[key]);
+        wrap.classList.add('dragging');
+        function onMove(ev){
+          if (ev.pointerId !== e.pointerId) return;
+          const dx = Math.round(base.dx + (ev.clientX - start.x) / currentScale);
+          const dy = Math.round(base.dy + (ev.clientY - start.y) / currentScale);
+          state.offsets[key] = { dx, dy };
+          wrap.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+        }
+        function onUp(ev){
+          if (ev.pointerId !== e.pointerId) return;
+          wrap.removeEventListener('pointermove', onMove);
+          wrap.removeEventListener('pointerup', onUp);
+          wrap.removeEventListener('pointercancel', onUp);
+          wrap.classList.remove('dragging');
+        }
+        wrap.addEventListener('pointermove', onMove);
+        wrap.addEventListener('pointerup', onUp);
+        wrap.addEventListener('pointercancel', onUp);
+      });
+
+      wrap.querySelector('.field-del').addEventListener('click', e => {
+        e.stopPropagation();
+        const key = wrap.dataset.key;
+        if (state.hidden.indexOf(key) < 0) state.hidden.push(key);
+        wrap.style.display = 'none';
+      });
+    });
+  }
+
+  function enableMediaDrag(node, state, frameW, frameH){
+    const layer = node.querySelector('.slide-media');
+    const img = node.querySelector('.slide-media img');
+    if (!layer || !img) return;
+    layer.style.touchAction = 'none';
+    layer.addEventListener('pointerdown', e => {
+      if (mode !== 'media') return;
+      e.preventDefault(); e.stopPropagation();
+      layer.setPointerCapture(e.pointerId);
+      const cached = imageCache.get(state.bgImage);
+      if (!cached) return;
+      const rect = computeMediaRect(cached.naturalWidth, cached.naturalHeight, frameW, frameH, state.media.fit, state.media.zoom);
+      const maxX = Math.max(0, (rect.w - frameW) / 2);
+      const maxY = Math.max(0, (rect.h - frameH) / 2);
+      const start = { x: e.clientX, y: e.clientY };
+      const base = { x: state.media.offsetX, y: state.media.offsetY };
+      function onMove(ev){
+        if (ev.pointerId !== e.pointerId) return;
+        let nx = base.x + (ev.clientX - start.x) / currentScale;
+        let ny = base.y + (ev.clientY - start.y) / currentScale;
+        nx = Math.max(-maxX, Math.min(maxX, nx));
+        ny = Math.max(-maxY, Math.min(maxY, ny));
+        state.media.offsetX = nx; state.media.offsetY = ny;
+        img.style.left = ((frameW - rect.w) / 2 + nx) + 'px';
+        img.style.top = ((frameH - rect.h) / 2 + ny) + 'px';
+      }
+      function onUp(ev){
+        if (ev.pointerId !== e.pointerId) return;
+        layer.removeEventListener('pointermove', onMove);
+        layer.removeEventListener('pointerup', onUp);
+        layer.removeEventListener('pointercancel', onUp);
+      }
+      layer.addEventListener('pointermove', onMove);
+      layer.addEventListener('pointerup', onUp);
+      layer.addEventListener('pointercancel', onUp);
+    });
+  }
+
+  function enableFreeDrag(node, state){
+    node.querySelectorAll('.free-el').forEach(wrap => {
+      const kind = wrap.dataset.kind, id = wrap.dataset.id;
+      const list = kind === 'shape' ? state.shapes : state.customTexts;
+      const item = list.find(x => x.id === id);
+      if (!item) return;
+      wrap.style.touchAction = 'none';
+      if (selection && selection.kind === kind && selection.id === id) wrap.classList.add('selected');
+
+      wrap.addEventListener('click', e => {
+        e.stopPropagation();
+        selection = { kind, id };
+        renderPropsPanel();
+        node.querySelectorAll('.free-el.selected').forEach(w2 => w2.classList.remove('selected'));
+        wrap.classList.add('selected');
+      });
+
+      wrap.addEventListener('pointerdown', e => {
+        if (mode !== 'move') return;
+        e.preventDefault(); e.stopPropagation();
+        wrap.setPointerCapture(e.pointerId);
+        const start = { x: e.clientX, y: e.clientY };
+        const base = { x: item.x, y: item.y };
+        wrap.classList.add('dragging');
+        function onMove(ev){
+          if (ev.pointerId !== e.pointerId) return;
+          item.x = Math.round(base.x + (ev.clientX - start.x) / currentScale);
+          item.y = Math.round(base.y + (ev.clientY - start.y) / currentScale);
+          wrap.style.left = item.x + 'px';
+          wrap.style.top = item.y + 'px';
+        }
+        function onUp(ev){
+          if (ev.pointerId !== e.pointerId) return;
+          wrap.removeEventListener('pointermove', onMove);
+          wrap.removeEventListener('pointerup', onUp);
+          wrap.removeEventListener('pointercancel', onUp);
+          wrap.classList.remove('dragging');
+        }
+        wrap.addEventListener('pointermove', onMove);
+        wrap.addEventListener('pointerup', onUp);
+        wrap.addEventListener('pointercancel', onUp);
+      });
+
+      wrap.querySelector('.field-del').addEventListener('click', e => {
+        e.stopPropagation();
+        const idx = list.indexOf(item);
+        if (idx >= 0) list.splice(idx, 1);
+        if (selection && selection.kind === kind && selection.id === id) selection = null;
+        render();
+      });
+    });
+  }
+
+  function renderPropsPanel(){
+    const panel = document.getElementById('props-panel');
+    const body = document.getElementById('props-body');
+    const title = document.getElementById('props-title');
+    if (!selection) { panel.hidden = true; return; }
+    const state = currentState();
+    const list = selection.kind === 'shape' ? state.shapes : state.customTexts;
+    const item = list && list.find(x => x.id === selection.id);
+    if (!item) { selection = null; panel.hidden = true; return; }
+    panel.hidden = false;
+    body.innerHTML = '';
+
+    function labelRow(text, extraStyle){
+      return el('div', { class: 'field-label', style: Object.assign({ marginTop: '0' }, extraStyle || {}), text });
+    }
+    function sliderRow(labelText, valueText){
+      const row = el('div', { class: 'slider-row', style: { marginTop: '18px' } });
+      row.appendChild(el('span', { text: labelText }));
+      const val = el('span', { class: 'slider-val', text: valueText });
+      row.appendChild(val);
+      return { row, val };
+    }
+
+    if (selection.kind === 'customText') {
+      title.textContent = 'Caixa de texto';
+
+      body.appendChild(labelRow('Fonte'));
+      const fontSelect = el('select', { class: 'text-field' });
+      TEXT_FONTS.forEach(f => {
+        const opt = el('option', { value: f.id, text: f.nome });
+        if (f.id === item.fontFamily) opt.setAttribute('selected', 'selected');
+        fontSelect.appendChild(opt);
+      });
+      fontSelect.addEventListener('change', () => { item.fontFamily = fontSelect.value; render(); });
+      body.appendChild(fontSelect);
+
+      const sz = sliderRow('Tamanho', item.fontSize + 'px');
+      body.appendChild(sz.row);
+      const sizeRange = el('input', { type: 'range', min: '14', max: '140', value: String(item.fontSize) });
+      sizeRange.addEventListener('input', () => { item.fontSize = parseInt(sizeRange.value, 10); sz.val.textContent = item.fontSize + 'px'; render(); });
+      body.appendChild(sizeRange);
+
+      body.appendChild(labelRow('Estilo', { marginTop: '18px' }));
+      const styleRow = el('div', { class: 'seg-btn-row' });
+      const boldBtn = el('button', { type: 'button', text: 'B', style: { fontWeight: '700' } });
+      const italBtn = el('button', { type: 'button', class: 'it', text: 'I' });
+      const undBtn = el('button', { type: 'button', class: 'un', text: 'S' });
+      [[boldBtn, 'bold'], [italBtn, 'italic'], [undBtn, 'underline']].forEach(([btn, key]) => {
+        btn.classList.toggle('active', !!item[key]);
+        btn.addEventListener('click', () => { item[key] = !item[key]; render(); });
+        styleRow.appendChild(btn);
+      });
+      body.appendChild(styleRow);
+
+      body.appendChild(labelRow('Cor do texto', { marginTop: '18px' }));
+      const colorRow = el('div', { class: 'color-row' });
+      const colorInput = el('input', { type: 'color', value: item.color });
+      colorInput.addEventListener('input', () => { item.color = colorInput.value; render(); });
+      colorRow.appendChild(colorInput);
+      colorRow.appendChild(el('span', { text: item.color }));
+      body.appendChild(colorRow);
+    } else {
+      title.textContent = (SHAPE_TYPES.find(s => s.id === item.type) || {}).nome || 'Forma';
+
+      body.appendChild(labelRow('Cor de preenchimento'));
+      const fillRow = el('div', { class: 'color-row' });
+      const fillInput = el('input', { type: 'color', value: item.fill });
+      fillInput.addEventListener('input', () => { item.fill = fillInput.value; render(); });
+      fillRow.appendChild(fillInput);
+      fillRow.appendChild(el('span', { text: item.fill }));
+      body.appendChild(fillRow);
+
+      body.appendChild(labelRow('Cor da linha', { marginTop: '18px' }));
+      const strokeRow = el('div', { class: 'color-row' });
+      const strokeInput = el('input', { type: 'color', value: item.stroke });
+      strokeInput.addEventListener('input', () => { item.stroke = strokeInput.value; render(); });
+      strokeRow.appendChild(strokeInput);
+      strokeRow.appendChild(el('span', { text: item.stroke }));
+      body.appendChild(strokeRow);
+
+      const sw = sliderRow('Espessura da linha', item.strokeWidth + 'px');
+      body.appendChild(sw.row);
+      const swRange = el('input', { type: 'range', min: '0', max: '24', value: String(item.strokeWidth) });
+      swRange.addEventListener('input', () => { item.strokeWidth = parseInt(swRange.value, 10); sw.val.textContent = item.strokeWidth + 'px'; render(); });
+      body.appendChild(swRange);
+
+      if (item.type === 'rect') {
+        const wR = sliderRow('Largura', item.w + 'px');
+        body.appendChild(wR.row);
+        const wRange = el('input', { type: 'range', min: '60', max: '1000', value: String(item.w) });
+        wRange.addEventListener('input', () => { item.w = parseInt(wRange.value, 10); wR.val.textContent = item.w + 'px'; render(); });
+        body.appendChild(wRange);
+
+        const hR = sliderRow('Altura', item.h + 'px');
+        body.appendChild(hR.row);
+        const hRange = el('input', { type: 'range', min: '60', max: '1000', value: String(item.h) });
+        hRange.addEventListener('input', () => { item.h = parseInt(hRange.value, 10); hR.val.textContent = item.h + 'px'; render(); });
+        body.appendChild(hRange);
+      } else {
+        const sizeR = sliderRow('Tamanho', item.w + 'px');
+        body.appendChild(sizeR.row);
+        const sizeRange = el('input', { type: 'range', min: '60', max: '900', value: String(item.w) });
+        sizeRange.addEventListener('input', () => {
+          const v = parseInt(sizeRange.value, 10);
+          item.w = v; item.h = v;
+          sizeR.val.textContent = v + 'px';
+          render();
+        });
+        body.appendChild(sizeRange);
+      }
+    }
+
+    const delBtn = el('button', { class: 'remove-btn', style: { marginTop: '18px', display: 'block' }, text: 'Excluir elemento' });
+    delBtn.addEventListener('click', () => {
+      const idx = list.indexOf(item);
+      if (idx >= 0) list.splice(idx, 1);
+      selection = null;
+      render();
+    });
+    body.appendChild(delBtn);
+  }
+
+  function renderPresets(){
+    const tone = TEMPLATES[currentTemplate].tone;
+    const list = PRESETS[tone];
+    const state = currentState();
+    presetsEl.innerHTML = '';
+    list.forEach((p, i) => {
+      const sw = el('button', {
+        type: 'button', class: 'preset-swatch' + (!state.bgImage && state.presetIndex === i ? ' active' : ''),
+        title: p.nome, style: { background: p.css }
+      });
+      sw.addEventListener('click', () => {
+        state.presetIndex = i;
+        state.bgImage = null;
+        bgInput.value = '';
+        render();
+      });
+      presetsEl.appendChild(sw);
+    });
+  }
+
+  function renderSlideNav(){
+    const cd = stateByTemplate.modeloC;
+    slideCount.textContent = (cd.active + 1) + ' / ' + cd.slides.length;
+    slidePrev.disabled = cd.active === 0;
+    slideNext.disabled = cd.active === cd.slides.length - 1;
+    slideDel.disabled = cd.slides.length <= 1;
+  }
+
+  function fitStage(){
+    const t = TEMPLATES[currentTemplate];
+    const wrap = document.querySelector('.stage-wrap');
+    const available = wrap.parentElement.clientWidth - 20;
+    const maxW = Math.min(available, 640);
+    const maxH = 620;
+    const scale = Math.min(maxW / t.w, maxH / t.h, 1);
+    currentScale = scale;
+    stage.style.width = t.w + 'px';
+    stage.style.height = t.h + 'px';
+    stage.style.transform = 'scale(' + scale + ')';
+    wrap.style.width = Math.round(t.w * scale) + 'px';
+    wrap.style.height = Math.round(t.h * scale) + 'px';
+  }
+
+  function renderTabs(){
+    tabsEl.innerHTML = '';
+    Object.keys(TEMPLATES).forEach(key => {
+      const b = document.createElement('button');
+      b.className = 'tab' + (key === currentTemplate ? ' active' : '');
+      b.textContent = TEMPLATES[key].label;
+      b.addEventListener('click', () => { currentTemplate = key; renderTabs(); render(); });
+      tabsEl.appendChild(b);
+    });
+  }
+
+  const MODE_HINTS = {
+    text: 'Clique direto em qualquer texto no preview ao lado para reescrevê-lo.',
+    move: 'Arraste qualquer texto para reposicionar, ou clique no × para removê-lo do modelo.',
+    media: 'Arraste a foto para reposicioná-la dentro do quadro. Ajuste zoom e enquadramento na lateral.'
+  };
+  function setMode(next){
+    mode = next;
+    [['text', modeEditBtn], ['move', modeMoveBtn], ['media', modeMediaBtn]].forEach(([key, btn]) => {
+      btn.classList.toggle('active', key === next);
+    });
+    modeHint.textContent = MODE_HINTS[next];
+    render();
+  }
+  modeEditBtn.addEventListener('click', () => setMode('text'));
+  modeMoveBtn.addEventListener('click', () => setMode('move'));
+  modeMediaBtn.addEventListener('click', () => {
+    if (!currentState().bgImage) { toast('Envie uma foto de fundo primeiro.'); return; }
+    setMode('media');
+  });
+
+  bgInput.addEventListener('change', () => {
+    const file = bgInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      loadImage(dataUrl).then(() => {
+        const state = currentState();
+        state.bgImage = dataUrl;
+        state.media = { fit: 'cover', zoom: 100, offsetX: 0, offsetY: 0, layer: 'behind' };
+        render();
+      }).catch(() => toast('Não foi possível carregar essa imagem.'));
+    };
+    reader.readAsDataURL(file);
+  });
+
+  removeBgBtn.addEventListener('click', () => {
+    currentState().bgImage = null;
+    bgInput.value = '';
+    if (mode === 'media') setMode('text'); else render();
+  });
+
+  scrimRange.addEventListener('input', () => {
+    currentState().scrim = parseInt(scrimRange.value, 10);
+    scrimVal.textContent = scrimRange.value + '%';
+    const layer = stage.querySelector('.slide-scrim');
+    if (layer) layer.setAttribute('style', scrimStyle(TEMPLATES[currentTemplate].tone, currentState().scrim));
+  });
+
+  fitCoverBtn.addEventListener('click', () => { currentState().media.fit = 'cover'; render(); });
+  fitContainBtn.addEventListener('click', () => { currentState().media.fit = 'contain'; render(); });
+
+  zoomRange.addEventListener('input', () => {
+    currentState().media.zoom = parseInt(zoomRange.value, 10);
+    zoomVal.textContent = zoomRange.value + '%';
+    render();
+  });
+
+  layerBehindBtn.addEventListener('click', () => { currentState().media.layer = 'behind'; render(); });
+  layerFrontBtn.addEventListener('click', () => { currentState().media.layer = 'front'; render(); });
+
+  const SHAPE_ICONS = {
+    rect: '<rect x="3" y="6" width="18" height="12" rx="1"></rect>',
+    square: '<rect x="5" y="5" width="14" height="14" rx="1"></rect>',
+    circle: '<circle cx="12" cy="12" r="9"></circle>',
+    triangle: '<polygon points="12,4 20,20 4,20"></polygon>',
+    star: '<polygon points="12,3 14.5,9.5 21,9.8 15.8,13.9 17.6,20.5 12,16.8 6.4,20.5 8.2,13.9 3,9.8 9.5,9.5"></polygon>'
+  };
+  SHAPE_TYPES.forEach(s => {
+    const btn = el('button', { type: 'button', class: 'shape-btn' });
+    btn.innerHTML = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">' + SHAPE_ICONS[s.id] + '</svg>';
+    btn.appendChild(document.createTextNode(s.nome));
+    btn.addEventListener('click', () => {
+      const t = TEMPLATES[currentTemplate];
+      const shape = makeShape(s.id, t.w, t.h);
+      currentState().shapes.push(shape);
+      selection = { kind: 'shape', id: shape.id };
+      if (mode !== 'move') setMode('move'); else render();
+    });
+    shapeGrid.appendChild(btn);
+  });
+
+  addTextBtn.addEventListener('click', () => {
+    const t = TEMPLATES[currentTemplate];
+    const ct = makeCustomText(t.w, t.h);
+    currentState().customTexts.push(ct);
+    selection = { kind: 'customText', id: ct.id };
+    if (mode !== 'move') setMode('move'); else render();
+  });
+
+  propsClose.addEventListener('click', () => { selection = null; renderPropsPanel(); });
+
+  bgSrcFileBtn.addEventListener('click', () => {
+    bgSrcFileBtn.classList.add('active'); bgSrcLinkBtn.classList.remove('active');
+    bgFileRow.hidden = false; bgLinkRow.hidden = true;
+  });
+  bgSrcLinkBtn.addEventListener('click', () => {
+    bgSrcLinkBtn.classList.add('active'); bgSrcFileBtn.classList.remove('active');
+    bgLinkRow.hidden = false; bgFileRow.hidden = true;
+  });
+
+  bgLinkLoad.addEventListener('click', async () => {
+    const url = bgLinkInput.value.trim();
+    if (!url) { toast('Cole o link da imagem primeiro.'); return; }
+    bgLinkLoad.disabled = true;
+    bgLinkLoad.textContent = 'Carregando...';
+    try {
+      const res = await fetch(url, { mode: 'cors' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const blob = await res.blob();
+      if (blob.type.indexOf('image/') !== 0) throw new Error('O link não aponta para uma imagem.');
+      const dataUrl = await new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(r.result);
+        r.onerror = reject;
+        r.readAsDataURL(blob);
+      });
+      await loadImage(dataUrl);
+      const state = currentState();
+      state.bgImage = dataUrl;
+      state.media = { fit: 'cover', zoom: 100, offsetX: 0, offsetY: 0, layer: 'behind' };
+      render();
+      toast('Imagem carregada pelo link.');
+    } catch (e) {
+      console.error(e);
+      toast('Não foi possível carregar essa imagem pelo link (o site pode bloquear acesso externo). Baixe a imagem e use "Do computador".');
+    } finally {
+      bgLinkLoad.disabled = false;
+      bgLinkLoad.textContent = 'Carregar';
+    }
+  });
+
+  resetBtn.addEventListener('click', () => {
+    Object.assign(currentState(), makeInstance(currentTemplate));
+    bgInput.value = '';
+    render();
+    toast('Modelo restaurado.');
+  });
+
+  generateBtn.addEventListener('click', () => {
+    const text = carouselInput.value.trim();
+    if (!text) { toast('Cole o texto do carrossel primeiro.'); return; }
+    const slides = parseCarouselText(text);
+    if (!slides.length) { toast('Não consegui identificar nenhum slide nesse texto.'); return; }
+    stateByTemplate.modeloC = { slides, active: 0 };
+    render();
+    toast(slides.length + ' slides gerados — use ‹ › para navegar entre eles.');
+  });
+
+  slidePrev.addEventListener('click', () => {
+    const cd = stateByTemplate.modeloC;
+    cd.active = Math.max(0, cd.active - 1);
+    render();
+  });
+  slideNext.addEventListener('click', () => {
+    const cd = stateByTemplate.modeloC;
+    cd.active = Math.min(cd.slides.length - 1, cd.active + 1);
+    render();
+  });
+  slideAdd.addEventListener('click', () => {
+    const cd = stateByTemplate.modeloC;
+    const n = String(cd.slides.length + 1).padStart(2, '0');
+    cd.slides.splice(cd.active + 1, 0, makeInstance('modeloC', { number: n }));
+    cd.active++;
+    render();
+  });
+  slideDel.addEventListener('click', () => {
+    const cd = stateByTemplate.modeloC;
+    if (cd.slides.length <= 1) return;
+    cd.slides.splice(cd.active, 1);
+    cd.active = Math.min(cd.active, cd.slides.length - 1);
+    render();
+  });
+
+  window.addEventListener('resize', fitStage);
+
+  async function ensureFonts(){
+    const specs = [
+      "400 16px 'Public Sans'", "700 16px 'Public Sans'",
+      "700 16px Fraunces", "italic 500 16px Fraunces",
+      "400 16px 'Alex Brush'"
+    ];
+    await Promise.all(specs.map(s => document.fonts.load(s).catch(() => {})));
+    try { await Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 3000))]); } catch(e){}
+  }
+
+  async function renderToCanvas(key, state, holder){
+    const t = TEMPLATES[key];
+    const node = buildSlide(key, state);
+    holder.appendChild(node);
+    const canvas = await html2canvas(node, {
+      scale: 1, useCORS: true, backgroundColor: t.tone === 'dark' ? '#031273' : '#FFFFFF',
+      logging: false, width: t.w, height: t.h, windowWidth: t.w, windowHeight: t.h
+    });
+    node.remove();
+    return canvas;
+  }
+
+  function downloadCanvas(canvas, filename){
+    return new Promise(resolve => {
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+        resolve();
+      }, 'image/png');
+    });
+  }
+
+  downloadBtn.addEventListener('click', async () => {
+    if (typeof html2canvas === 'undefined') {
+      toast('Não foi possível carregar a ferramenta de exportação (verifique a conexão) — tente recarregar a página.');
+      return;
+    }
+    downloadBtn.disabled = true;
+    downloadBtn.textContent = 'Preparando...';
+    const holder = document.createElement('div');
+    holder.style.position = 'fixed';
+    holder.style.left = '-99999px';
+    holder.style.top = '0';
+    document.body.appendChild(holder);
+    try {
+      await ensureFonts();
+      if (isCarousel() && stateByTemplate.modeloC.slides.length > 1) {
+        const slides = stateByTemplate.modeloC.slides;
+        for (let i = 0; i < slides.length; i++) {
+          downloadBtn.textContent = 'Slide ' + (i + 1) + ' de ' + slides.length + '...';
+          const canvas = await renderToCanvas('modeloC', slides[i], holder);
+          await downloadCanvas(canvas, 'pnsg-carrossel-' + String(i + 1).padStart(2, '0') + '.png');
+          await new Promise(r => setTimeout(r, 450));
+        }
+        toast(slides.length + ' artes baixadas.');
+      } else {
+        const canvas = await renderToCanvas(currentTemplate, currentState(), holder);
+        await downloadCanvas(canvas, 'pnsg-' + currentTemplate + '.png');
+        toast('Arte baixada.');
+      }
+    } catch (e) {
+      console.error(e);
+      toast('Não foi possível gerar a imagem: ' + e.message);
+    } finally {
+      holder.remove();
+      downloadBtn.disabled = false;
+      downloadBtn.textContent = 'Baixar arte (PNG)';
+    }
+  });
+
+  renderTabs();
+  ensureFonts().then(render);
+  render();
+})();
+</script>
+
+</body>
+</html>

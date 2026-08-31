@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Identidade Visual — Paróquia Nossa Senhora das Graças</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&family=Alex+Brush&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F7FC;
+    --surface:#FFFFFF;
+    --surface-2:#EDF1FA;
+    --ink:#12162A;
+    --ink-muted:#535A7A;
+    --border:#DBE1F1;
+    --shadow: 0 1px 2px rgba(18,22,42,.04), 0 8px 24px rgba(18,22,42,.06);
+
+    --primary-dark:#031273;
+    --primary:#0504AA;
+    --secondary:#2337C6;
+    --accent:#4169E1;
+    --sky:#4CC9F0;
+    --good:#1E8E5A;
+    --bad:#D64550;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0B0E1E;
+      --surface:#141935;
+      --surface-2:#1B2145;
+      --ink:#EDEFFB;
+      --ink-muted:#AEB4DA;
+      --border:#2B3161;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+      --good:#4ADE80;
+      --bad:#FF6B6B;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B0E1E;
+    --surface:#141935;
+    --surface-2:#1B2145;
+    --ink:#EDEFFB;
+    --ink-muted:#AEB4DA;
+    --border:#2B3161;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    --good:#4ADE80;
+    --bad:#FF6B6B;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Public Sans", ui-sans-serif, system-ui, sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ max-width:100%; display:block; }
+
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  h1,h2,h3{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;
+    text-wrap:balance;
+    margin:0;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:linear-gradient(175deg, var(--primary-dark), var(--primary) 85%);
+    color:#F2F4FF;
+    padding:76px 0 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .wrap{ position:relative; z-index:1; }
+  .hero-inner{ display:flex; align-items:center; justify-content:space-between; gap:32px; }
+  .hero-copy{ flex:1; min-width:280px; }
+  .hero-figure{ flex-shrink:0; width:190px; display:flex; justify-content:center; }
+  .hero-figure .medal{ width:100%; height:auto; filter:drop-shadow(0 8px 24px rgba(0,0,0,.25)); }
+  .hero-figure .stars circle{ animation:medal-twinkle 3.2s ease-in-out infinite; }
+  .hero-figure .stars circle:nth-child(odd){ animation-delay:.6s; }
+  @keyframes medal-twinkle{ 0%,100%{ opacity:1; } 50%{ opacity:.45; } }
+  @media (prefers-reduced-motion: reduce){ .hero-figure .stars circle{ animation:none; } }
+  .eyebrow{
+    font-size:.78rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--sky);
+    font-weight:600;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 4.2vw, 3.1rem);
+    color:#fff;
+    max-width:16ch;
+  }
+  .hero .script{
+    font-family:"Alex Brush", cursive;
+    font-size:clamp(1.8rem, 3vw, 2.4rem);
+    color:var(--sky);
+    margin-top:6px;
+    font-weight:400;
+  }
+  .hero p.lede{
+    max-width:56ch;
+    color:#D7DCFA;
+    margin-top:22px;
+    font-size:1.02rem;
+  }
+  .arches{
+    position:absolute;
+    right:-40px; bottom:-30px;
+    opacity:.16;
+    width:340px; height:auto;
+  }
+
+  /* ---------- Nav ---------- */
+  .subnav{
+    position:sticky; top:0; z-index:10;
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+  }
+  .subnav .wrap{
+    display:flex; gap:4px; flex-wrap:wrap;
+    padding-top:0; padding-bottom:0;
+  }
+  .subnav a{
+    color:var(--ink-muted);
+    text-decoration:none;
+    font-size:.88rem;
+    font-weight:600;
+    padding:16px 14px;
+    border-bottom:2px solid transparent;
+    white-space:nowrap;
+  }
+  .subnav a:hover{ color:var(--primary); }
+  :root[data-theme="dark"] .subnav a:hover{ color: var(--sky); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .subnav a:hover{ color: var(--sky); } }
+
+  /* ---------- Sections ---------- */
+  section{ padding:72px 0; }
+  section + section{ border-top:1px solid var(--border); }
+
+  .section-head{
+    max-width:64ch;
+    margin-bottom:40px;
+  }
+  .section-head .kicker{
+    font-size:.78rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--secondary);
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  :root[data-theme="dark"] .section-head .kicker{ color: var(--sky); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .section-head .kicker{ color: var(--sky); } }
+
+  .section-head h2{ font-size:clamp(1.5rem,2.6vw,2rem); }
+  .section-head p{ color:var(--ink-muted); margin-top:12px; font-size:1rem; }
+
+  /* ---------- Divider (arch motif) ---------- */
+  .divider{
+    display:flex; justify-content:center;
+    padding:8px 0 0;
+  }
+
+  /* ---------- Palette ---------- */
+  .palette{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:16px;
+  }
+  .swatch{
+    border-radius:14px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:var(--surface);
+    box-shadow:var(--shadow);
+  }
+  .swatch .fill{ height:120px; }
+  .swatch .meta{ padding:14px 14px 16px; }
+  .swatch .name{ font-weight:700; font-size:.92rem; }
+  .swatch .hex{
+    font-family:ui-monospace, "SF Mono", Menlo, monospace;
+    color:var(--ink-muted);
+    font-size:.82rem;
+    margin-top:2px;
+  }
+  .swatch .use{ color:var(--ink-muted); font-size:.82rem; margin-top:8px; line-height:1.4; }
+
+  /* ---------- Typography ---------- */
+  .type-roles{ display:flex; flex-direction:column; gap:0; border:1px solid var(--border); border-radius:16px; overflow:hidden; background:var(--surface); box-shadow:var(--shadow); }
+  .type-role{ display:grid; grid-template-columns:180px 1fr; gap:24px; padding:32px; align-items:center; }
+  .type-role + .type-role{ border-top:1px solid var(--border); }
+  .type-role .label{ font-size:.8rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-muted); font-weight:700; }
+  .type-role .label small{ display:block; text-transform:none; letter-spacing:0; font-weight:400; margin-top:4px; font-size:.78rem; }
+  .type-role .label .font-name{
+    display:inline-block;
+    text-transform:none;
+    letter-spacing:0;
+    font-weight:600;
+    font-family:ui-monospace, "SF Mono", Menlo, monospace;
+    font-size:.78rem;
+    color:#fff;
+    margin-top:8px;
+    padding:2px 8px;
+    border:1px solid var(--primary);
+    border-radius:999px;
+    background:var(--primary);
+  }
+  .type-role .sample.script{ font-family:"Alex Brush", cursive; font-size:2.6rem; color:var(--primary); line-height:1; }
+  :root[data-theme="dark"] .type-role .sample.script{ color: var(--sky); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .type-role .sample.script{ color: var(--sky); } }
+  .type-role .sample.heading{ font-family:"Fraunces", serif; font-weight:700; font-size:1.9rem; }
+  .type-role .sample.body{ font-family:"Public Sans", sans-serif; font-size:1rem; color:var(--ink-muted); max-width:52ch; }
+
+  /* ---------- Stickers ---------- */
+  .sticker-grid{
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    gap:14px;
+  }
+  .sticker-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 10px 12px;
+    text-align:center;
+    box-shadow:var(--shadow);
+  }
+  .sticker-preview{
+    background-image:
+      linear-gradient(45deg, var(--surface-2) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--surface-2) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, var(--surface-2) 75%),
+      linear-gradient(-45deg, transparent 75%, var(--surface-2) 75%);
+    background-size:14px 14px;
+    background-position:0 0, 0 7px, 7px -7px, -7px 0;
+    border-radius:10px;
+    padding:10px;
+    margin-bottom:8px;
+  }
+  .sticker-card img{ height:66px; width:auto; margin:0 auto; object-fit:contain; display:block; }
+  .sticker-card .cap{ font-size:.74rem; color:var(--ink-muted); font-weight:600; margin-bottom:10px; }
+  .sticker-dl{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:.7rem; font-weight:700;
+    color:#fff; background:var(--good);
+    padding:6px 11px; border-radius:999px;
+    text-decoration:none;
+    line-height:1;
+  }
+  .sticker-dl:hover{ filter:brightness(1.08); }
+  .sticker-dl svg{ width:11px; height:11px; flex-shrink:0; }
+  .sticker-tip{
+    font-size:.86rem;
+    color:var(--ink-muted);
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px 16px;
+    margin-top:20px;
+    max-width:64ch;
+  }
+
+  /* ---------- Identity cards ---------- */
+  .matriz-card{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:0;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    margin-bottom:20px;
+  }
+  .matriz-card .photo{ height:100%; min-height:220px; padding:14px; background:var(--surface-2); display:flex; }
+  .matriz-card .photo .frame{ position:relative; flex:1; overflow:hidden; border-radius:12px; }
+  .matriz-card .photo .frame img{ width:100%; height:100%; object-fit:cover; filter:saturate(1.1) contrast(1.08); }
+  .matriz-card .photo .frame::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(165deg, rgba(3,18,115,.10), rgba(3,18,115,.4));
+    mix-blend-mode:multiply;
+    pointer-events:none;
+  }
+  .matriz-card .content{ padding:36px; display:flex; flex-direction:column; justify-content:center; gap:16px; }
+  .badge-row{ display:flex; align-items:center; gap:16px; }
+  .emblem{
+    width:76px; height:76px; border-radius:50%;
+    border:3px solid var(--surface);
+    outline:1px solid var(--border);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    background:var(--surface-2);
+    flex-shrink:0;
+  }
+  .emblem img{ width:100%; height:100%; object-fit:cover; filter:contrast(1.1) saturate(1.05); }
+  .emblem.mono{
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(160deg, var(--secondary), var(--accent));
+    color:#fff; font-family:"Fraunces",serif; font-weight:700; font-size:1.3rem;
+  }
+  .tag{ display:inline-block; font-size:.74rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--secondary); }
+  :root[data-theme="dark"] .tag{ color: var(--sky); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tag{ color: var(--sky); } }
+  .matriz-card h3{ font-size:1.5rem; }
+  .matriz-card .desc{ color:var(--ink-muted); font-size:.95rem; }
+
+  .community-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+  }
+  .community-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .community-card .photo{ height:150px; padding:10px; background:var(--surface-2); display:flex; }
+  .community-card .photo .frame{ position:relative; flex:1; overflow:hidden; border-radius:10px; }
+  .community-card .photo .frame img{ width:100%; height:100%; object-fit:cover; filter:saturate(1.1) contrast(1.08); }
+  .community-card .photo .frame::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(165deg, rgba(3,18,115,.10), rgba(3,18,115,.4));
+    mix-blend-mode:multiply;
+    pointer-events:none;
+  }
+  .community-card .content{ padding:20px; }
+  .community-card .badge-row{ margin-bottom:14px; gap:12px; }
+  .community-card .emblem{ width:56px; height:56px; }
+  .community-card h4{ font-family:"Fraunces",serif; font-weight:600; font-size:1.05rem; margin:0 0 4px; }
+  .community-card .note{ font-size:.78rem; color:var(--ink-muted); font-style:italic; margin-top:6px; }
+
+  /* ---------- Applications ---------- */
+  .app-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  .app-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:28px;
+    box-shadow:var(--shadow);
+  }
+  .app-card h4{ font-family:"Fraunces",serif; font-weight:600; font-size:1.15rem; margin:0 0 16px; }
+  .app-card ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .app-card li{ font-size:.9rem; color:var(--ink-muted); padding-left:26px; position:relative; line-height:1.45; }
+  .app-card li.do::before{ content:"✓"; position:absolute; left:0; top:0; color:var(--good); font-weight:700; }
+  .app-card li.dont::before{ content:"✕"; position:absolute; left:0; top:0; color:var(--bad); font-weight:700; }
+
+  .tools-cta{
+    margin-top:24px; padding:32px; border-radius:20px;
+    background:linear-gradient(175deg,var(--primary-dark),var(--primary) 85%);
+    display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
+    box-shadow:var(--shadow);
+  }
+  .tools-cta .copy h4{ font-family:"Fraunces",serif; font-weight:600; font-size:1.2rem; color:#fff; margin:0 0 8px; }
+  .tools-cta .copy p{ color:#D7DCFA; font-size:.9rem; max-width:52ch; margin:0; line-height:1.5; }
+  .tools-cta a{
+    flex-shrink:0; display:inline-flex; align-items:center; gap:8px;
+    background:#fff; color:var(--primary); text-decoration:none;
+    font-weight:700; font-size:.92rem; padding:13px 22px; border-radius:12px; white-space:nowrap;
+  }
+  .tools-cta a:hover{ opacity:.92; }
+
+  /* ---------- Media specs ---------- */
+  .spec-table-wrap{ overflow-x:auto; border-radius:16px; border:1px solid var(--border); box-shadow:var(--shadow); }
+  .spec-table{ width:100%; border-collapse:collapse; background:var(--surface); min-width:640px; }
+  .spec-table th, .spec-table td{ padding:14px 18px; text-align:left; font-size:.88rem; border-bottom:1px solid var(--border); white-space:nowrap; }
+  .spec-table th{ background:var(--surface-2); color:var(--ink-muted); text-transform:uppercase; font-size:.72rem; letter-spacing:.06em; font-weight:700; }
+  .spec-table tr:last-child td{ border-bottom:none; }
+  .spec-table td.mono{ font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.82rem; color:var(--ink-muted); }
+
+  footer{
+    padding:40px 0 60px;
+    text-align:center;
+    color:var(--ink-muted);
+    font-size:.85rem;
+  }
+
+  @media (max-width: 860px){
+    .hero-inner{ flex-direction:column; text-align:center; }
+    .hero-figure{ width:140px; order:-1; }
+    .palette{ grid-template-columns:repeat(2,1fr); }
+    .sticker-grid{ grid-template-columns:repeat(3,1fr); }
+    .type-role{ grid-template-columns:1fr; gap:8px; }
+    .matriz-card{ grid-template-columns:1fr; }
+    .matriz-card .photo{ min-height:200px; }
+    .community-grid{ grid-template-columns:1fr; }
+    .app-grid{ grid-template-columns:1fr; }
+    .subnav .wrap{ overflow-x:auto; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <div class="eyebrow">Guia de Identidade Visual</div>
+        <h1>Paróquia Nossa Senhora<br>das Graças</h1>
+        <div class="script">e suas comunidades, com fé</div>
+        <p class="lede">Paleta de cores, tipografia, pack de figurinhas e a identidade visual da Matriz e das comunidades — reunidos em um único padrão para uso em materiais impressos, redes sociais e comunicação com os fiéis.</p>
+      </div>
+      <div class="hero-figure" aria-hidden="true">
+        <svg class="medal" viewBox="0 0 220 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g class="stars" fill="#fff">
+            <circle cx="110" cy="32" r="2.4"/><circle cx="164" cy="46" r="2.4"/><circle cx="204" cy="86" r="2.4"/>
+            <circle cx="218" cy="140" r="2.4"/><circle cx="204" cy="194" r="2.4"/><circle cx="164" cy="234" r="2.4"/>
+            <circle cx="110" cy="248" r="2.4"/><circle cx="56" cy="234" r="2.4"/><circle cx="16" cy="194" r="2.4"/>
+            <circle cx="2" cy="140" r="2.4"/><circle cx="16" cy="86" r="2.4"/><circle cx="56" cy="46" r="2.4"/>
+          </g>
+          <g class="rays" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".85">
+            <line x1="185" y1="177" x2="199" y2="183"/>
+            <line x1="171" y1="201" x2="183" y2="211"/>
+            <line x1="150" y1="219" x2="158" y2="232"/>
+            <line x1="110" y1="235" x2="110" y2="250"/>
+            <line x1="70" y1="219" x2="63" y2="232"/>
+            <line x1="49" y1="201" x2="37" y2="211"/>
+            <line x1="35" y1="177" x2="21" y2="183"/>
+          </g>
+          <g class="figure" stroke="#fff" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+            <path class="robe" d="M85,100 C70,140 55,185 50,230 C90,238 130,238 170,230 C165,185 150,140 135,100 C127,90 93,90 85,100 Z"/>
+            <path d="M110,106 C104,142 108,192 110,228" opacity=".55"/>
+            <path d="M92,46 C80,56 78,76 82,100" opacity=".8"/>
+            <path d="M128,46 C140,56 142,76 138,100" opacity=".8"/>
+            <path d="M92,46 Q110,30 128,46" opacity=".8"/>
+            <circle class="head" cx="110" cy="58" r="12" fill="none"/>
+            <path d="M80,234 Q110,250 140,234" opacity=".7"/>
+          </g>
+          <g class="hands" fill="#fff" stroke="none">
+            <ellipse cx="72" cy="153" rx="7" ry="4.2" transform="rotate(-18 72 153)"/>
+            <ellipse cx="148" cy="153" rx="7" ry="4.2" transform="rotate(18 148 153)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <svg class="arches" viewBox="0 0 300 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 160V70a40 40 0 0 1 80 0v90" stroke="#fff" stroke-width="3"/>
+      <path d="M110 160V50a50 50 0 0 1 100 0v110" stroke="#fff" stroke-width="3"/>
+      <path d="M220 160V80a35 35 0 0 1 70 0v80" stroke="#fff" stroke-width="3"/>
+    </svg>
+  </header>
+
+  <nav class="subnav">
+    <div class="wrap">
+      <a href="#paleta">Paleta de Cores</a>
+      <a href="#tipografia">Tipografia</a>
+      <a href="#figurinhas">Figurinhas</a>
+      <a href="#identidades">Identidades</a>
+      <a href="#aplicacoes">Aplicações da Marca</a>
+      <a href="#especificacoes">Especificações de Mídia</a>
+      <a href="templates.html">Templates</a>
+    </div>
+  </nav>
+
+  <section id="paleta">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">01 — Cores</div>
+        <h2>Paleta de Cores</h2>
+        <p>Cinco tons de azul royal, do mais profundo ao mais claro. Cada um com um papel definido, para manter consistência entre peças impressas e digitais.</p>
+      </div>
+      <div class="palette">
+        <div class="swatch">
+          <div class="fill" style="background:#031273"></div>
+          <div class="meta">
+            <div class="name">Azul Meia-Noite</div>
+            <div class="hex">#031273</div>
+            <div class="use">Fundos escuros e títulos de destaque</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="fill" style="background:#0504AA"></div>
+          <div class="meta">
+            <div class="name">Azul Real</div>
+            <div class="hex">#0504AA</div>
+            <div class="use">Cor primária — logotipo e elementos principais</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="fill" style="background:#2337C6"></div>
+          <div class="meta">
+            <div class="name">Azul Marinho</div>
+            <div class="hex">#2337C6</div>
+            <div class="use">Cor secundária — botões e links</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="fill" style="background:#4169E1"></div>
+          <div class="meta">
+            <div class="name">Azul Cornflower</div>
+            <div class="hex">#4169E1</div>
+            <div class="use">Apoio — ícones e detalhes</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="fill" style="background:#4CC9F0"></div>
+          <div class="meta">
+            <div class="name">Azul Celeste</div>
+            <div class="hex">#4CC9F0</div>
+            <div class="use">Realces claros e fundos suaves</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tipografia">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">02 — Tipografia</div>
+        <h2>Tipografia</h2>
+        <p>Três papéis bem definidos substituem a lista solta de fontes do material anterior — cada fonte com um uso claro.</p>
+      </div>
+      <div class="type-roles">
+        <div class="type-role">
+          <div class="label">Manuscrito<small>Frases de destaque e assinatura</small><span class="font-name">Alex Brush</span></div>
+          <div class="sample script">com fé, tudo posso</div>
+        </div>
+        <div class="type-role">
+          <div class="label">Títulos<small>Nomes de igrejas e seções</small><span class="font-name">Fraunces</span></div>
+          <div class="sample heading">Nossa Senhora das Graças</div>
+        </div>
+        <div class="type-role">
+          <div class="label">Texto corrido<small>Parágrafos e legendas</small><span class="font-name">Public Sans</span></div>
+          <div class="sample body">Usada em avisos, textos de missa e comunicação do dia a dia — priorizando leitura fácil em qualquer tamanho de tela ou material impresso.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="figurinhas">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">03 — Figurinhas</div>
+        <h2>Pack de Figurinhas de Fé</h2>
+        <p>Conjunto de treze letterings em PNG transparente, prontos para baixar e usar como figurinha no WhatsApp, Instagram e materiais das comunidades.</p>
+      </div>
+      <div class="sticker-grid">
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0001.png" alt="Deus é bom" loading="lazy"></div><div class="cap">Deus é bom</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0001.png" download="figurinha-deus-e-bom.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0002.png" alt="Filha do Rei" loading="lazy"></div><div class="cap">Filha do Rei</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0002.png" download="figurinha-filha-do-rei.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0003.png" alt="Tudo posso" loading="lazy"></div><div class="cap">Tudo posso</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0003.png" download="figurinha-tudo-posso.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0004.png" alt="Foco, força, fé" loading="lazy"></div><div class="cap">Foco, força, fé</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0004.png" download="figurinha-foco-forca-fe.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0005.png" alt="Oi, Deus" loading="lazy"></div><div class="cap">Oi, Deus</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0005.png" download="figurinha-oi-deus.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0006.png" alt="Tenha fé" loading="lazy"></div><div class="cap">Tenha fé</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0006.png" download="figurinha-tenha-fe.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0007.png" alt="Vai na fé!" loading="lazy"></div><div class="cap">Vai na fé!</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0007.png" download="figurinha-vai-na-fe.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0008.png" alt="Deus" loading="lazy"></div><div class="cap">Deus</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0008.png" download="figurinha-deus.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0009.png" alt="Asas" loading="lazy"></div><div class="cap">Asas</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0009.png" download="figurinha-asas.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0010.png" alt="Vem com fé" loading="lazy"></div><div class="cap">Vem com fé</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0010.png" download="figurinha-vem-com-fe.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0011.png" alt="Tô em paz" loading="lazy"></div><div class="cap">Tô em paz</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0011.png" download="figurinha-to-em-paz.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0012.png" alt="Amém" loading="lazy"></div><div class="cap">Amém</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0012.png" download="figurinha-amem.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0013.png" alt="fé" loading="lazy"></div><div class="cap">fé</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0013.png" download="figurinha-fe.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+      </div>
+      <p class="sticker-tip">💡 <strong>Como usar no WhatsApp:</strong> toque em "Baixar PNG" para salvar a figurinha nas suas fotos. Depois, abra um app de figurinhas (como o "Sticker Maker" ou "Figurinhas para WhatsApp") e importe a imagem para gerar um pacote instalável — o WhatsApp não permite adicionar uma figurinha avulsa diretamente pelo navegador.</p>
+    </div>
+  </section>
+
+  <section id="identidades">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">04 — Identidades</div>
+        <h2>Matriz e Comunidades</h2>
+        <p>Fachada e selo de cada comunidade da paróquia, seguindo o mesmo padrão de apresentação.</p>
+      </div>
+
+      <div class="matriz-card">
+        <div class="photo">
+          <div class="frame"><img src="Catalog/catalogo_P%C3%A1gina_3_Imagem_0002.jpg" alt="Fachada da Matriz Nossa Senhora das Graças"></div>
+        </div>
+        <div class="content">
+          <div class="badge-row">
+            <div class="emblem">
+              <img src="Catalog/catalogo_P%C3%A1gina_3_Imagem_0003.jpg" alt="Selo da Paróquia Nossa Senhora das Graças">
+            </div>
+            <span class="tag">Sede da paróquia</span>
+          </div>
+          <h3>Matriz — Nossa Senhora das Graças</h3>
+          <p class="desc">A igreja matriz é a referência visual da paróquia: seu selo acompanha comunicados oficiais, celebrações e materiais impressos.</p>
+        </div>
+      </div>
+
+      <div class="community-grid">
+        <div class="community-card">
+          <div class="photo">
+            <div class="frame"><img src="Catalog/catalogo_P%C3%A1gina_4_Imagem_0002.jpg" alt="Fachada da Comunidade Nossa Senhora de Guadalupe"></div>
+          </div>
+          <div class="content">
+            <div class="badge-row">
+              <div class="emblem">
+                <img src="Catalog/catalogo_P%C3%A1gina_4_Imagem_0003.jpg" alt="Nossa Senhora de Guadalupe">
+              </div>
+            </div>
+            <h4>Nossa Senhora de Guadalupe</h4>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="photo">
+            <div class="frame"><img src="Catalog/catalogo_P%C3%A1gina_5_Imagem_0002.jpg" alt="Fachada da Comunidade Nossa Senhora Aparecida"></div>
+          </div>
+          <div class="content">
+            <div class="badge-row">
+              <div class="emblem mono">A</div>
+            </div>
+            <h4>Nossa Senhora Aparecida</h4>
+            <div class="note">Selo próprio em desenvolvimento</div>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="photo">
+            <div class="frame"><img src="Catalog/catalogo_P%C3%A1gina_6_Imagem_0001.jpg" alt="Fachada da Comunidade Nossa Senhora Aparecida Santa Fé"></div>
+          </div>
+          <div class="content">
+            <div class="badge-row">
+              <div class="emblem mono">SF</div>
+            </div>
+            <h4>N. Sra. Aparecida — Santa Fé</h4>
+            <div class="note">Selo próprio em desenvolvimento</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="aplicacoes">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">05 — Aplicações</div>
+        <h2>Aplicações Práticas da Marca</h2>
+        <p>Como usar o selo, as cores e as fontes no dia a dia — em redes sociais, grupos de WhatsApp, materiais impressos e uniformes das comunidades.</p>
+      </div>
+      <div class="app-grid">
+        <div class="app-card">
+          <h4>Redes sociais</h4>
+          <ul>
+            <li class="do">Use o selo da Matriz ou da comunidade em posts institucionais</li>
+            <li class="do">Combine títulos em Fraunces com a paleta de azuis</li>
+            <li class="dont">Não distorça o selo nem o aplique sobre fotos de baixo contraste</li>
+          </ul>
+        </div>
+        <div class="app-card">
+          <h4>WhatsApp</h4>
+          <ul>
+            <li class="do">Use as figurinhas de fé para avisos e mensagens do dia a dia</li>
+            <li class="do">Mantenha o fundo transparente das figurinhas</li>
+            <li class="dont">Não recorte ou combine letterings diferentes numa mesma peça</li>
+          </ul>
+        </div>
+        <div class="app-card">
+          <h4>Materiais impressos</h4>
+          <ul>
+            <li class="do">Reserve uma margem de respiro ao redor do selo</li>
+            <li class="do">Use fundo branco ou Azul Meia-Noite atrás do selo</li>
+            <li class="dont">Não reduza o selo abaixo de 2 cm de largura</li>
+          </ul>
+        </div>
+        <div class="app-card">
+          <h4>Uniformes e crachás</h4>
+          <ul>
+            <li class="do">Aplique o selo em versão monocromática sobre tecido escuro</li>
+            <li class="do">Use Public Sans para nomes e funções</li>
+            <li class="dont">Não use o manuscrito (Alex Brush) em textos pequenos — perde legibilidade</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tools-cta">
+        <div class="copy">
+          <h4>Templates prontos para editar</h4>
+          <p>Escolha um modelo, edite o texto direto na tela, envie uma foto de fundo e baixe a arte pronta — sem precisar de outro programa.</p>
+        </div>
+        <a href="templates.html">Abrir templates →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="especificacoes">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">06 — Especificações</div>
+        <h2>Especificações de Mídias</h2>
+        <p>Tamanhos e formatos recomendados para preparar artes prontas para cada canal, sem retrabalho.</p>
+      </div>
+      <div class="spec-table-wrap">
+        <table class="spec-table">
+          <thead>
+            <tr><th>Aplicação</th><th>Proporção</th><th>Tamanho recomendado</th><th>Arquivo</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Instagram — Feed</td><td class="mono">1:1</td><td class="mono">1080 × 1080 px</td><td>JPG/PNG, RGB</td></tr>
+            <tr><td>Instagram — Stories/Reels</td><td class="mono">9:16</td><td class="mono">1080 × 1920 px</td><td>JPG/PNG, RGB</td></tr>
+            <tr><td>WhatsApp — Status</td><td class="mono">9:16</td><td class="mono">1080 × 1920 px</td><td>JPG/PNG</td></tr>
+            <tr><td>WhatsApp — Figurinha</td><td class="mono">1:1</td><td class="mono">512 × 512 px</td><td>PNG transparente, até 100 KB</td></tr>
+            <tr><td>Facebook — Capa</td><td class="mono">2.63:1</td><td class="mono">820 × 312 px</td><td>JPG/PNG</td></tr>
+            <tr><td>Cartaz — A4</td><td class="mono">210 × 297 mm</td><td class="mono">300 dpi</td><td>PDF, CMYK</td></tr>
+            <tr><td>Banner de fachada</td><td class="mono">conforme o local</td><td class="mono">mín. 150 dpi na escala final</td><td>PDF, CMYK</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Guia de identidade visual preparado a partir do material da paróquia · agosto de 2026
+  </footer>
+
+</body>
+</html>
