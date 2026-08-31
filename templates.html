@@ -145,12 +145,17 @@
   .stage.move-mode .field-wrap:hover .field-del,
   .stage.move-mode .field-wrap.dragging .field-del{ display:flex; }
 
-  .nsg-badge{
-    width:60px; height:60px; border-radius:50%; background:#F2F4FF; border:2px solid #fff;
-    display:flex; align-items:center; justify-content:center; box-shadow:0 6px 18px rgba(3,18,115,.35);
-    font-family:"Fraunces",Georgia,serif; font-weight:700; font-size:18px; color:#031273; flex-shrink:0;
+  .slide-media{ position:absolute; inset:0; overflow:hidden; }
+  .slide-media img{ position:absolute; user-select:none; -webkit-user-drag:none; }
+  .stage.media-mode .slide-media img{ cursor:move; }
+
+  .seg-toggle{ display:flex; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .seg-toggle button{
+    flex:1; padding:9px; border:none; background:var(--bg); color:var(--ink-muted); font-size:.78rem; font-weight:700;
+    cursor:pointer; font-family:"Public Sans",sans-serif;
   }
-  .tone-light .nsg-badge{ background:var(--bg); border-color:var(--border); box-shadow:none; }
+  .seg-toggle button.active{ background:var(--primary); color:#fff; }
+  .seg-toggle:disabled, .media-controls.disabled{ opacity:.4; pointer-events:none; }
 </style>
 </head>
 <body>
@@ -173,7 +178,8 @@
 
       <div class="mode-toggle">
         <button id="mode-edit" class="active">Editar texto</button>
-        <button id="mode-move">Mover / excluir</button>
+        <button id="mode-move">Mover texto</button>
+        <button id="mode-media">Posicionar foto</button>
       </div>
 
       <div class="field-label" style="margin-top:0">Fundo predefinido</div>
@@ -184,6 +190,27 @@
         <label class="upload-btn" for="bg-input">Escolher imagem</label>
         <input type="file" id="bg-input" accept="image/*">
         <button class="remove-btn" id="remove-bg" hidden>Remover</button>
+      </div>
+
+      <div id="media-controls" class="media-controls disabled">
+        <div class="field-label">Enquadramento</div>
+        <div class="seg-toggle">
+          <button id="fit-cover" class="active">Preencher (cortar)</button>
+          <button id="fit-contain">Mostrar tudo</button>
+        </div>
+
+        <div class="slider-row" style="margin-top:18px">
+          <span>Zoom da foto</span>
+          <span class="slider-val" id="zoom-val">100%</span>
+        </div>
+        <input type="range" id="zoom-range" min="100" max="300" value="100">
+        <div class="hint" style="margin:6px 0 0">Use o modo "Posicionar foto" acima para arrastar e escolher o melhor enquadramento.</div>
+
+        <div class="field-label">Camada</div>
+        <div class="seg-toggle">
+          <button id="layer-behind" class="active">Atrás do texto</button>
+          <button id="layer-front">Na frente do texto</button>
+        </div>
       </div>
 
       <div class="slider-row" style="margin-top:18px">
@@ -291,10 +318,6 @@
     return `background:rgba(255,255,255,${((pct/100)*0.92).toFixed(2)})`;
   }
 
-  function bgStyle(img){
-    return img ? `background-image:url(${img})` : '';
-  }
-
   function presetCss(tone, idx){
     const list = PRESETS[tone];
     const p = list[idx] || list[0];
@@ -304,10 +327,6 @@
   // ---------- Modelo A: Citações ----------
   function buildModeloA(state){
     const s = el('div', { class: 'slide tone-dark', style: { width:'1080px', height:'1080px' } });
-    s.appendChild(el('div', { class: 'slide-bg', style: bgStyle(state.bgImage) }));
-    s.appendChild(el('div', { class: 'slide-scrim', style: scrimStyle('dark', state.scrim) }));
-
-    s.appendChild(el('div', { class: 'nsg-badge', style: { position:'absolute', top:'72px', left:'72px', zIndex:2 }, text:'NSG' }));
 
     const wrap = el('div', { style: { position:'relative', zIndex:2, height:'100%', display:'flex', alignItems:'center', justifyContent:'center', padding:'140px 130px' } });
     const inner = el('div', { style: { display:'flex', flexDirection:'column', alignItems:'center', gap:'32px', textAlign:'center' } });
@@ -330,11 +349,8 @@
   // ---------- Modelo B: Avisos ----------
   function buildModeloB(state){
     const s = el('div', { class: 'slide tone-light', style: { width:'1080px', height:'1080px' } });
-    s.appendChild(el('div', { class: 'slide-bg', style: bgStyle(state.bgImage) }));
-    s.appendChild(el('div', { class: 'slide-scrim', style: scrimStyle('light', state.scrim) }));
 
     s.appendChild(el('div', { style: { position:'absolute', top:0, left:0, right:0, height:'16px', background:'linear-gradient(90deg,#2337C6,#4169E1)', zIndex:2 } }));
-    s.appendChild(el('div', { class: 'nsg-badge', style: { position:'absolute', top:'64px', right:'72px', zIndex:2 }, text:'NSG' }));
 
     const content = el('div', { style: { position:'relative', zIndex:2, display:'flex', flexDirection:'column', gap:'32px', width:'888px', margin:'150px 96px 0' } });
 
@@ -363,8 +379,6 @@
   // ---------- Modelo C: Carrossel ----------
   function buildModeloC(state){
     const s = el('div', { class: 'slide tone-dark', style: { width:'1080px', height:'1080px' } });
-    s.appendChild(el('div', { class: 'slide-bg', style: bgStyle(state.bgImage) }));
-    s.appendChild(el('div', { class: 'slide-scrim', style: scrimStyle('dark', state.scrim) }));
 
     const content = el('div', { style: { position:'relative', zIndex:2, height:'100%', display:'flex', flexDirection:'column', margin:'80px' } });
 
@@ -385,10 +399,6 @@
   // ---------- Modelo D: Evangelho ----------
   function buildModeloD(state){
     const s = el('div', { class: 'slide tone-light', style: { width:'1080px', height:'1080px' } });
-    s.appendChild(el('div', { class: 'slide-bg', style: bgStyle(state.bgImage) }));
-    s.appendChild(el('div', { class: 'slide-scrim', style: scrimStyle('light', state.scrim) }));
-
-    s.appendChild(el('div', { class: 'nsg-badge', style: { position:'absolute', top:'64px', right:'72px', zIndex:2, background:'#F5F7FC', borderColor:'#DBE1F1' }, text:'NSG' }));
 
     const content = el('div', { style: { position:'relative', zIndex:2, display:'flex', flexDirection:'column', gap:'36px', width:'888px', margin:'150px 96px 0' } });
 
@@ -414,13 +424,10 @@
   // ---------- Stories / Reels ----------
   function buildStories(state){
     const s = el('div', { class: 'slide tone-dark', style: { width:'1080px', height:'1920px' } });
-    s.appendChild(el('div', { class: 'slide-bg', style: bgStyle(state.bgImage) }));
-    s.appendChild(el('div', { class: 'slide-scrim', style: scrimStyle('dark', state.scrim) }));
 
     const content = el('div', { style: { position:'absolute', top:'250px', left:'64px', right:'64px', bottom:'250px', zIndex:2, display:'flex', flexDirection:'column', gap:'28px' } });
 
-    const row = el('div', { style: { display:'flex', alignItems:'center', justifyContent:'space-between' } });
-    row.appendChild(el('div', { class:'nsg-badge', text:'NSG' }));
+    const row = el('div', { style: { display:'flex', alignItems:'center', justifyContent:'flex-end' } });
     row.appendChild(field('div', 'tag', state.texts.tag, { fontFamily:"'Public Sans',sans-serif", fontWeight:'700', fontSize:'14px', letterSpacing:'.08em', textTransform:'uppercase', color:'#4CC9F0', background:'rgba(255,255,255,.12)', border:'1px solid rgba(255,255,255,.3)', borderRadius:'999px', padding:'7px 16px' }));
     content.appendChild(row);
 
@@ -454,8 +461,57 @@
   function makeInstance(key, textsOverride){
     return {
       texts: Object.assign({}, DEFAULTS[key], textsOverride || {}),
-      bgImage: null, scrim: 55, presetIndex: 0, offsets: {}, hidden: []
+      bgImage: null, scrim: 55, presetIndex: 0, offsets: {}, hidden: [],
+      media: { fit: 'cover', zoom: 100, offsetX: 0, offsetY: 0, layer: 'behind' }
     };
+  }
+
+  // ---------- background photo: fit / zoom / pan / layer ----------
+  const imageCache = new Map();
+
+  function loadImage(dataUrl){
+    if (imageCache.has(dataUrl)) return Promise.resolve(imageCache.get(dataUrl));
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => { imageCache.set(dataUrl, img); resolve(img); };
+      img.onerror = reject;
+      img.src = dataUrl;
+    });
+  }
+
+  function computeMediaRect(naturalW, naturalH, frameW, frameH, fit, zoomPct){
+    const ir = naturalW / naturalH, fr = frameW / frameH;
+    let baseW, baseH;
+    if (fit === 'contain' ? (ir > fr) : (ir <= fr)) { baseW = frameW; baseH = baseW / ir; }
+    else { baseH = frameH; baseW = baseH * ir; }
+    const zoom = (zoomPct || 100) / 100;
+    return { w: baseW * zoom, h: baseH * zoom };
+  }
+
+  function clampMediaOffset(m, rect, frameW, frameH){
+    const maxX = Math.max(0, (rect.w - frameW) / 2);
+    const maxY = Math.max(0, (rect.h - frameH) / 2);
+    m.offsetX = Math.max(-maxX, Math.min(maxX, m.offsetX));
+    m.offsetY = Math.max(-maxY, Math.min(maxY, m.offsetY));
+  }
+
+  function buildMediaLayer(state, frameW, frameH, interactive){
+    const wrap = el('div', { class: 'slide-media', style: { pointerEvents: interactive ? 'auto' : 'none' } });
+    const cached = imageCache.get(state.bgImage);
+    if (!cached) return wrap;
+    const m = state.media;
+    const rect = computeMediaRect(cached.naturalWidth, cached.naturalHeight, frameW, frameH, m.fit, m.zoom);
+    clampMediaOffset(m, rect, frameW, frameH);
+    const img = el('img', {
+      src: state.bgImage,
+      style: {
+        width: rect.w + 'px', height: rect.h + 'px',
+        left: ((frameW - rect.w) / 2 + m.offsetX) + 'px',
+        top: ((frameH - rect.h) / 2 + m.offsetY) + 'px'
+      }
+    });
+    wrap.appendChild(img);
+    return wrap;
   }
 
   function finalizeNode(node, state){
@@ -471,10 +527,18 @@
     });
   }
 
-  function buildSlide(key, state){
+  function buildSlide(key, state, opts){
     const t = TEMPLATES[key];
     const node = t.build(state);
-    if (!state.bgImage) node.style.background = presetCss(t.tone, state.presetIndex);
+    node.style.background = presetCss(t.tone, state.presetIndex);
+    if (state.bgImage) {
+      const front = state.media.layer === 'front';
+      const media = buildMediaLayer(state, t.w, t.h, opts && opts.mediaInteractive);
+      const scrim = el('div', { class: 'slide-scrim', style: scrimStyle(t.tone, state.scrim) });
+      if (front) { media.style.zIndex = '3'; scrim.style.zIndex = '3'; }
+      node.appendChild(media);
+      node.appendChild(scrim);
+    }
     finalizeNode(node, state);
     return node;
   }
@@ -501,7 +565,7 @@
   const requested = new URLSearchParams(location.search).get('t');
   if (requested && TEMPLATES[requested]) currentTemplate = requested;
 
-  let moveMode = false;
+  let mode = 'text'; // 'text' | 'move' | 'media'
   let currentScale = 1;
 
   const stage = document.getElementById('stage');
@@ -517,7 +581,15 @@
   const presetsEl = document.getElementById('presets');
   const modeEditBtn = document.getElementById('mode-edit');
   const modeMoveBtn = document.getElementById('mode-move');
+  const modeMediaBtn = document.getElementById('mode-media');
   const modeHint = document.getElementById('mode-hint');
+  const mediaControls = document.getElementById('media-controls');
+  const fitCoverBtn = document.getElementById('fit-cover');
+  const fitContainBtn = document.getElementById('fit-contain');
+  const zoomRange = document.getElementById('zoom-range');
+  const zoomVal = document.getElementById('zoom-val');
+  const layerBehindBtn = document.getElementById('layer-behind');
+  const layerFrontBtn = document.getElementById('layer-front');
   const carouselPanel = document.getElementById('carousel-panel');
   const carouselInput = document.getElementById('carousel-input');
   const generateBtn = document.getElementById('generate-btn');
@@ -547,12 +619,12 @@
   function render(){
     const t = TEMPLATES[currentTemplate];
     const state = currentState();
-    const node = buildSlide(currentTemplate, state);
+    const node = buildSlide(currentTemplate, state, { mediaInteractive: mode === 'media' });
     stage.innerHTML = '';
     stage.appendChild(node);
 
     node.querySelectorAll('[data-field]').forEach(f => {
-      f.setAttribute('contenteditable', moveMode ? 'false' : 'true');
+      f.setAttribute('contenteditable', mode === 'text' ? 'true' : 'false');
       f.addEventListener('paste', e => {
         e.preventDefault();
         const text = (e.clipboardData || window.clipboardData).getData('text/plain');
@@ -563,8 +635,10 @@
       });
     });
 
-    enableDrag(node, state);
-    stage.classList.toggle('move-mode', moveMode);
+    enableFieldDrag(node, state);
+    enableMediaDrag(node, state, t.w, t.h);
+    stage.classList.toggle('move-mode', mode === 'move');
+    stage.classList.toggle('media-mode', mode === 'media');
 
     fitStage();
     dimLabel.textContent = t.w + ' × ' + t.h + ' px';
@@ -573,15 +647,23 @@
     scrimVal.textContent = state.scrim + '%';
     scrimRange.classList.toggle('slider-disabled', !state.bgImage);
 
+    mediaControls.classList.toggle('disabled', !state.bgImage);
+    fitCoverBtn.classList.toggle('active', state.media.fit === 'cover');
+    fitContainBtn.classList.toggle('active', state.media.fit === 'contain');
+    zoomRange.value = state.media.zoom;
+    zoomVal.textContent = state.media.zoom + '%';
+    layerBehindBtn.classList.toggle('active', state.media.layer === 'behind');
+    layerFrontBtn.classList.toggle('active', state.media.layer === 'front');
+
     renderPresets();
     carouselPanel.hidden = !isCarousel();
     if (isCarousel()) renderSlideNav();
   }
 
-  function enableDrag(node, state){
+  function enableFieldDrag(node, state){
     node.querySelectorAll('.field-wrap').forEach(wrap => {
       wrap.addEventListener('mousedown', e => {
-        if (!moveMode) return;
+        if (mode !== 'move') return;
         e.preventDefault(); e.stopPropagation();
         const key = wrap.dataset.key;
         const start = { x: e.clientX, y: e.clientY };
@@ -608,6 +690,37 @@
         if (state.hidden.indexOf(key) < 0) state.hidden.push(key);
         wrap.style.display = 'none';
       });
+    });
+  }
+
+  function enableMediaDrag(node, state, frameW, frameH){
+    const img = node.querySelector('.slide-media img');
+    if (!img) return;
+    img.addEventListener('mousedown', e => {
+      if (mode !== 'media') return;
+      e.preventDefault(); e.stopPropagation();
+      const cached = imageCache.get(state.bgImage);
+      if (!cached) return;
+      const rect = computeMediaRect(cached.naturalWidth, cached.naturalHeight, frameW, frameH, state.media.fit, state.media.zoom);
+      const maxX = Math.max(0, (rect.w - frameW) / 2);
+      const maxY = Math.max(0, (rect.h - frameH) / 2);
+      const start = { x: e.clientX, y: e.clientY };
+      const base = { x: state.media.offsetX, y: state.media.offsetY };
+      function onMove(ev){
+        let nx = base.x + (ev.clientX - start.x) / currentScale;
+        let ny = base.y + (ev.clientY - start.y) / currentScale;
+        nx = Math.max(-maxX, Math.min(maxX, nx));
+        ny = Math.max(-maxY, Math.min(maxY, ny));
+        state.media.offsetX = nx; state.media.offsetY = ny;
+        img.style.left = ((frameW - rect.w) / 2 + nx) + 'px';
+        img.style.top = ((frameH - rect.h) / 2 + ny) + 'px';
+      }
+      function onUp(){
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('mouseup', onUp);
+      }
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onUp);
     });
   }
 
@@ -665,17 +778,24 @@
     });
   }
 
-  modeEditBtn.addEventListener('click', () => {
-    moveMode = false;
-    modeEditBtn.classList.add('active'); modeMoveBtn.classList.remove('active');
-    modeHint.textContent = 'Clique direto em qualquer texto no preview ao lado para reescrevê-lo.';
+  const MODE_HINTS = {
+    text: 'Clique direto em qualquer texto no preview ao lado para reescrevê-lo.',
+    move: 'Arraste qualquer texto para reposicionar, ou clique no × para removê-lo do modelo.',
+    media: 'Arraste a foto para reposicioná-la dentro do quadro. Ajuste zoom e enquadramento na lateral.'
+  };
+  function setMode(next){
+    mode = next;
+    [['text', modeEditBtn], ['move', modeMoveBtn], ['media', modeMediaBtn]].forEach(([key, btn]) => {
+      btn.classList.toggle('active', key === next);
+    });
+    modeHint.textContent = MODE_HINTS[next];
     render();
-  });
-  modeMoveBtn.addEventListener('click', () => {
-    moveMode = true;
-    modeMoveBtn.classList.add('active'); modeEditBtn.classList.remove('active');
-    modeHint.textContent = 'Arraste qualquer texto para reposicionar, ou clique no × para removê-lo do modelo.';
-    render();
+  }
+  modeEditBtn.addEventListener('click', () => setMode('text'));
+  modeMoveBtn.addEventListener('click', () => setMode('move'));
+  modeMediaBtn.addEventListener('click', () => {
+    if (!currentState().bgImage) { toast('Envie uma foto de fundo primeiro.'); return; }
+    setMode('media');
   });
 
   bgInput.addEventListener('change', () => {
@@ -683,8 +803,13 @@
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
-      currentState().bgImage = reader.result;
-      render();
+      const dataUrl = reader.result;
+      loadImage(dataUrl).then(() => {
+        const state = currentState();
+        state.bgImage = dataUrl;
+        state.media = { fit: 'cover', zoom: 100, offsetX: 0, offsetY: 0, layer: 'behind' };
+        render();
+      }).catch(() => toast('Não foi possível carregar essa imagem.'));
     };
     reader.readAsDataURL(file);
   });
@@ -692,7 +817,7 @@
   removeBgBtn.addEventListener('click', () => {
     currentState().bgImage = null;
     bgInput.value = '';
-    render();
+    if (mode === 'media') setMode('text'); else render();
   });
 
   scrimRange.addEventListener('input', () => {
@@ -701,6 +826,18 @@
     const layer = stage.querySelector('.slide-scrim');
     if (layer) layer.setAttribute('style', scrimStyle(TEMPLATES[currentTemplate].tone, currentState().scrim));
   });
+
+  fitCoverBtn.addEventListener('click', () => { currentState().media.fit = 'cover'; render(); });
+  fitContainBtn.addEventListener('click', () => { currentState().media.fit = 'contain'; render(); });
+
+  zoomRange.addEventListener('input', () => {
+    currentState().media.zoom = parseInt(zoomRange.value, 10);
+    zoomVal.textContent = zoomRange.value + '%';
+    render();
+  });
+
+  layerBehindBtn.addEventListener('click', () => { currentState().media.layer = 'behind'; render(); });
+  layerFrontBtn.addEventListener('click', () => { currentState().media.layer = 'front'; render(); });
 
   resetBtn.addEventListener('click', () => {
     Object.assign(currentState(), makeInstance(currentTemplate));
