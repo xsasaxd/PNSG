@@ -85,6 +85,14 @@
     overflow:hidden;
   }
   .hero .wrap{ position:relative; z-index:1; }
+  .hero-inner{ display:flex; align-items:center; justify-content:space-between; gap:32px; }
+  .hero-copy{ flex:1; min-width:280px; }
+  .hero-figure{ flex-shrink:0; width:190px; display:flex; justify-content:center; }
+  .hero-figure .medal{ width:100%; height:auto; filter:drop-shadow(0 8px 24px rgba(0,0,0,.25)); }
+  .hero-figure .stars circle{ animation:medal-twinkle 3.2s ease-in-out infinite; }
+  .hero-figure .stars circle:nth-child(odd){ animation-delay:.6s; }
+  @keyframes medal-twinkle{ 0%,100%{ opacity:1; } 50%{ opacity:.45; } }
+  @media (prefers-reduced-motion: reduce){ .hero-figure .stars circle{ animation:none; } }
   .eyebrow{
     font-size:.78rem;
     letter-spacing:.14em;
@@ -233,8 +241,40 @@
     text-align:center;
     box-shadow:var(--shadow);
   }
-  .sticker-card img{ height:66px; width:auto; margin:0 auto 8px; object-fit:contain; }
-  .sticker-card .cap{ font-size:.74rem; color:var(--ink-muted); font-weight:600; }
+  .sticker-preview{
+    background-image:
+      linear-gradient(45deg, var(--surface-2) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--surface-2) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, var(--surface-2) 75%),
+      linear-gradient(-45deg, transparent 75%, var(--surface-2) 75%);
+    background-size:14px 14px;
+    background-position:0 0, 0 7px, 7px -7px, -7px 0;
+    border-radius:10px;
+    padding:10px;
+    margin-bottom:8px;
+  }
+  .sticker-card img{ height:66px; width:auto; margin:0 auto; object-fit:contain; display:block; }
+  .sticker-card .cap{ font-size:.74rem; color:var(--ink-muted); font-weight:600; margin-bottom:10px; }
+  .sticker-dl{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:.7rem; font-weight:700;
+    color:#fff; background:var(--good);
+    padding:6px 11px; border-radius:999px;
+    text-decoration:none;
+    line-height:1;
+  }
+  .sticker-dl:hover{ filter:brightness(1.08); }
+  .sticker-dl svg{ width:11px; height:11px; flex-shrink:0; }
+  .sticker-tip{
+    font-size:.86rem;
+    color:var(--ink-muted);
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px 16px;
+    margin-top:20px;
+    max-width:64ch;
+  }
 
   /* ---------- Identity cards ---------- */
   .matriz-card{
@@ -355,6 +395,8 @@
   }
 
   @media (max-width: 860px){
+    .hero-inner{ flex-direction:column; text-align:center; }
+    .hero-figure{ width:140px; order:-1; }
     .palette{ grid-template-columns:repeat(2,1fr); }
     .sticker-grid{ grid-template-columns:repeat(3,1fr); }
     .type-role{ grid-template-columns:1fr; gap:8px; }
@@ -369,11 +411,45 @@
 <body>
 
   <header class="hero">
-    <div class="wrap">
-      <div class="eyebrow">Guia de Identidade Visual</div>
-      <h1>Paróquia Nossa Senhora<br>das Graças</h1>
-      <div class="script">e suas comunidades, com fé</div>
-      <p class="lede">Paleta de cores, tipografia, pack de figurinhas e a identidade visual da Matriz e das comunidades — reunidos em um único padrão para uso em materiais impressos, redes sociais e comunicação com os fiéis.</p>
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <div class="eyebrow">Guia de Identidade Visual</div>
+        <h1>Paróquia Nossa Senhora<br>das Graças</h1>
+        <div class="script">e suas comunidades, com fé</div>
+        <p class="lede">Paleta de cores, tipografia, pack de figurinhas e a identidade visual da Matriz e das comunidades — reunidos em um único padrão para uso em materiais impressos, redes sociais e comunicação com os fiéis.</p>
+      </div>
+      <div class="hero-figure" aria-hidden="true">
+        <svg class="medal" viewBox="0 0 220 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g class="stars" fill="#fff">
+            <circle cx="110" cy="32" r="2.4"/><circle cx="164" cy="46" r="2.4"/><circle cx="204" cy="86" r="2.4"/>
+            <circle cx="218" cy="140" r="2.4"/><circle cx="204" cy="194" r="2.4"/><circle cx="164" cy="234" r="2.4"/>
+            <circle cx="110" cy="248" r="2.4"/><circle cx="56" cy="234" r="2.4"/><circle cx="16" cy="194" r="2.4"/>
+            <circle cx="2" cy="140" r="2.4"/><circle cx="16" cy="86" r="2.4"/><circle cx="56" cy="46" r="2.4"/>
+          </g>
+          <g class="rays" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".85">
+            <line x1="185" y1="177" x2="199" y2="183"/>
+            <line x1="171" y1="201" x2="183" y2="211"/>
+            <line x1="150" y1="219" x2="158" y2="232"/>
+            <line x1="110" y1="235" x2="110" y2="250"/>
+            <line x1="70" y1="219" x2="63" y2="232"/>
+            <line x1="49" y1="201" x2="37" y2="211"/>
+            <line x1="35" y1="177" x2="21" y2="183"/>
+          </g>
+          <g class="figure" stroke="#fff" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+            <path class="robe" d="M85,100 C70,140 55,185 50,230 C90,238 130,238 170,230 C165,185 150,140 135,100 C127,90 93,90 85,100 Z"/>
+            <path d="M110,106 C104,142 108,192 110,228" opacity=".55"/>
+            <path d="M92,46 C80,56 78,76 82,100" opacity=".8"/>
+            <path d="M128,46 C140,56 142,76 138,100" opacity=".8"/>
+            <path d="M92,46 Q110,30 128,46" opacity=".8"/>
+            <circle class="head" cx="110" cy="58" r="12" fill="none"/>
+            <path d="M80,234 Q110,250 140,234" opacity=".7"/>
+          </g>
+          <g class="hands" fill="#fff" stroke="none">
+            <ellipse cx="72" cy="153" rx="7" ry="4.2" transform="rotate(-18 72 153)"/>
+            <ellipse cx="148" cy="153" rx="7" ry="4.2" transform="rotate(18 148 153)"/>
+          </g>
+        </svg>
+      </div>
     </div>
     <svg class="arches" viewBox="0 0 300 160" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M10 160V70a40 40 0 0 1 80 0v90" stroke="#fff" stroke-width="3"/>
@@ -475,23 +551,24 @@
       <div class="section-head">
         <div class="kicker">03 — Figurinhas</div>
         <h2>Pack de Figurinhas de Fé</h2>
-        <p>Conjunto de treze letterings para uso em WhatsApp, Instagram e materiais das comunidades.</p>
+        <p>Conjunto de treze letterings em PNG transparente, prontos para baixar e usar como figurinha no WhatsApp, Instagram e materiais das comunidades.</p>
       </div>
       <div class="sticker-grid">
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0001.jpg" alt="Deus é bom"><div class="cap">Deus é bom</div></div>
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0002.jpg" alt="Filha do Rei"><div class="cap">Filha do Rei</div></div>
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0003.jpg" alt="Tudo posso"><div class="cap">Tudo posso</div></div>
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0004.jpg" alt="Foco, força, fé"><div class="cap">Foco, força, fé</div></div>
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0005.jpg" alt="Oi, Deus"><div class="cap">Oi, Deus</div></div>
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0006.jpg" alt="Tenha fé"><div class="cap">Tenha fé</div></div>
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0007.jpg" alt="Vai na fé!"><div class="cap">Vai na fé!</div></div>
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0008.jpg" alt="Deus"><div class="cap">Deus</div></div>
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0009.jpg" alt="Asas"><div class="cap">Asas</div></div>
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0010.jpg" alt="Vem com fé"><div class="cap">Vem com fé</div></div>
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0011.jpg" alt="Tô em paz"><div class="cap">Tô em paz</div></div>
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0012.jpg" alt="Amém"><div class="cap">Amém</div></div>
-        <div class="sticker-card"><img src="Catalog/catalogo_P%C3%A1gina_2_Imagem_0013.jpg" alt="fé"><div class="cap">fé</div></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0001.png" alt="Deus é bom" loading="lazy"></div><div class="cap">Deus é bom</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0001.png" download="figurinha-deus-e-bom.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0002.png" alt="Filha do Rei" loading="lazy"></div><div class="cap">Filha do Rei</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0002.png" download="figurinha-filha-do-rei.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0003.png" alt="Tudo posso" loading="lazy"></div><div class="cap">Tudo posso</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0003.png" download="figurinha-tudo-posso.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0004.png" alt="Foco, força, fé" loading="lazy"></div><div class="cap">Foco, força, fé</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0004.png" download="figurinha-foco-forca-fe.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0005.png" alt="Oi, Deus" loading="lazy"></div><div class="cap">Oi, Deus</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0005.png" download="figurinha-oi-deus.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0006.png" alt="Tenha fé" loading="lazy"></div><div class="cap">Tenha fé</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0006.png" download="figurinha-tenha-fe.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0007.png" alt="Vai na fé!" loading="lazy"></div><div class="cap">Vai na fé!</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0007.png" download="figurinha-vai-na-fe.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0008.png" alt="Deus" loading="lazy"></div><div class="cap">Deus</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0008.png" download="figurinha-deus.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0009.png" alt="Asas" loading="lazy"></div><div class="cap">Asas</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0009.png" download="figurinha-asas.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0010.png" alt="Vem com fé" loading="lazy"></div><div class="cap">Vem com fé</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0010.png" download="figurinha-vem-com-fe.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0011.png" alt="Tô em paz" loading="lazy"></div><div class="cap">Tô em paz</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0011.png" download="figurinha-to-em-paz.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0012.png" alt="Amém" loading="lazy"></div><div class="cap">Amém</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0012.png" download="figurinha-amem.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
+        <div class="sticker-card"><div class="sticker-preview"><img src="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0013.png" alt="fé" loading="lazy"></div><div class="cap">fé</div><a class="sticker-dl" href="Catalog/stickers-png/catalogo_P%C3%A1gina_2_Imagem_0013.png" download="figurinha-fe.png"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v6.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 8.586V2a1 1 0 0 1 1-1zM2 13a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1z"/></svg>Baixar PNG</a></div>
       </div>
+      <p class="sticker-tip">💡 <strong>Como usar no WhatsApp:</strong> toque em "Baixar PNG" para salvar a figurinha nas suas fotos. Depois, abra um app de figurinhas (como o "Sticker Maker" ou "Figurinhas para WhatsApp") e importe a imagem para gerar um pacote instalável — o WhatsApp não permite adicionar uma figurinha avulsa diretamente pelo navegador.</p>
     </div>
   </section>
 
