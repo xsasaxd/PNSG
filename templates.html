@@ -38,15 +38,22 @@
   header h1{ font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:1.5rem; margin:6px 0 0; }
   header p{ margin:6px 0 0; color:#D7DCFA; font-size:.92rem; max-width:60ch; }
 
-  .layout{ max-width:1320px; margin:0 auto; padding:28px; display:grid; grid-template-columns:300px 1fr; gap:24px; align-items:start; }
+  .layout{ max-width:1320px; margin:0 auto; padding:28px; display:grid; grid-template-columns:320px 1fr; gap:24px; align-items:start; }
 
   .tabs{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
   .tab{ font-size:.82rem; font-weight:600; padding:9px 14px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-muted); cursor:pointer; }
   .tab.active{ background:var(--primary); border-color:var(--primary); color:#fff; }
 
-  .panel{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:22px; box-shadow:var(--shadow); }
+  .panel{ background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:22px; box-shadow:var(--shadow); margin-bottom:16px; }
   .panel h3{ font-family:"Fraunces",Georgia,serif; font-size:1.05rem; margin:0 0 6px; }
-  .panel .hint{ font-size:.82rem; color:var(--ink-muted); line-height:1.5; margin-bottom:18px; }
+  .panel .hint{ font-size:.82rem; color:var(--ink-muted); line-height:1.5; margin-bottom:16px; }
+
+  .mode-toggle{ display:flex; border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:18px; }
+  .mode-toggle button{
+    flex:1; padding:10px; border:none; background:var(--bg); color:var(--ink-muted); font-size:.82rem; font-weight:700;
+    cursor:pointer; font-family:"Public Sans",sans-serif;
+  }
+  .mode-toggle button.active{ background:var(--primary); color:#fff; }
 
   .field-label{ display:block; font-size:.76rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted); margin:18px 0 8px; }
   .field-label:first-of-type{ margin-top:0; }
@@ -55,6 +62,14 @@
   .upload-btn{ display:inline-flex; align-items:center; gap:8px; font-size:.85rem; font-weight:600; padding:10px 14px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--ink); cursor:pointer; }
   .remove-btn{ font-size:.8rem; color:#D64550; background:none; border:none; cursor:pointer; font-weight:600; padding:4px 0; }
   input[type="file"]{ display:none; }
+
+  .presets{ display:flex; gap:10px; flex-wrap:wrap; }
+  .preset-swatch{
+    width:44px; height:44px; border-radius:10px; cursor:pointer; border:2px solid var(--border);
+    position:relative; flex-shrink:0;
+  }
+  .preset-swatch.active{ border-color:var(--primary); box-shadow:0 0 0 2px rgba(5,4,170,.18); }
+  .preset-swatch span{ display:none; }
 
   .slider-row{ display:flex; justify-content:space-between; font-size:.76rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-muted); }
   .slider-val{ font-variant-numeric:tabular-nums; color:var(--ink); }
@@ -70,6 +85,26 @@
   }
   .download-btn:hover:not(:disabled){ opacity:.92; }
   .download-btn:disabled{ opacity:.6; cursor:progress; }
+
+  .carousel-input{
+    width:100%; min-height:120px; border:1px solid var(--border); border-radius:10px; padding:10px 12px;
+    font-family:"Public Sans",sans-serif; font-size:.86rem; color:var(--ink); background:var(--bg); resize:vertical;
+  }
+  .generate-btn{
+    width:100%; margin-top:10px; padding:11px; border:1px solid var(--border); border-radius:10px; cursor:pointer;
+    background:var(--surface-2); color:var(--ink); font-family:"Public Sans",sans-serif; font-weight:700; font-size:.85rem;
+  }
+  .generate-btn:hover{ background:var(--border); }
+
+  .slide-nav{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:16px; }
+  .slide-nav .nav-btns{ display:flex; align-items:center; gap:8px; }
+  .slide-nav button{
+    width:32px; height:32px; border-radius:8px; border:1px solid var(--border); background:var(--bg);
+    color:var(--ink); cursor:pointer; font-size:.9rem; font-family:"Public Sans",sans-serif;
+  }
+  .slide-nav button:disabled{ opacity:.35; cursor:not-allowed; }
+  .slide-nav .count{ font-size:.82rem; font-weight:700; color:var(--ink-muted); min-width:52px; text-align:center; font-variant-numeric:tabular-nums; }
+  .slide-nav .danger{ color:#D64550; font-size:.8rem; font-weight:600; background:none; border:none; cursor:pointer; width:auto; }
 
   .preview{ display:flex; flex-direction:column; align-items:center; gap:14px; }
   .stage-wrap{ position:relative; margin:0 auto; }
@@ -93,9 +128,22 @@
   .slide-bg{ position:absolute; inset:0; background-size:cover; background-position:center; }
   .slide-scrim{ position:absolute; inset:0; }
   .slide [data-field]{ outline:none; }
-  .stage.editing [data-field]{ cursor:text; outline:1px dashed rgba(255,255,255,.4); outline-offset:6px; border-radius:4px; }
+  .stage.editing [data-field]{ cursor:text; outline:1px dashed rgba(255,255,255,.4); outline-offset:4px; border-radius:4px; }
   .stage.editing .tone-light [data-field]{ outline-color:rgba(3,18,115,.35); }
   .stage.editing [data-field]:focus{ outline:2px solid #4CC9F0; }
+
+  .field-wrap{ position:relative; }
+  .field-del{
+    position:absolute; top:-12px; right:-12px; width:24px; height:24px; border-radius:50%;
+    background:#D64550; color:#fff; border:2px solid #fff; font-size:14px; line-height:1; cursor:pointer;
+    display:none; align-items:center; justify-content:center; z-index:6; padding:0;
+  }
+  .stage.move-mode{ cursor:default; }
+  .stage.move-mode [data-field]{ pointer-events:none; }
+  .stage.move-mode .field-wrap{ cursor:move; }
+  .stage.move-mode .field-wrap:hover{ outline:1px dashed rgba(76,201,240,.9); outline-offset:4px; }
+  .stage.move-mode .field-wrap:hover .field-del,
+  .stage.move-mode .field-wrap.dragging .field-del{ display:flex; }
 
   .nsg-badge{
     width:60px; height:60px; border-radius:50%; background:#F2F4FF; border:2px solid #fff;
@@ -103,8 +151,6 @@
     font-family:"Fraunces",Georgia,serif; font-weight:700; font-size:18px; color:#031273; flex-shrink:0;
   }
   .tone-light .nsg-badge{ background:var(--bg); border-color:var(--border); box-shadow:none; }
-
-  .pill-tag{ display:inline-flex; align-items:center; font-weight:700; font-size:14px; letter-spacing:.06em; text-transform:uppercase; border-radius:999px; padding:10px 18px; white-space:nowrap; }
 </style>
 </head>
 <body>
@@ -113,7 +159,7 @@
   <div class="wrap">
     <a class="back" href="index.html">← Voltar ao guia de identidade</a>
     <h1>Templates de Mídia</h1>
-    <p>Escolha um modelo, clique em qualquer texto para editar, envie uma foto de fundo (opcional) e baixe a arte pronta para postar.</p>
+    <p>Escolha um modelo, clique em qualquer texto para editar, envie uma foto (ou escolha um fundo predefinido) e baixe a arte pronta para postar.</p>
   </div>
 </header>
 
@@ -123,7 +169,15 @@
 
     <div class="panel">
       <h3>Editar</h3>
-      <div class="hint">Clique direto em qualquer texto no preview ao lado para reescrevê-lo.</div>
+      <div class="hint" id="mode-hint">Clique direto em qualquer texto no preview ao lado para reescrevê-lo.</div>
+
+      <div class="mode-toggle">
+        <button id="mode-edit" class="active">Editar texto</button>
+        <button id="mode-move">Mover / excluir</button>
+      </div>
+
+      <div class="field-label" style="margin-top:0">Fundo predefinido</div>
+      <div class="presets" id="presets"></div>
 
       <div class="field-label">Foto de fundo (opcional)</div>
       <div class="upload-row">
@@ -138,9 +192,28 @@
       </div>
       <input type="range" id="scrim-range" min="0" max="100" value="55">
 
-      <button class="reset-btn" id="reset-btn">Restaurar textos originais deste modelo</button>
+      <button class="reset-btn" id="reset-btn">Restaurar este modelo</button>
 
       <button class="download-btn" id="download-btn">Baixar arte (PNG)</button>
+    </div>
+
+    <div class="panel" id="carousel-panel" hidden>
+      <h3>Carrossel — gerar tudo de uma vez</h3>
+      <div class="hint">Cole o texto: cada bloco vira um slide (primeira linha = título, o resto = subtítulo). Separe os blocos com uma linha em branco.</div>
+      <textarea class="carousel-input" id="carousel-input" placeholder="O que é a Liturgia do Tempo Comum?&#10;Entenda o significado das cores e das leituras diárias.&#10;&#10;Por que rezamos o terço?&#10;Descubra a origem e o significado de cada mistério.&#10;&#10;O que é a Eucaristia?&#10;A presença real de Cristo no pão e no vinho consagrados."></textarea>
+      <button class="generate-btn" id="generate-btn">Gerar carrossel</button>
+
+      <div class="slide-nav">
+        <div class="nav-btns">
+          <button id="slide-prev">‹</button>
+          <span class="count" id="slide-count">1 / 1</span>
+          <button id="slide-next">›</button>
+        </div>
+        <div class="nav-btns">
+          <button id="slide-add" title="Novo slide">+</button>
+          <button class="danger" id="slide-del" title="Excluir slide">Excluir</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -172,6 +245,20 @@
     stories: { label: 'Stories / Reels', w: 1080, h: 1920, tone: 'dark', build: buildStories }
   };
 
+  const PRESETS = {
+    dark: [
+      { id:'profundo', nome:'Azul Profundo', css:'linear-gradient(175deg,#031273 0%,#0504AA 85%)' },
+      { id:'noite',    nome:'Noite Real',     css:'linear-gradient(160deg,#031273 0%,#2337C6 70%,#4169E1 130%)' },
+      { id:'horizonte',nome:'Horizonte Celeste', css:'radial-gradient(circle at 85% 100%, #4CC9F0 0%, #0504AA 45%, #031273 100%)' },
+      { id:'sobrio',   nome:'Sóbrio',         css:'#031273' }
+    ],
+    light: [
+      { id:'neblina',  nome:'Neblina',        css:'#F5F7FC' },
+      { id:'nevoa',    nome:'Névoa Celeste',  css:'linear-gradient(160deg,#FFFFFF 0%,#EDF1FA 60%,#D8ECFB 130%)' },
+      { id:'aureola',  nome:'Auréola',        css:'radial-gradient(circle at 15% 0%, rgba(76,201,240,.35) 0%, #F5F7FC 60%)' }
+    ]
+  };
+
   function el(tag, attrs, children){
     const n = document.createElement(tag);
     if (attrs) Object.keys(attrs).forEach(k => {
@@ -187,9 +274,12 @@
   }
 
   function field(tag, key, value, style){
-    const n = el(tag, { 'data-field': key, style });
-    n.textContent = value;
-    return n;
+    const inner = el(tag, { 'data-field': key, style });
+    inner.textContent = value;
+    const wrap = el('div', { class: 'field-wrap', 'data-key': key, style: { position:'relative', display: tag === 'span' ? 'inline' : 'block' } });
+    wrap.appendChild(inner);
+    wrap.appendChild(el('button', { class: 'field-del', type: 'button', title: 'Remover este texto', text: '×' }));
+    return wrap;
   }
 
   function scrimStyle(tone, pct){
@@ -205,9 +295,15 @@
     return img ? `background-image:url(${img})` : '';
   }
 
+  function presetCss(tone, idx){
+    const list = PRESETS[tone];
+    const p = list[idx] || list[0];
+    return p.css;
+  }
+
   // ---------- Modelo A: Citações ----------
   function buildModeloA(state){
-    const s = el('div', { class: 'slide tone-dark', style: { width:'1080px', height:'1080px', background:'linear-gradient(175deg,#031273 0%,#0504AA 85%)' } });
+    const s = el('div', { class: 'slide tone-dark', style: { width:'1080px', height:'1080px' } });
     s.appendChild(el('div', { class: 'slide-bg', style: bgStyle(state.bgImage) }));
     s.appendChild(el('div', { class: 'slide-scrim', style: scrimStyle('dark', state.scrim) }));
 
@@ -233,7 +329,7 @@
 
   // ---------- Modelo B: Avisos ----------
   function buildModeloB(state){
-    const s = el('div', { class: 'slide tone-light', style: { width:'1080px', height:'1080px', background:'#F5F7FC' } });
+    const s = el('div', { class: 'slide tone-light', style: { width:'1080px', height:'1080px' } });
     s.appendChild(el('div', { class: 'slide-bg', style: bgStyle(state.bgImage) }));
     s.appendChild(el('div', { class: 'slide-scrim', style: scrimStyle('light', state.scrim) }));
 
@@ -264,9 +360,9 @@
     return s;
   }
 
-  // ---------- Modelo C: Carrossel (capa) ----------
+  // ---------- Modelo C: Carrossel ----------
   function buildModeloC(state){
-    const s = el('div', { class: 'slide tone-dark', style: { width:'1080px', height:'1080px', background:'#031273' } });
+    const s = el('div', { class: 'slide tone-dark', style: { width:'1080px', height:'1080px' } });
     s.appendChild(el('div', { class: 'slide-bg', style: bgStyle(state.bgImage) }));
     s.appendChild(el('div', { class: 'slide-scrim', style: scrimStyle('dark', state.scrim) }));
 
@@ -288,7 +384,7 @@
 
   // ---------- Modelo D: Evangelho ----------
   function buildModeloD(state){
-    const s = el('div', { class: 'slide tone-light', style: { width:'1080px', height:'1080px', background:'#FFFFFF' } });
+    const s = el('div', { class: 'slide tone-light', style: { width:'1080px', height:'1080px' } });
     s.appendChild(el('div', { class: 'slide-bg', style: bgStyle(state.bgImage) }));
     s.appendChild(el('div', { class: 'slide-scrim', style: scrimStyle('light', state.scrim) }));
 
@@ -317,7 +413,7 @@
 
   // ---------- Stories / Reels ----------
   function buildStories(state){
-    const s = el('div', { class: 'slide tone-dark', style: { width:'1080px', height:'1920px', background:'linear-gradient(175deg,#031273 0%,#0504AA 85%)' } });
+    const s = el('div', { class: 'slide tone-dark', style: { width:'1080px', height:'1920px' } });
     s.appendChild(el('div', { class: 'slide-bg', style: bgStyle(state.bgImage) }));
     s.appendChild(el('div', { class: 'slide-scrim', style: scrimStyle('dark', state.scrim) }));
 
@@ -355,19 +451,58 @@
     return s;
   }
 
-  function applyBaseFieldStyle(node){
-    node.querySelectorAll('[data-field]').forEach(f => { f.style.display = f.style.display || 'block'; if (f.tagName === 'SPAN') f.style.display = 'inline'; });
+  function makeInstance(key, textsOverride){
+    return {
+      texts: Object.assign({}, DEFAULTS[key], textsOverride || {}),
+      bgImage: null, scrim: 55, presetIndex: 0, offsets: {}, hidden: []
+    };
+  }
+
+  function finalizeNode(node, state){
+    node.querySelectorAll('[data-field]').forEach(f => {
+      f.style.display = f.style.display || 'block';
+      if (f.tagName === 'SPAN') f.style.display = 'inline';
+    });
+    node.querySelectorAll('.field-wrap').forEach(w => {
+      const key = w.dataset.key;
+      const off = state.offsets[key];
+      if (off) w.style.transform = 'translate(' + off.dx + 'px,' + off.dy + 'px)';
+      if (state.hidden.indexOf(key) >= 0) w.style.display = 'none';
+    });
+  }
+
+  function buildSlide(key, state){
+    const t = TEMPLATES[key];
+    const node = t.build(state);
+    if (!state.bgImage) node.style.background = presetCss(t.tone, state.presetIndex);
+    finalizeNode(node, state);
+    return node;
+  }
+
+  function parseCarouselText(text){
+    const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+    return blocks.map((b, i) => {
+      const lines = b.split('\n').map(l => l.trim()).filter(Boolean);
+      const title = lines[0] || '';
+      const subtitle = lines.slice(1).join(' ') || '';
+      return makeInstance('modeloC', { number: String(i + 1).padStart(2, '0'), title, subtitle, cta: DEFAULTS.modeloC.cta });
+    });
   }
 
   // ---------- state ----------
   const stateByTemplate = {};
   Object.keys(TEMPLATES).forEach(key => {
-    stateByTemplate[key] = { texts: Object.assign({}, DEFAULTS[key]), bgImage: null, scrim: 55 };
+    stateByTemplate[key] = key === 'modeloC'
+      ? { slides: [makeInstance('modeloC')], active: 0 }
+      : makeInstance(key);
   });
 
   let currentTemplate = 'modeloA';
   const requested = new URLSearchParams(location.search).get('t');
   if (requested && TEMPLATES[requested]) currentTemplate = requested;
+
+  let moveMode = false;
+  let currentScale = 1;
 
   const stage = document.getElementById('stage');
   const tabsEl = document.getElementById('tabs');
@@ -379,6 +514,18 @@
   const resetBtn = document.getElementById('reset-btn');
   const downloadBtn = document.getElementById('download-btn');
   const toastEl = document.getElementById('toast');
+  const presetsEl = document.getElementById('presets');
+  const modeEditBtn = document.getElementById('mode-edit');
+  const modeMoveBtn = document.getElementById('mode-move');
+  const modeHint = document.getElementById('mode-hint');
+  const carouselPanel = document.getElementById('carousel-panel');
+  const carouselInput = document.getElementById('carousel-input');
+  const generateBtn = document.getElementById('generate-btn');
+  const slidePrev = document.getElementById('slide-prev');
+  const slideNext = document.getElementById('slide-next');
+  const slideCount = document.getElementById('slide-count');
+  const slideAdd = document.getElementById('slide-add');
+  const slideDel = document.getElementById('slide-del');
 
   function toast(msg){
     toastEl.textContent = msg;
@@ -387,17 +534,25 @@
     toast._t = setTimeout(() => toastEl.classList.remove('show'), 3200);
   }
 
-  function currentState(){ return stateByTemplate[currentTemplate]; }
+  function isCarousel(){ return currentTemplate === 'modeloC'; }
+
+  function currentState(){
+    if (isCarousel()) {
+      const cd = stateByTemplate.modeloC;
+      return cd.slides[cd.active];
+    }
+    return stateByTemplate[currentTemplate];
+  }
 
   function render(){
     const t = TEMPLATES[currentTemplate];
-    const node = t.build(currentState());
-    applyBaseFieldStyle(node);
+    const state = currentState();
+    const node = buildSlide(currentTemplate, state);
     stage.innerHTML = '';
     stage.appendChild(node);
 
     node.querySelectorAll('[data-field]').forEach(f => {
-      f.setAttribute('contenteditable', 'true');
+      f.setAttribute('contenteditable', moveMode ? 'false' : 'true');
       f.addEventListener('paste', e => {
         e.preventDefault();
         const text = (e.clipboardData || window.clipboardData).getData('text/plain');
@@ -408,12 +563,80 @@
       });
     });
 
+    enableDrag(node, state);
+    stage.classList.toggle('move-mode', moveMode);
+
     fitStage();
     dimLabel.textContent = t.w + ' × ' + t.h + ' px';
-    removeBgBtn.hidden = !currentState().bgImage;
-    scrimRange.value = currentState().scrim;
-    scrimVal.textContent = currentState().scrim + '%';
-    scrimRange.classList.toggle('slider-disabled', !currentState().bgImage);
+    removeBgBtn.hidden = !state.bgImage;
+    scrimRange.value = state.scrim;
+    scrimVal.textContent = state.scrim + '%';
+    scrimRange.classList.toggle('slider-disabled', !state.bgImage);
+
+    renderPresets();
+    carouselPanel.hidden = !isCarousel();
+    if (isCarousel()) renderSlideNav();
+  }
+
+  function enableDrag(node, state){
+    node.querySelectorAll('.field-wrap').forEach(wrap => {
+      wrap.addEventListener('mousedown', e => {
+        if (!moveMode) return;
+        e.preventDefault(); e.stopPropagation();
+        const key = wrap.dataset.key;
+        const start = { x: e.clientX, y: e.clientY };
+        const base = Object.assign({ dx: 0, dy: 0 }, state.offsets[key]);
+        wrap.classList.add('dragging');
+        function onMove(ev){
+          const dx = Math.round(base.dx + (ev.clientX - start.x) / currentScale);
+          const dy = Math.round(base.dy + (ev.clientY - start.y) / currentScale);
+          state.offsets[key] = { dx, dy };
+          wrap.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+        }
+        function onUp(){
+          window.removeEventListener('mousemove', onMove);
+          window.removeEventListener('mouseup', onUp);
+          wrap.classList.remove('dragging');
+        }
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+      });
+
+      wrap.querySelector('.field-del').addEventListener('click', e => {
+        e.stopPropagation();
+        const key = wrap.dataset.key;
+        if (state.hidden.indexOf(key) < 0) state.hidden.push(key);
+        wrap.style.display = 'none';
+      });
+    });
+  }
+
+  function renderPresets(){
+    const tone = TEMPLATES[currentTemplate].tone;
+    const list = PRESETS[tone];
+    const state = currentState();
+    presetsEl.innerHTML = '';
+    list.forEach((p, i) => {
+      const sw = el('button', {
+        type: 'button', class: 'preset-swatch' + (!state.bgImage && state.presetIndex === i ? ' active' : ''),
+        title: p.nome, style: { background: p.css }
+      });
+      sw.addEventListener('click', () => {
+        state.presetIndex = i;
+        state.bgImage = null;
+        bgInput.value = '';
+        render();
+      });
+      presetsEl.appendChild(sw);
+    });
+  }
+
+  function renderSlideNav(){
+    const cd = stateByTemplate.modeloC;
+    slideCount.textContent = (cd.active + 1) + ' / ' + cd.slides.length;
+    slidePrev.disabled = cd.active === 0;
+    slideNext.disabled = cd.active === cd.slides.length - 1;
+    slideDel.disabled = cd.slides.length <= 1;
   }
 
   function fitStage(){
@@ -423,6 +646,7 @@
     const maxW = Math.min(available, 640);
     const maxH = 620;
     const scale = Math.min(maxW / t.w, maxH / t.h, 1);
+    currentScale = scale;
     stage.style.width = t.w + 'px';
     stage.style.height = t.h + 'px';
     stage.style.transform = 'scale(' + scale + ')';
@@ -440,6 +664,19 @@
       tabsEl.appendChild(b);
     });
   }
+
+  modeEditBtn.addEventListener('click', () => {
+    moveMode = false;
+    modeEditBtn.classList.add('active'); modeMoveBtn.classList.remove('active');
+    modeHint.textContent = 'Clique direto em qualquer texto no preview ao lado para reescrevê-lo.';
+    render();
+  });
+  modeMoveBtn.addEventListener('click', () => {
+    moveMode = true;
+    modeMoveBtn.classList.add('active'); modeEditBtn.classList.remove('active');
+    modeHint.textContent = 'Arraste qualquer texto para reposicionar, ou clique no × para removê-lo do modelo.';
+    render();
+  });
 
   bgInput.addEventListener('change', () => {
     const file = bgInput.files[0];
@@ -466,9 +703,45 @@
   });
 
   resetBtn.addEventListener('click', () => {
-    stateByTemplate[currentTemplate].texts = Object.assign({}, DEFAULTS[currentTemplate]);
+    Object.assign(currentState(), makeInstance(currentTemplate));
+    bgInput.value = '';
     render();
-    toast('Textos restaurados.');
+    toast('Modelo restaurado.');
+  });
+
+  generateBtn.addEventListener('click', () => {
+    const text = carouselInput.value.trim();
+    if (!text) { toast('Cole o texto do carrossel primeiro.'); return; }
+    const slides = parseCarouselText(text);
+    if (!slides.length) { toast('Não consegui identificar nenhum slide nesse texto.'); return; }
+    stateByTemplate.modeloC = { slides, active: 0 };
+    render();
+    toast(slides.length + ' slides gerados — use ‹ › para navegar entre eles.');
+  });
+
+  slidePrev.addEventListener('click', () => {
+    const cd = stateByTemplate.modeloC;
+    cd.active = Math.max(0, cd.active - 1);
+    render();
+  });
+  slideNext.addEventListener('click', () => {
+    const cd = stateByTemplate.modeloC;
+    cd.active = Math.min(cd.slides.length - 1, cd.active + 1);
+    render();
+  });
+  slideAdd.addEventListener('click', () => {
+    const cd = stateByTemplate.modeloC;
+    const n = String(cd.slides.length + 1).padStart(2, '0');
+    cd.slides.splice(cd.active + 1, 0, makeInstance('modeloC', { number: n }));
+    cd.active++;
+    render();
+  });
+  slideDel.addEventListener('click', () => {
+    const cd = stateByTemplate.modeloC;
+    if (cd.slides.length <= 1) return;
+    cd.slides.splice(cd.active, 1);
+    cd.active = Math.min(cd.active, cd.slides.length - 1);
+    render();
   });
 
   window.addEventListener('resize', fitStage);
@@ -481,6 +754,31 @@
     ];
     await Promise.all(specs.map(s => document.fonts.load(s).catch(() => {})));
     try { await Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 3000))]); } catch(e){}
+  }
+
+  async function renderToCanvas(key, state, holder){
+    const t = TEMPLATES[key];
+    const node = buildSlide(key, state);
+    holder.appendChild(node);
+    const canvas = await html2canvas(node, {
+      scale: 1, useCORS: true, backgroundColor: t.tone === 'dark' ? '#031273' : '#FFFFFF',
+      logging: false, width: t.w, height: t.h, windowWidth: t.w, windowHeight: t.h
+    });
+    node.remove();
+    return canvas;
+  }
+
+  function downloadCanvas(canvas, filename){
+    return new Promise(resolve => {
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+        resolve();
+      }, 'image/png');
+    });
   }
 
   downloadBtn.addEventListener('click', async () => {
@@ -497,21 +795,20 @@
     document.body.appendChild(holder);
     try {
       await ensureFonts();
-      const t = TEMPLATES[currentTemplate];
-      const node = t.build(currentState());
-      applyBaseFieldStyle(node);
-      holder.appendChild(node);
-      const canvas = await html2canvas(node, {
-        scale: 1, useCORS: true, backgroundColor: t.tone === 'dark' ? '#031273' : '#FFFFFF',
-        logging: false, width: t.w, height: t.h, windowWidth: t.w, windowHeight: t.h
-      });
-      const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'pnsg-' + currentTemplate + '.png';
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 4000);
-      toast('Arte baixada.');
+      if (isCarousel() && stateByTemplate.modeloC.slides.length > 1) {
+        const slides = stateByTemplate.modeloC.slides;
+        for (let i = 0; i < slides.length; i++) {
+          downloadBtn.textContent = 'Slide ' + (i + 1) + ' de ' + slides.length + '...';
+          const canvas = await renderToCanvas('modeloC', slides[i], holder);
+          await downloadCanvas(canvas, 'pnsg-carrossel-' + String(i + 1).padStart(2, '0') + '.png');
+          await new Promise(r => setTimeout(r, 450));
+        }
+        toast(slides.length + ' artes baixadas.');
+      } else {
+        const canvas = await renderToCanvas(currentTemplate, currentState(), holder);
+        await downloadCanvas(canvas, 'pnsg-' + currentTemplate + '.png');
+        toast('Arte baixada.');
+      }
     } catch (e) {
       console.error(e);
       toast('Não foi possível gerar a imagem: ' + e.message);
