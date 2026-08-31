@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Identidade Visual — Paróquia Nossa Senhora das Graças</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700&family=Alex+Brush&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F7FC;
+    --surface:#FFFFFF;
+    --surface-2:#EDF1FA;
+    --ink:#12162A;
+    --ink-muted:#535A7A;
+    --border:#DBE1F1;
+    --shadow: 0 1px 2px rgba(18,22,42,.04), 0 8px 24px rgba(18,22,42,.06);
+
+    --primary-dark:#031273;
+    --primary:#0504AA;
+    --secondary:#2337C6;
+    --accent:#4169E1;
+    --sky:#4CC9F0;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0B0E1E;
+      --surface:#141935;
+      --surface-2:#1B2145;
+      --ink:#EDEFFB;
+      --ink-muted:#AEB4DA;
+      --border:#2B3161;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B0E1E;
+    --surface:#141935;
+    --surface-2:#1B2145;
+    --ink:#EDEFFB;
+    --ink-muted:#AEB4DA;
+    --border:#2B3161;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Public Sans", ui-sans-serif, system-ui, sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ max-width:100%; display:block; }
+
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  h1,h2,h3{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;
+    text-wrap:balance;
+    margin:0;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:linear-gradient(175deg, var(--primary-dark), var(--primary) 85%);
+    color:#F2F4FF;
+    padding:76px 0 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .wrap{ position:relative; z-index:1; }
+  .eyebrow{
+    font-size:.78rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--sky);
+    font-weight:600;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 4.2vw, 3.1rem);
+    color:#fff;
+    max-width:16ch;
+  }
+  .hero .script{
+    font-family:"Alex Brush", cursive;
+    font-size:clamp(1.8rem, 3vw, 2.4rem);
+    color:var(--sky);
+    margin-top:6px;
+    font-weight:400;
+  }
+  .hero p.lede{
+    max-width:56ch;
+    color:#D7DCFA;
+    margin-top:22px;
+    font-size:1.02rem;
+  }
+  .arches{
+    position:absolute;
+    right:-40px; bottom:-30px;
+    opacity:.16;
+    width:340px; height:auto;
+  }
+
+  /* ---------- Nav ---------- */
+  .subnav{
+    position:sticky; top:0; z-index:10;
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+  }
+  .subnav .wrap{
+    display:flex; gap:4px; flex-wrap:wrap;
+    padding-top:0; padding-bottom:0;
+  }
+  .subnav a{
+    color:var(--ink-muted);
+    text-decoration:none;
+    font-size:.88rem;
+    font-weight:600;
+    padding:16px 14px;
+    border-bottom:2px solid transparent;
+    white-space:nowrap;
+  }
+  .subnav a:hover{ color:var(--primary); }
+  :root[data-theme="dark"] .subnav a:hover{ color: var(--sky); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .subnav a:hover{ color: var(--sky); } }
+
+  /* ---------- Sections ---------- */
+  section{ padding:72px 0; }
+  section + section{ border-top:1px solid var(--border); }
+
+  .section-head{
+    max-width:64ch;
+    margin-bottom:40px;
+  }
+  .section-head .kicker{
+    font-size:.78rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--secondary);
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  :root[data-theme="dark"] .section-head .kicker{ color: var(--sky); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .section-head .kicker{ color: var(--sky); } }
+
+  .section-head h2{ font-size:clamp(1.5rem,2.6vw,2rem); }
+  .section-head p{ color:var(--ink-muted); margin-top:12px; font-size:1rem; }
+
+  /* ---------- Divider (arch motif) ---------- */
+  .divider{
+    display:flex; justify-content:center;
+    padding:8px 0 0;
+  }
+
+  /* ---------- Palette ---------- */
+  .palette{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:16px;
+  }
+  .swatch{
+    border-radius:14px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:var(--surface);
+    box-shadow:var(--shadow);
+  }
+  .swatch .fill{ height:120px; }
+  .swatch .meta{ padding:14px 14px 16px; }
+  .swatch .name{ font-weight:700; font-size:.92rem; }
+  .swatch .hex{
+    font-family:ui-monospace, "SF Mono", Menlo, monospace;
+    color:var(--ink-muted);
+    font-size:.82rem;
+    margin-top:2px;
+  }
+  .swatch .use{ color:var(--ink-muted); font-size:.82rem; margin-top:8px; line-height:1.4; }
+
+  /* ---------- Typography ---------- */
+  .type-roles{ display:flex; flex-direction:column; gap:0; border:1px solid var(--border); border-radius:16px; overflow:hidden; background:var(--surface); box-shadow:var(--shadow); }
+  .type-role{ display:grid; grid-template-columns:180px 1fr; gap:24px; padding:32px; align-items:center; }
+  .type-role + .type-role{ border-top:1px solid var(--border); }
+  .type-role .label{ font-size:.8rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-muted); font-weight:700; }
+  .type-role .label small{ display:block; text-transform:none; letter-spacing:0; font-weight:400; margin-top:4px; font-size:.78rem; }
+  .type-role .sample.script{ font-family:"Alex Brush", cursive; font-size:2.6rem; color:var(--primary); line-height:1; }
+  :root[data-theme="dark"] .type-role .sample.script{ color: var(--sky); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .type-role .sample.script{ color: var(--sky); } }
+  .type-role .sample.heading{ font-family:"Fraunces", serif; font-weight:700; font-size:1.9rem; }
+  .type-role .sample.body{ font-family:"Public Sans", sans-serif; font-size:1rem; color:var(--ink-muted); max-width:52ch; }
+
+  /* ---------- Stickers ---------- */
+  .sticker-grid{
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    gap:14px;
+  }
+  .sticker-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 10px 12px;
+    text-align:center;
+    box-shadow:var(--shadow);
+  }
+  .sticker-card img{ height:66px; width:auto; margin:0 auto 8px; object-fit:contain; }
+  .sticker-card .cap{ font-size:.74rem; color:var(--ink-muted); font-weight:600; }
+
+  /* ---------- Identity cards ---------- */
+  .matriz-card{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:0;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    margin-bottom:20px;
+  }
+  .matriz-card .photo{ height:100%; min-height:220px; padding:14px; background:var(--surface-2); display:flex; }
+  .matriz-card .photo .frame{ position:relative; flex:1; overflow:hidden; border-radius:12px; }
+  .matriz-card .photo .frame img{ width:100%; height:100%; object-fit:cover; filter:saturate(1.1) contrast(1.08); }
+  .matriz-card .photo .frame::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(165deg, rgba(3,18,115,.10), rgba(3,18,115,.4));
+    mix-blend-mode:multiply;
+    pointer-events:none;
+  }
+  .matriz-card .content{ padding:36px; display:flex; flex-direction:column; justify-content:center; gap:16px; }
+  .badge-row{ display:flex; align-items:center; gap:16px; }
+  .emblem{
+    width:76px; height:76px; border-radius:50%;
+    border:3px solid var(--surface);
+    outline:1px solid var(--border);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    background:var(--surface-2);
+    flex-shrink:0;
+  }
+  .emblem img{ width:100%; height:100%; object-fit:cover; filter:contrast(1.1) saturate(1.05); }
+  .emblem.mono{
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(160deg, var(--secondary), var(--accent));
+    color:#fff; font-family:"Fraunces",serif; font-weight:700; font-size:1.3rem;
+  }
+  .tag{ display:inline-block; font-size:.74rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--secondary); }
+  :root[data-theme="dark"] .tag{ color: var(--sky); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tag{ color: var(--sky); } }
+  .matriz-card h3{ font-size:1.5rem; }
+  .matriz-card .desc{ color:var(--ink-muted); font-size:.95rem; }
+
+  .community-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+  }
+  .community-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .community-card .photo{ height:150px; padding:10px; background:var(--surface-2); display:flex; }
+  .community-card .photo .frame{ position:relative; flex:1; overflow:hidden; border-radius:10px; }
+  .community-card .photo .frame img{ width:100%; height:100%; object-fit:cover; filter:saturate(1.1) contrast(1.08); }
+  .community-card .photo .frame::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(165deg, rgba(3,18,115,.10), rgba(3,18,115,.4));
+    mix-blend-mode:multiply;
+    pointer-events:none;
+  }
+  .community-card .content{ padding:20px; }
+  .community-card .badge-row{ margin-bottom:14px; gap:12px; }
+  .community-card .emblem{ width:56px; height:56px; }
+  .community-card h4{ font-family:"Fraunces",serif; font-weight:600; font-size:1.05rem; margin:0 0 4px; }
+  .community-card .note{ font-size:.78rem; color:var(--ink-muted); font-style:italic; margin-top:6px; }
+
+  footer{
+    padding:40px 0 60px;
+    text-align:center;
+    color:var(--ink-muted);
+    font-size:.85rem;
+  }
+
+  @media (max-width: 860px){
+    .palette{ grid-template-columns:repeat(2,1fr); }
+    .sticker-grid{ grid-template-columns:repeat(3,1fr); }
+    .type-role{ grid-template-columns:1fr; gap:8px; }
+    .matriz-card{ grid-template-columns:1fr; }
+    .matriz-card .photo{ min-height:200px; }
+    .community-grid{ grid-template-columns:1fr; }
+    .subnav .wrap{ overflow-x:auto; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Guia de Identidade Visual</div>
+      <h1>Paróquia Nossa Senhora<br>das Graças</h1>
+      <div class="script">e suas comunidades, com fé</div>
+      <p class="lede">Paleta de cores, tipografia, pack de figurinhas e a identidade visual da Matriz e das comunidades — reunidos em um único padrão para uso em materiais impressos, redes sociais e comunicação com os fiéis.</p>
+    </div>
+    <svg class="arches" viewBox="0 0 300 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 160V70a40 40 0 0 1 80 0v90" stroke="#fff" stroke-width="3"/>
+      <path d="M110 160V50a50 50 0 0 1 100 0v110" stroke="#fff" stroke-width="3"/>
+      <path d="M220 160V80a35 35 0 0 1 70 0v80" stroke="#fff" stroke-width="3"/>
+    </svg>
+  </header>
+
+  <nav class="subnav">
+    <div class="wrap">
+      <a href="#paleta">Paleta de Cores</a>
+      <a href="#tipografia">Tipografia</a>
+      <a href="#figurinhas">Figurinhas</a>
+      <a href="#identidades">Identidades</a>
+    </div>
+  </nav>
+
+  <section id="paleta">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">01 — Cores</div>
+        <h2>Paleta de Cores</h2>
+        <p>Cinco tons de azul royal, do mais profundo ao mais claro. Cada um com um papel definido, para manter consistência entre peças impressas e digitais.</p>
+      </div>
+      <div class="palette">
+        <div class="swatch">
+          <div class="fill" style="background:#031273"></div>
+          <div class="meta">
+            <div class="name">Azul Meia-Noite</div>
+            <div class="hex">#031273</div>
+            <div class="use">Fundos escuros e títulos de destaque</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="fill" style="background:#0504AA"></div>
+          <div class="meta">
+            <div class="name">Azul Real</div>
+            <div class="hex">#0504AA</div>
+            <div class="use">Cor primária — logotipo e elementos principais</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="fill" style="background:#2337C6"></div>
+          <div class="meta">
+            <div class="name">Azul Marinho</div>
+            <div class="hex">#2337C6</div>
+            <div class="use">Cor secundária — botões e links</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="fill" style="background:#4169E1"></div>
+          <div class="meta">
+            <div class="name">Azul Cornflower</div>
+            <div class="hex">#4169E1</div>
+            <div class="use">Apoio — ícones e detalhes</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="fill" style="background:#4CC9F0"></div>
+          <div class="meta">
+            <div class="name">Azul Celeste</div>
+            <div class="hex">#4CC9F0</div>
+            <div class="use">Realces claros e fundos suaves</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tipografia">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">02 — Tipografia</div>
+        <h2>Tipografia</h2>
+        <p>Três papéis bem definidos substituem a lista solta de fontes do material anterior — cada fonte com um uso claro.</p>
+      </div>
+      <div class="type-roles">
+        <div class="type-role">
+          <div class="label">Manuscrito<small>Frases de destaque e assinatura</small></div>
+          <div class="sample script">com fé, tudo posso</div>
+        </div>
+        <div class="type-role">
+          <div class="label">Títulos<small>Nomes de igrejas e seções</small></div>
+          <div class="sample heading">Nossa Senhora das Graças</div>
+        </div>
+        <div class="type-role">
+          <div class="label">Texto corrido<small>Parágrafos e legendas</small></div>
+          <div class="sample body">Usada em avisos, textos de missa e comunicação do dia a dia — priorizando leitura fácil em qualquer tamanho de tela ou material impresso.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="figurinhas">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">03 — Figurinhas</div>
+        <h2>Pack de Figurinhas de Fé</h2>
+        <p>Conjunto de treze letterings para uso em WhatsApp, Instagram e materiais das comunidades.</p>
+      </div>
+      <div class="sticker-grid">
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0001.jpg" alt="Deus é bom"><div class="cap">Deus é bom</div></div>
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0002.jpg" alt="Filha do Rei"><div class="cap">Filha do Rei</div></div>
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0003.jpg" alt="Tudo posso"><div class="cap">Tudo posso</div></div>
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0004.jpg" alt="Foco, força, fé"><div class="cap">Foco, força, fé</div></div>
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0005.jpg" alt="Oi, Deus"><div class="cap">Oi, Deus</div></div>
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0006.jpg" alt="Tenha fé"><div class="cap">Tenha fé</div></div>
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0007.jpg" alt="Vai na fé!"><div class="cap">Vai na fé!</div></div>
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0008.jpg" alt="Deus"><div class="cap">Deus</div></div>
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0009.jpg" alt="Asas"><div class="cap">Asas</div></div>
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0010.jpg" alt="Vem com fé"><div class="cap">Vem com fé</div></div>
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0011.jpg" alt="Tô em paz"><div class="cap">Tô em paz</div></div>
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0012.jpg" alt="Amém"><div class="cap">Amém</div></div>
+        <div class="sticker-card"><img src="../uploads/catalogo_P%C3%A1gina_2_Imagem_0013.jpg" alt="fé"><div class="cap">fé</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="identidades">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="kicker">04 — Identidades</div>
+        <h2>Matriz e Comunidades</h2>
+        <p>Fachada e selo de cada comunidade da paróquia, seguindo o mesmo padrão de apresentação.</p>
+      </div>
+
+      <div class="matriz-card">
+        <div class="photo">
+          <div class="frame"><img src="../uploads/catalogo_P%C3%A1gina_3_Imagem_0002.jpg" alt="Fachada da Matriz Nossa Senhora das Graças"></div>
+        </div>
+        <div class="content">
+          <div class="badge-row">
+            <div class="emblem">
+              <img src="../uploads/catalogo_P%C3%A1gina_3_Imagem_0003.jpg" alt="Selo da Paróquia Nossa Senhora das Graças">
+            </div>
+            <span class="tag">Sede da paróquia</span>
+          </div>
+          <h3>Matriz — Nossa Senhora das Graças</h3>
+          <p class="desc">A igreja matriz é a referência visual da paróquia: seu selo acompanha comunicados oficiais, celebrações e materiais impressos.</p>
+        </div>
+      </div>
+
+      <div class="community-grid">
+        <div class="community-card">
+          <div class="photo">
+            <div class="frame"><img src="../uploads/catalogo_P%C3%A1gina_4_Imagem_0002.jpg" alt="Fachada da Comunidade Nossa Senhora de Guadalupe"></div>
+          </div>
+          <div class="content">
+            <div class="badge-row">
+              <div class="emblem">
+                <img src="../uploads/catalogo_P%C3%A1gina_4_Imagem_0003.jpg" alt="Nossa Senhora de Guadalupe">
+              </div>
+            </div>
+            <h4>Nossa Senhora de Guadalupe</h4>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="photo">
+            <div class="frame"><img src="../uploads/catalogo_P%C3%A1gina_5_Imagem_0002.jpg" alt="Fachada da Comunidade Nossa Senhora Aparecida"></div>
+          </div>
+          <div class="content">
+            <div class="badge-row">
+              <div class="emblem mono">A</div>
+            </div>
+            <h4>Nossa Senhora Aparecida</h4>
+            <div class="note">Selo próprio em desenvolvimento</div>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="photo">
+            <div class="frame"><img src="../uploads/catalogo_P%C3%A1gina_6_Imagem_0001.jpg" alt="Fachada da Comunidade Nossa Senhora Aparecida Santa Fé"></div>
+          </div>
+          <div class="content">
+            <div class="badge-row">
+              <div class="emblem mono">SF</div>
+            </div>
+            <h4>N. Sra. Aparecida — Santa Fé</h4>
+            <div class="note">Selo próprio em desenvolvimento</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Guia de identidade visual preparado a partir do material da paróquia · agosto de 2026
+  </footer>
+
+</body>
+</html>
